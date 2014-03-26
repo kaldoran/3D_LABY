@@ -14,7 +14,7 @@ BIN_REP = bin
  #
 SRC = $(foreach dir, $(SRC_REP), $(wildcard $(dir)/*.c))
 OBJ = $(addsuffix .o, $(basename $(subst ${SRC_REP}, ${OBJ_REP}, ${SRC})))
-BIN = laby
+BIN = main
 
 .PHONY: clean mrproper clear dir
 .SUFFIXES:
