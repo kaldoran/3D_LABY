@@ -124,12 +124,6 @@ Point kCreePoint(int x, int y, int z) {
 }
 
 
-
-							/* Fonction non utile */
-
-
-
-
 /* On considere le fait suivant :
  * Que le point A est le point le plus bas
  * Et ainsi que le point B ets le point le plus haut
@@ -206,7 +200,6 @@ karbre boule2arbrebis( Point S, Point A, Point B, int r) {
 		return Ab;
 
 	}
-
 } 
 
 /* L'information se trouvant dans les feuilles,  il n'est pas possible que
@@ -222,5 +215,4 @@ karbre intersetion(karbre A1, karbre A2) {
 		return kConsArbre(kCreeElement(kRacine(A1)->valeur), NULL);
 	else 
 		return kConsArbre(kCreeElement(-1), kRacine(intersetion(A1->fils[0], A2->fils[0])), kRacine(intersetion(A1->fils[1], A2->fils[1])), kRacine(intersetion(A1->fils[2], A2->fils[2])), kRacine(intersetion(A1->fils[3], A2->fils[3])), kRacine(intersetion(A1->fils[4], A2->fils[4])), kRacine(intersetion(A1->fils[5], A2->fils[5])), kRacine(intersetion(A1->fils[6], A2->fils[6])), kRacine(intersetion(A1->fils[7],A2->fils[7])) );
-
 }

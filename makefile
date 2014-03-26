@@ -1,36 +1,60 @@
-# Dossier pour la compilation
-
-DEST_SRC = SRC
-DEST_INC = INC
-DEST_OBJ = OBJ
-
-# Flags de compilation
-
 CC = gcc
-CFLAGS = -W -Wall
+CFLAGS = -W -Wall -Wextra -pedantic -lglut -lGLU
 
+#
+# Repositories.
+ #
+OBJ_REP = objets
+INC_REP = includes
+SRC_REP = sources
+BIN_REP = bin
 
-SRC = $(foreach dir, $(DEST_SRC), $(wildcard $(dir)/*.c))
-OBJ = $(addsuffix .o, $(basename $(subst ${DEST_SRC}, ${DEST_OBJ}, ${SRC})))
+#
+# Sources, objects and binary file name
+ #
+SRC = $(foreach dir, $(SRC_REP), $(wildcard $(dir)/*.c))
+OBJ = $(addsuffix .o, $(basename $(subst ${SRC_REP}, ${OBJ_REP}, ${SRC})))
+BIN = laby
 
-#nom de l'executable
-BIN = TP4
+.PHONY: clean mrproper clear dir
+.SUFFIXES:
+	
 
-# Make
+all: clear dir $(BIN_REP)/$(BIN)
 
-all: $(BIN)
+#
+# BIN creation.
+ #
+$(BIN_REP)/$(BIN): $(OBJ)
+	@$(CC) $(CFLAGS) $(OBJ) -o $@ -I $(INC_REP)
+#
+# Object files creation.
+ #
+$(OBJ_REP)/%.o: $(SRC_REP)/%.c
+	@$(CC) $(CFLAGS) -c $^ -o $@ -I $(INC_REP)
 
-$(BIN): $(OBJ)
-	$(CC) -o ${BIN} $(OBJ) $(ADDFLAGS)
-
-$(DEST_OBJ)/%.o: $(DEST_SRC)/%.c
-	$(CC) $(CFLAGS) -I$(DEST_INC) -c $< -o $@  $(ADDFLAGS)
-
-
-# Clean
-
+#
+# Other usefull targets.
+ #
 clean:
-	@rm -f $(DEST_OBJ)/*.o
-	@rm -f $(BIN)
-	@find . -name \*~ -exec rm \-fv {} \;
-	@echo  "\t"Le programme $(BIN) a bien été supprimé
+	rm -f ./$(OBJ_REP)/*.o;
+	rm -f output
+
+mrproper:
+	rm -f ./$(OBJ_REP)/*.o ./$(BIN_REP)/$(BIN);
+	rm -f output
+
+rebuild: mrproper clear all
+
+#
+# Screen cleaning.
+ #
+clear:
+	clear
+
+#
+# Repository creation.
+ #
+dir:
+	@mkdir -p $(OBJ_REP)
+	@mkdir -p $(BIN_REP)
