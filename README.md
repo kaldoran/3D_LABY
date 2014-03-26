@@ -1,3 +1,7 @@
+Ce projet est réalisé dans le cadre de l'UE projet de programmation de l'UJM Saint Etienne de la Licence 3 Informatique
+de 2013/2014.
+Vous êtes donc priez de passer votre chemin si vous faites parti de la même promo.
+
 Projet de SAI :
 ----
 
