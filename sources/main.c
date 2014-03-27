@@ -8,13 +8,16 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <math.h>
+#include <time.h>
 #include "laby.h"
 #include "stack.h"
 
 int main(int argc, char *argv[])
 {
-	Laby *laby = laby_new();
 	Stack *stack = stack_new();
+	Laby *laby = laby_new();
+
+	srand(time(NULL));
 
 	stack = stack_push(stack, 2);
 	stack = stack_push(stack, 5);
@@ -23,10 +26,8 @@ int main(int argc, char *argv[])
 	stack = stack_pop(stack);
 	stack = stack_pop(stack);
 
-	if (stack->last != NULL)
-	{
-		fprintf(stderr, "%i : %i\n", (stack->last)->value, stack->size);
-	}
+	laby = maze_generation(laby);
+	laby_print(laby);
 
 	stack_free(stack);
 	laby_free(laby);
