@@ -6,11 +6,11 @@
 #ifndef _LABY
 #define _LABY
 
-#define WIDTH 	40
-#define HEIGHT 	40
+#define WIDTH 	100
+#define HEIGHT 	20
 #define SIZE 	(WIDTH * HEIGHT)
 
-#define COORD(I,J) 		((I >= 0 && I <= HEIGHT && J >= 0 && J <= WIDTH) ? (I * WIDTH)+J : -1)
+#define COORD(I,J) 		((I >= 0 && I < WIDTH && J >= 0 && J < HEIGHT) ? (J * WIDTH) + I : -1)
 #define LINE(X)			(X / WIDTH)
 #define COLUMN(X)		(X % WIDTH)
 #define END_RIGHT(X) 	(X % WIDTH == WIDTH - 1)

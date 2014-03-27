@@ -14,7 +14,6 @@
   */
 Laby *laby_new(void)
 {
-	int x = 0;
 	Laby *laby;
 
 	if ((laby = malloc(sizeof *laby)) == NULL)
@@ -25,12 +24,6 @@ Laby *laby_new(void)
 	if ((laby->matrix = calloc(SIZE, sizeof(char))) == NULL)
 	{
 		return NULL;
-	}
-
-	while (IS_IN(x))
-	{
-		laby->matrix[x] = '1';
-		++x;
 	}
 
 	laby->end = 0;
@@ -47,7 +40,7 @@ void laby_free(Laby *laby)
 Laby *maze_generation(Laby *laby)
 {
 	int i, x, y;
-	int rand_cell, rand_room_width, rand_room_height;
+	int rand_room_width, rand_room_height;
 	int cell_x, cell_y;
 	Stack *stack = stack_new();
 	/*
@@ -55,20 +48,22 @@ Laby *maze_generation(Laby *laby)
 	  */
 	stack = stack_push(stack, 0);
 	
+
 	/*
 	 * We generate some rooms in the middle of the maze.
 	  */
-	for (i = 0; i < 3; ++i)
+	for (i = 0; i < (SIZE / 350); ++i)
 	{
-
-		rand_room_width = (rand() % ((WIDTH / 2) - (WIDTH / 10))) + (WIDTH / 10);
-		rand_room_height = (rand() % ((HEIGHT / 2) - (HEIGHT / 10))) +  (HEIGHT / 10);
+		rand_room_width = (rand() % ((WIDTH / 3) - (WIDTH / 15))) + (WIDTH / 15);
+		rand_room_height = (rand() % ((HEIGHT / 3) - (HEIGHT / 15))) +  (HEIGHT / 15);
 		rand_room_width = rand_room_width / 2;
 		rand_room_height = rand_room_height / 2;
 
-		rand_cell = rand() % (SIZE - 1);
-		cell_x = COLUMN(rand_cell);
-		cell_y = LINE(rand_cell);
+		rand_room_width = (rand_room_width == 0) ? 1 : rand_room_width;
+		rand_room_height = (rand_room_height == 0) ? 1 : rand_room_height;
+
+		cell_x = rand() % WIDTH;
+		cell_y = rand() % HEIGHT;
 
 		fprintf(stderr, "%d %d, %d %d\n",
 			cell_x, cell_y, rand_room_width, rand_room_height );
@@ -103,7 +98,7 @@ void laby_print(Laby *laby)
 		fprintf(stdout, "│");
 		for (x = 0; x < WIDTH; ++x)
 		{
-			if (laby->matrix[(y * WIDTH) + x] == '1')
+			if (laby->matrix[(y * WIDTH) + x] == '0')
 			{
 				fprintf(stdout, "%c", laby->matrix[(y * WIDTH) + x]);
 			} else {
