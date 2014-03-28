@@ -43,11 +43,23 @@ Laby *maze_generation(Laby *laby)
 	int rand_room_width, rand_room_height;
 	int cell_x, cell_y;
 	Stack *stack = stack_new();
+	
 	/*
 	 * We start the maze generation from the position 0.
 	  */
+	int visited = 0;
 	stack = stack_push(stack, 0);
 	
+/*	
+	while (visited < SIZE)
+	{
+		if (stack->size == 0)
+		{
+			fprintf(stderr, "YOU FUCKING BITCHE !\n");
+			return;
+		} else if (stack->size == 1) {
+		}
+	}*/
 
 	/*
 	 * We generate some rooms in the middle of the maze.
@@ -87,28 +99,29 @@ void laby_print(Laby *laby)
 	int x,y;
 	fprintf(stdout, "%i : %d\n",HEIGHT, WIDTH);
 
-	for (x = 0; x < WIDTH; ++x)
-	{
-		fprintf(stdout, "─");
-	}
-	fprintf(stdout, "→ X\n");
+
+	fprintf(stdout, "↑Y\n");
 
 	for (y = HEIGHT - 1; y >= 0; --y)
 	{
 		fprintf(stdout, "│");
 		for (x = 0; x < WIDTH; ++x)
 		{
-			if (laby->matrix[(y * WIDTH) + x] == '0')
+			if (laby->matrix[(y * WIDTH) + x] == 0)
 			{
-				fprintf(stdout, "%c", laby->matrix[(y * WIDTH) + x]);
+				fprintf(stdout, "▓");
 			} else {
 				fprintf(stdout, " ");
 			}
 		}
 		fprintf(stdout, "\n");
 	}
+	fprintf(stdout, "└");
+	for (x = 0; x < WIDTH; ++x)
+	{
+		fprintf(stdout, "─");
+	}
+	fprintf(stdout, "→ X\n");
 
-	fprintf(stdout, "↓\nY\n");
-
-	fprintf(stdout, "\n");
+	fprintf(stdout, "(0,0)\n");
 }
