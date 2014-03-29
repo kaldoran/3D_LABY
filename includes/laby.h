@@ -6,8 +6,8 @@
 #ifndef _LABY
 #define _LABY
 
-#define WIDTH 	71
-#define HEIGHT 	21
+#define WIDTH 	51
+#define HEIGHT 	51
 #define SIZE 	(WIDTH * HEIGHT)
 
 #define COORD(I,J) 			((J * WIDTH) + I)
