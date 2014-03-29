@@ -241,7 +241,7 @@ void display() {
 		glVertex3f(WIDTH * CELL_SIZE, 0, 5);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 5);
 
-		glVertex3f(WIDTH * CELL_SIZE, HEIGHT, 10);
+		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10.5);
