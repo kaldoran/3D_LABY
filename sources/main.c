@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	/*glutFullScreen();*/
 	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
 
-	glutCreateWindow("Laby");
+	glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_BLEND );
 
