@@ -2,6 +2,8 @@
  * SAI project - 3D Laby
  * File : laby.c
  * Authors : Hivert Kevin - Reynaud Nicolas.
+ *
+ * Thanks to : https://github.com/joewing/maze for the maze generation.
   */
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,6 +16,7 @@
   */
 Laby *laby_new(void)
 {
+	int x = 0;
 	Laby *laby;
 
 	if ((laby = malloc(sizeof *laby)) == NULL)
@@ -26,6 +29,11 @@ Laby *laby_new(void)
 		return NULL;
 	}
 
+	while (IS_IN(x))
+	{
+		laby->matrix[x++] = 1;
+	}
+
 	laby->end = 0;
 return laby;
 }
@@ -36,61 +44,99 @@ void laby_free(Laby *laby)
 	free(laby);
 }
 
+Laby *maze_carving (Laby *laby, int x, int y)
+{
+	int x1, y1, x2, y2, dx, dy;
+	int direction = rand() % 4, count = 0;
 
+	while (count < 4)
+	{
+		dx = 0;
+		dy = 0;
+		switch (direction)
+		{
+			case 0:
+				dx = 1;
+			break;
+			case 1:
+				dy = 1;
+			break;
+			case 2:
+				dx = -1;
+			break;
+			default:
+				dy = -1;
+			break;
+		}
+
+		x1 = x + dx;
+		y1 = y + dy;
+		x2 = x1 + dx;
+		y2 = y1 + dy;
+
+		if (!IS_BORDER(COORD(x2,y2)) && IS_WALL(COORD(x2,y2)) && IS_WALL(COORD(x1,y1)))
+		{
+			laby->matrix[COORD(x1,y1)] = 0;
+			laby->matrix[COORD(x2,y2)] = 0;
+			x = x2;
+			y = y2;
+			direction = rand() % 4;
+			count = 0;
+		} else {
+			direction = (direction + 1) % 4;
+			++count;
+		}
+	}
+return laby;
+}
 Laby *maze_generation(Laby *laby)
 {
 	int i, x, y;
 	int rand_room_width, rand_room_height;
 	int cell_x, cell_y;
-	Stack *stack = stack_new();
-	
-	/*
-	 * We start the maze generation from the position 0.
-	  */
-	int visited = 0;
-	stack = stack_push(stack, 0);
-	
-/*	
-	while (visited < SIZE)
+
+	srand(time(0));
+	laby->matrix[WIDTH + 1] = 0;
+	laby->matrix[WIDTH] = 0;
+	laby->matrix[0] = 0;
+
+	for (x = 1; x < WIDTH; x += 2)
 	{
-		if (stack->size == 0)
+		for (y = 1; y < HEIGHT; y += 2)
 		{
-			fprintf(stderr, "YOU FUCKING BITCHE !\n");
-			return;
-		} else if (stack->size == 1) {
+			laby = maze_carving(laby, x, y);
 		}
-	}*/
+	}
 
 	/*
-	 * We generate some rooms in the middle of the maze.
+	 * We generate some rooms at borders of the maze.
 	  */
-	for (i = 0; i < (SIZE / 350); ++i)
+	for (i = 0; i < (SIZE / 100); ++i)
 	{
-		rand_room_width = (rand() % ((WIDTH / 3) - (WIDTH / 15))) + (WIDTH / 15);
-		rand_room_height = (rand() % ((HEIGHT / 3) - (HEIGHT / 15))) +  (HEIGHT / 15);
-		rand_room_width = rand_room_width / 2;
+		rand_room_width  = (rand() % ((WIDTH / 6) - 2)) + 2;
+		rand_room_height = (rand() % ((HEIGHT / 6) - 2)) + 2;
+		rand_room_width  = rand_room_width / 2;
 		rand_room_height = rand_room_height / 2;
-
-		rand_room_width = (rand_room_width == 0) ? 1 : rand_room_width;
+		
+		rand_room_width  = (rand_room_width == 0) ? 1 : rand_room_width;
 		rand_room_height = (rand_room_height == 0) ? 1 : rand_room_height;
 
-		cell_x = rand() % WIDTH;
-		cell_y = rand() % HEIGHT;
+		do {
+			cell_x = rand() % WIDTH;
+			cell_y = rand() % HEIGHT;
+		} while (!IS_BORDER(COORD(cell_x,cell_y)));
 
-		fprintf(stderr, "%d %d, %d %d\n",
-			cell_x, cell_y, rand_room_width, rand_room_height );
 		for (x = cell_x - rand_room_width ; x <=  cell_x + rand_room_width; ++x)
 		{
 			for (y = cell_y - rand_room_height; y <= cell_y + rand_room_height; ++y)
 			{
-				if (IS_IN(COORD(x,y)) && !BORDER(COORD(x,y)))
+				if (IS_IN(COORD(x,y)))
 				{
-					laby->matrix[COORD(x,y)] = '0';
+					laby->matrix[COORD(x,y)] = 0;
 				}
 			}
 		}
 	}
-stack_free(stack);
 return laby;
 }
 
@@ -107,11 +153,11 @@ void laby_print(Laby *laby)
 		fprintf(stdout, "│");
 		for (x = 0; x < WIDTH; ++x)
 		{
-			if (laby->matrix[(y * WIDTH) + x] == 0)
+			if (laby->matrix[(y * WIDTH) + x] == 1)
 			{
-				fprintf(stdout, "▓");
+				fprintf(stdout, "█");
 			} else {
-				fprintf(stdout, " ");
+				fprintf(stdout, "░");
 			}
 		}
 		fprintf(stdout, "\n");

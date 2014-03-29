@@ -7,8 +7,6 @@
 #include <unistd.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include <math.h>
-#include <time.h>
 #include "laby.h"
 #include "stack.h"
 
@@ -16,8 +14,6 @@ int main(int argc, char *argv[])
 {
 	Stack *stack = stack_new();
 	Laby *laby = laby_new();
-
-	srand(time(NULL));
 
 	stack = stack_push(stack, 2);
 	stack = stack_push(stack, 5);

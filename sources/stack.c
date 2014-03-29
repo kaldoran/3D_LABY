@@ -89,7 +89,6 @@ Stack *stack_push(Stack *stack, int value)
 	node->next = stack->last;
 	stack->last = node;
 	++(stack->size);
-
 return stack;
 }
 
