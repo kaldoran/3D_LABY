@@ -11,7 +11,7 @@
   */
 typedef struct Node
 {
-	int value;
+	void *value;
 	struct Node *next;
 } Node;
 
@@ -35,7 +35,7 @@ void stack_free(Stack *stack);
 
 /* Add a new element at the end of the
  * given stack. */
-Stack *stack_push(Stack *stack, int value);
+Stack *stack_push(Stack *stack, void *value);
 
 /* Remove the element at the end of the
  * given stack. */

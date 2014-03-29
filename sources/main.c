@@ -29,6 +29,10 @@ int main(int argc, char *argv[])
 
 	laby = maze_generation(laby);
 
+	stack = stack_push(stack, laby);
+	stack = stack_push(stack, conf);
+	stack = stack_pop(stack);
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	

@@ -1,7 +1,7 @@
 #ifndef __KTREE
 #define __KTREE
 
-#define K 8
+#define K 4
 
 typedef struct Point
 {

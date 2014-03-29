@@ -67,7 +67,7 @@ void stack_free(Stack *stack)
 free(stack);
 }
 
-Stack *stack_push(Stack *stack, int value)
+Stack *stack_push(Stack *stack, void *value)
 {
 	Node *node;
 
