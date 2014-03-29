@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	glEnable( GL_BLEND );
 
 	glEnable(GL_DEPTH_TEST);
-	glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(/*GLUT_CURSOR_CROSSHAIR*/GLUT_CURSOR_NONE);
 	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
 
 	glutDisplayFunc(display);
