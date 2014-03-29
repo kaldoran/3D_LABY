@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "laby.h"
-#include "stack.h"
  
 /*
  * Maze allocation.
@@ -163,11 +162,12 @@ void laby_print(Laby *laby)
 		fprintf(stdout, "\n");
 	}
 	fprintf(stdout, "└");
+
 	for (x = 0; x < WIDTH; ++x)
 	{
 		fprintf(stdout, "─");
 	}
-	fprintf(stdout, "→ X\n");
 
+	fprintf(stdout, "→ X\n");
 	fprintf(stdout, "(0,0)\n");
 }

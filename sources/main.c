@@ -9,21 +9,15 @@
 #include <GL/glut.h>
 #include "laby.h"
 #include "stack.h"
+#include "k-tree.h"
 
 int main(int argc, char *argv[])
 {
 	Stack *stack = stack_new();
 	Laby *laby = laby_new();
 
-	stack = stack_push(stack, 2);
-	stack = stack_push(stack, 5);
-	stack = stack_pop(stack);
-	stack = stack_push(stack, 3);
-	stack = stack_pop(stack);
-	stack = stack_pop(stack);
-
 	laby = maze_generation(laby);
-	laby_print(laby);
+	
 
 	stack_free(stack);
 	laby_free(laby);
