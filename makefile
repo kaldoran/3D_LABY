@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall -Wextra -pedantic -lglut -lGLU -lm
+CFLAGS = -W -Wall -Wextra -pedantic -lGL -lGLU -lglut -lm
 
 #
 # Repositories.
@@ -26,12 +26,12 @@ all: clear dir $(BIN_REP)/$(BIN)
 # BIN creation.
  #
 $(BIN_REP)/$(BIN): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $@ -I $(INC_REP)
+	@$(CC) $(OBJ) -o $@ -I $(INC_REP) $(CFLAGS) 
 #
 # Object files creation.
  #
 $(OBJ_REP)/%.o: $(SRC_REP)/%.c
-	@$(CC) $(CFLAGS) -c $^ -o $@ -I $(INC_REP)
+	@$(CC) -c $^ -o $@ -I $(INC_REP) $(CFLAGS) 
 
 #
 # Other usefull targets.
