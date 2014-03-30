@@ -23,6 +23,7 @@ void change_center();
 void Object_floor_print();
 void Object_border_print();
 void Object_sun_print(Object *sun);
+void Object_fir_tree_print(Object *fir_tree);
 
 Config *conf;
 Object_list *ol;
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
 	Object *fir_tree = object_new(-30, 10, 10, FIR_TREE);
 	Object *fir_tree1 = object_new(-50, 40, 10, FIR_TREE);
 	Object *fir_tree2 = object_new(-50, 20, 10, FIR_TREE);
-	Object *fir_tree3 = object_new(15, 40, 20, FIR_TREE);
+	Object *fir_tree3 = object_new(15, -40, 20, FIR_TREE);
 
 	conf = config_new();
 	ol = object_list_new();
@@ -195,6 +196,9 @@ void display() {
 			case SUN:
 				Object_sun_print(iterator->object);
 			break;
+			case FIR_TREE:
+				Object_fir_tree_print(iterator->object);
+			break;
 			default:
 			break;
 		}
@@ -214,7 +218,7 @@ void display() {
 		default:
 		break;
 	}
-	
+
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
 	glutPostRedisplay();
 	glutSwapBuffers();
@@ -317,4 +321,42 @@ void Object_floor_print()
 			glEnd();
 		}
 	}
+}
+
+void Object_fir_tree_print(Object *fir_tree) {
+	float ratio = 0.2;
+	/* TRONC Arbre */
+	glColor3f(0.95, 0.7, 0.05);
+	glPushMatrix();
+		glTranslatef((fir_tree->anchor)->x, (fir_tree->anchor)->y, 0);
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(-((fir_tree->anchor)->z*ratio), 0, 0);
+		glVertex3f(((fir_tree->anchor)->z*ratio), 0, 0);
+		glVertex3f(((fir_tree->anchor)->z*ratio), 0, (fir_tree->anchor)->z);
+		glVertex3f(-((fir_tree->anchor)->z*ratio), 0, (fir_tree->anchor)->z);
+		glEnd();
+
+		/* Ligne milieu TRONC */
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 0, (fir_tree->anchor)->z);
+		glEnd();
+
+		/* Génération Arbre TRONC */
+		glBegin(GL_LINE_LOOP);
+		glVertex3f(0, -((fir_tree->anchor)->z*ratio), 0);
+		glVertex3f(0, ((fir_tree->anchor)->z*ratio), 0);
+		glVertex3f(0, ((fir_tree->anchor)->z*ratio), (fir_tree->anchor)->z);
+		glVertex3f(0, -((fir_tree->anchor)->z*ratio), (fir_tree->anchor)->z); 		
+		glEnd();
+
+		/* Sapin les murs */
+		glColor3f(0, 1, 0);
+		glTranslatef(0, 0, (fir_tree->anchor)->z); 
+		/*glutWireCone(Largeur Base, Hauteur Cone, Nombre de Facette, Nombre de Facette) */
+		glutWireCone((fir_tree->anchor)->z, 3 * (fir_tree->anchor)->z, (fir_tree->anchor)->z, (fir_tree->anchor)->z);
+
+		/*glutSolidCone(10., 25., 10, 10);
+		glutWireSphere(10., 10, 10);*/
+	glPopMatrix();
 }
