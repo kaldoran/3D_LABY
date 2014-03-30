@@ -22,10 +22,11 @@ void change_center();
 
 Config *conf;
 Object_list *ol;
+Laby *laby;
 
 int main(int argc, char *argv[])
 {
-	Laby *laby = laby_new();
+	laby = laby_new();
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
 	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 300, SUN);
@@ -121,6 +122,8 @@ void keyboard(unsigned char key, int x , int y) {
 		&& save_eye->x < (CELL_SIZE * WIDTH) - 2
 		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2
 		&& save_eye->z > 5
+		&& (IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE)))
+			|| save_eye->z > CELL_SIZE)
 	) {
 		conf->eye->x = save_eye->x;
 		conf->eye->y = save_eye->y;

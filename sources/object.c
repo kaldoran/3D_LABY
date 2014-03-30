@@ -420,36 +420,80 @@ void Object_wall_print(Object *wall)
 {
 	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
 	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
-	glColor3f(0.2, 0.2, 0.9);
+	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
+		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
+		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
+		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
+		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
+
+		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
+		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
+
+		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
+		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
+
+		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
+		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
+		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
+
+		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
+		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
+		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
+
+		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
+		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
+	glEnd();
+
+	glColor3f(1, 0.5, 0);
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x1, y2, z1);
 		glVertex3f(x2, y2, z1);
 		glVertex3f(x2, y1, z1);
-
+	glEnd();
+	/*glColor3f(0, 0, 1);*/
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x2, y1, z2);
 		glVertex3f(x2, y1, z1);
-
+	glEnd();
+	/*glColor3f(0, 1, 0);*/
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x2, y1, z1);
 		glVertex3f(x2, y1, z2);
 		glVertex3f(x2, y2, z2);
 		glVertex3f(x2, y2, z1);
-
+	glEnd();
+	/*glColor3f(1, 0, 0);*/
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x2, y2, z1);
 		glVertex3f(x1, y2, z1);
 		glVertex3f(x1, y2, z2);
 		glVertex3f(x2, y2, z2);
-
+	glEnd();
+	/*glColor3f(1, 0, 1);*/
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x1, y2, z2);
 		glVertex3f(x1, y2, z1);
-
+	glEnd();
+	/*glColor3f(1, 1, 0);*/
+	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x1, y2, z2);
 		glVertex3f(x2, y2, z2);
 		glVertex3f(x2, y1, z2);
 	glEnd();
+	
 }
