@@ -123,7 +123,11 @@ void keyboard(unsigned char key, int x , int y) {
 		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2
 		&& save_eye->z > 5
 		&& (IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE)))
-			|| save_eye->z > CELL_SIZE)
+			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE)))
+			|| save_eye->z > CELL_SIZE + 7)
 	) {
 		conf->eye->x = save_eye->x;
 		conf->eye->y = save_eye->y;
