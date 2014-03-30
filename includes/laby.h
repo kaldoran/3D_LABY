@@ -6,6 +6,7 @@
 #ifndef __LABY
 #define __LABY
 
+/* WIDTH and HEIGHT must be odd numbers. */
 #define WIDTH 	51
 #define HEIGHT 	51
 #define SIZE 	(WIDTH * HEIGHT)

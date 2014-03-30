@@ -46,4 +46,13 @@ Object_list *object_list_push(Object_list *ol, Object *object);
 
 /*  Shift the first element of the list. */
 Object_list *object_list_shift(Object_list *ol);
+
+Object_list *object_list_generatre_fir_trees(Object_list *ol);
+Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
+
+void Object_floor_print();
+void Object_border_print();
+void Object_sun_print(Object *sun);
+void Object_fir_tree_print(Object *fir_tree);
+
 #endif

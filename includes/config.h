@@ -21,7 +21,7 @@
 #define CELL_SIZE 		25
 #define CHARACTER_SIZE	10
 #define NEAR 			1
-#define FAR				(WIDTH * CELL_SIZE / 2)
+#define FAR				800
 
 typedef struct Config {
 	Point *eye;
