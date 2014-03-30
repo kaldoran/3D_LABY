@@ -152,7 +152,7 @@ void laby_print(Laby *laby)
 		fprintf(stdout, "│");
 		for (x = 0; x < WIDTH; ++x)
 		{
-			if (laby->matrix[(y * WIDTH) + x] == 1)
+			if (laby->matrix[COORD(x,y)] == 1)
 			{
 				fprintf(stdout, "█");
 			} else {

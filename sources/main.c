@@ -32,14 +32,13 @@ int main(int argc, char *argv[])
 
 	conf = config_new();
 	ol = object_list_new();
+	laby = maze_generation(laby);
 
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
 	ol = object_list_push(ol, sun);
-	ol = object_list_generatre_fir_trees(ol);
-
-	fprintf(stderr, "%u\n", ol->size);
-	laby = maze_generation(laby);
+	ol = object_list_generate_fir_trees(ol);
+	ol = object_list_push_maze_walls(ol, laby);
 
 	if(argc == 1)
 	{
@@ -191,6 +190,9 @@ void display() {
 			case FIR_TREE:
 				Object_fir_tree_print(iterator->object);
 			break;
+			case WALL:
+				Object_wall_print(iterator->object);
+			break;
 			default:
 			break;
 		}
@@ -206,6 +208,12 @@ void display() {
 		break;
 		case SUN:
 			Object_sun_print(iterator->object);
+		break;
+		case FIR_TREE:
+			Object_fir_tree_print(iterator->object);
+		break;
+		case WALL:
+			Object_wall_print(iterator->object);
 		break;
 		default:
 		break;

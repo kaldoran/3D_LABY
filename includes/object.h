@@ -11,6 +11,8 @@
 #define BORDER 		1
 #define FIR_TREE 	2
 #define SUN			3
+#define WALL 		4
+#define TEAPOT		418
 
 typedef struct Object
 {
@@ -47,12 +49,14 @@ Object_list *object_list_push(Object_list *ol, Object *object);
 /*  Shift the first element of the list. */
 Object_list *object_list_shift(Object_list *ol);
 
-Object_list *object_list_generatre_fir_trees(Object_list *ol);
+Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby);
+Object_list *object_list_generate_fir_trees(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
 void Object_floor_print();
 void Object_border_print();
 void Object_sun_print(Object *sun);
 void Object_fir_tree_print(Object *fir_tree);
+void Object_wall_print(Object *wall);
 
 #endif

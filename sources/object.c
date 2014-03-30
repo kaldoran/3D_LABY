@@ -163,7 +163,7 @@ Object_list *object_list_shift(Object_list *ol)
 return ol;
 }
 
-Object_list *object_list_generatre_fir_trees(Object_list *ol)
+Object_list *object_list_generate_fir_trees(Object_list *ol)
 {
 	int x, y;
 	int density = 3, gap = 14, space = 100;
@@ -218,6 +218,22 @@ Object_list *object_list_generatre_fir_trees(Object_list *ol)
 return ol;
 }
 
+Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby)
+{
+	int x, y;
+
+	for (x = 0; x < WIDTH; ++x)
+	{
+		for (y = 0; y < HEIGHT; ++y)
+		{
+			if (laby->matrix[COORD(x,y)] == 1)
+			{
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, WALL);
+			}
+		}
+	}
+return ol;
+}
 
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type)
 {
@@ -398,4 +414,42 @@ void Object_fir_tree_print(Object *fir_tree) {
 		/*glutSolidCone(10., 25., 10, 10);
 		glutWireSphere(10., 10, 10);*/
 	glPopMatrix();
+}
+
+void Object_wall_print(Object *wall)
+{
+	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
+	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
+	glColor3f(0.2, 0.2, 0.9);
+	glBegin(GL_QUADS);
+		glVertex3f(x1, y1, z1);
+		glVertex3f(x1, y2, z1);
+		glVertex3f(x2, y2, z1);
+		glVertex3f(x2, y1, z1);
+
+		glVertex3f(x1, y1, z1);
+		glVertex3f(x1, y1, z2);
+		glVertex3f(x2, y1, z2);
+		glVertex3f(x2, y1, z1);
+
+		glVertex3f(x2, y1, z1);
+		glVertex3f(x2, y1, z2);
+		glVertex3f(x2, y2, z2);
+		glVertex3f(x2, y2, z1);
+
+		glVertex3f(x2, y2, z1);
+		glVertex3f(x1, y2, z1);
+		glVertex3f(x1, y2, z2);
+		glVertex3f(x2, y2, z2);
+
+		glVertex3f(x1, y1, z1);
+		glVertex3f(x1, y1, z2);
+		glVertex3f(x1, y2, z2);
+		glVertex3f(x1, y2, z1);
+
+		glVertex3f(x1, y1, z2);
+		glVertex3f(x1, y2, z2);
+		glVertex3f(x2, y2, z2);
+		glVertex3f(x2, y1, z2);
+	glEnd();
 }
