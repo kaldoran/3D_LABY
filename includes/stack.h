@@ -3,8 +3,8 @@
  * File : stack.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
-#ifndef _STACK
-#define _STACK
+#ifndef __STACK
+#define __STACK
 
 /*
  * In order to generate the maze we need a stack.
@@ -17,7 +17,7 @@ typedef struct Node
 
 typedef struct Stack
 {
-	int size;
+	unsigned int size;
 	Node *last;
 } Stack;
 

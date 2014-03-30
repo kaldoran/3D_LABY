@@ -1,19 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <string.h>
 #include "k-tree.h"
 
 /*
  * New Point allocation.
   */
-Point *point_new(float a, float b, float c)
+Point *point_new(float x, float y, float z)
 {
-	Point *s = malloc(sizeof *s);
-	s->x = a;
-	s->y = b;
-	s->z = c;
-return s;
+	Point *p = malloc(sizeof *p);
+	p->x = x;
+	p->y = y;
+	p->z = z;
+return p;
 }
 
 void point_free(Point *p)

@@ -1,3 +1,8 @@
+/*
+ * SAI project - 3D Laby
+ * File : k-tree.h
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+  */
 #ifndef __KTREE
 #define __KTREE
 
@@ -17,7 +22,8 @@ typedef struct Element
 	char p;
 } Element;
 
-typedef struct Ktree {
+typedef struct Ktree
+{
 	Element *e;
 	struct Ktree *son[K];
 } Ktree;

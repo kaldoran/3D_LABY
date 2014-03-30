@@ -13,39 +13,56 @@
 #include "stack.h"
 #include "k-tree.h"
 #include "config.h"
-
-Config *conf;
+#include "object.h"
 
 void keyboard(unsigned char touche, int x , int y);
 void mouse_motion(int x, int z);
 void display();
 void change_center();
 
+void Object_floor_print();
+void Object_border_print();
+void Object_sun_print(Object *sun);
+
+Config *conf;
+Object_list *ol;
+
 int main(int argc, char *argv[])
 {
-	Stack *stack = stack_new();
 	Laby *laby = laby_new();
+	Object *floor = object_new(0, 0, 0, FLOOR);
+	Object *border = object_new(0, 0, 0, BORDER);
+	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 300, SUN);
+	Object *fir_tree = object_new(-30, 10, 10, FIR_TREE);
+	Object *fir_tree1 = object_new(-50, 40, 10, FIR_TREE);
+	Object *fir_tree2 = object_new(-50, 20, 10, FIR_TREE);
+	Object *fir_tree3 = object_new(15, 40, 20, FIR_TREE);
+
 	conf = config_new();
+	ol = object_list_new();
+
+	ol = object_list_push(ol, floor);
+	ol = object_list_push(ol, border);
+	ol = object_list_push(ol, sun);
+	ol = object_list_push(ol, fir_tree);
+	ol = object_list_push(ol, fir_tree1);
+	ol = object_list_push(ol, fir_tree2);
+	ol = object_list_push(ol, fir_tree3);
 
 	laby = maze_generation(laby);
-
-	stack = stack_push(stack, laby);
-	stack = stack_push(stack, conf);
-	stack = stack_pop(stack);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
-	/*glutFullScreen();*/
 	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
 
 	glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable( GL_BLEND );
+	glEnable(GL_BLEND);
 
 	glEnable(GL_DEPTH_TEST);
-	glutSetCursor(/*GLUT_CURSOR_CROSSHAIR*/GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
 
 	glutDisplayFunc(display);
@@ -57,7 +74,8 @@ int main(int argc, char *argv[])
 	
 	glutMainLoop();
 
-	stack_free(stack);
+	object_list_free(ol);
+	config_free(conf);
 	laby_free(laby);
 return 0;
 }
@@ -154,7 +172,7 @@ void mouse_motion(int x, int z) {
 }
 
 void display() {
-	int i, j;
+	Doubly_linked_node *iterator = doubly_linked_node_new();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -162,35 +180,48 @@ void display() {
 	/*glFrustum(-5, 5, -5, 5, 5, 500);*/
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	/*tree(-30, 10, 10);
-	tree(-50, 40, 10);
-	tree(-50, 20, 10);
-	tree(15, -100, 20);
-	tree(-60, 40, 20);*/
 
-	/* LE SOLEILLLLLLL */
-	glPushMatrix();
-		glTranslatef(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 300); 
-		glColor3f(1, 1, 0);
-		glutWireSphere(30., 15, 15);
-	glPopMatrix();
-
-	/* 1250 : LARGEUR laby = HAUTEUR laby ici*/ 
-	/* Génération du sol */
-	glColor3f(0, 1, 1);
-	for ( i = 0; i < WIDTH * CELL_SIZE; i += CELL_SIZE ) {
-		for ( j = 0; j < HEIGHT * CELL_SIZE; j += CELL_SIZE) { 
-			glBegin(GL_LINE_LOOP);
-				glVertex3f(i, j, 0);
-				glVertex3f(i + CELL_SIZE, j, 0);
-				glVertex3f(i + CELL_SIZE, j + CELL_SIZE, 0); 
-				glVertex3f(i, j + CELL_SIZE, 0);
-			glEnd();
+	iterator = ol->last;
+	while (iterator->next != NULL)
+	{
+		switch ((iterator->object)->type)
+		{
+			case FLOOR:
+				Object_floor_print();
+			break;
+			case BORDER:
+				Object_border_print();
+			break;
+			case SUN:
+				Object_sun_print(iterator->object);
+			break;
+			default:
+			break;
 		}
+		iterator = iterator->next;
+	}
+	switch ((iterator->object)->type)
+	{
+		case FLOOR:
+			Object_floor_print();
+		break;
+		case BORDER:
+			Object_border_print();
+		break;
+		case SUN:
+			Object_sun_print(iterator->object);
+		break;
+		default:
+		break;
 	}
 	
-	/* Mur confinement */
+	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
+	glutPostRedisplay();
+	glutSwapBuffers();
+}
+
+void Object_border_print()
+{
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
 		glVertex3f(0, 0, 5);
@@ -215,9 +246,8 @@ void display() {
 	glEnd();
 
 	glColor3f(1, 0, 0);
-	/* boiboite */
 	glBegin(GL_QUADS);
-		/* Boiboite de la face gauche au spawn */
+		/* LEFT_BORDER */
 		glVertex3f(0, 0, 4.5);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 4.5);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 5);
@@ -228,7 +258,7 @@ void display() {
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10.5);
 		glVertex3f(0, 0, 10.5);
 
-		/* Autre boibote */
+		/* TOP BORDER */
 		glVertex3f(0, HEIGHT * CELL_SIZE, 4.5);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 4.5);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 5);
@@ -239,7 +269,7 @@ void display() {
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10.5);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10.5);
 
-		/* autre boiboite */
+		/* RIGHT BORDER */
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 4.5);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 4.5);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 5);
@@ -250,7 +280,7 @@ void display() {
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10.5);
 
-		/* autre boiboite */
+		/* BOTTOM BORDER */
 		glVertex3f(WIDTH * CELL_SIZE, 0, 4.5);
 		glVertex3f(0, 0, 4.5);
 		glVertex3f(0, 0, 5);
@@ -261,10 +291,30 @@ void display() {
 		glVertex3f(0, 0, 10.5);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
 	glEnd();
+}
 
+void Object_sun_print(Object *sun)
+{
+	glPushMatrix();
+		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z); 
+		glColor3f(1, 1, 0);
+		glutWireSphere(30., 15, 15);
+	glPopMatrix();
+}
 
-	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
-	
-	glutPostRedisplay();
-	glutSwapBuffers();
+void Object_floor_print()
+{
+	int i, j;
+
+	glColor3f(0, 1, 1);
+	for ( i = 0; i < WIDTH * CELL_SIZE; i += CELL_SIZE ) {
+		for ( j = 0; j < HEIGHT * CELL_SIZE; j += CELL_SIZE) { 
+			glBegin(GL_LINE_LOOP);
+				glVertex3f(i, j, 0);
+				glVertex3f(i + CELL_SIZE, j, 0);
+				glVertex3f(i + CELL_SIZE, j + CELL_SIZE, 0); 
+				glVertex3f(i, j + CELL_SIZE, 0);
+			glEnd();
+		}
+	}
 }

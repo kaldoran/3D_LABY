@@ -3,8 +3,8 @@
  * File : laby.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
-#ifndef _LABY
-#define _LABY
+#ifndef __LABY
+#define __LABY
 
 #define WIDTH 	51
 #define HEIGHT 	51

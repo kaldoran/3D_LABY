@@ -4,7 +4,6 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include <stdlib.h>
-#include <stdio.h>
 #include "stack.h"
 
 Node *node_new()
@@ -81,7 +80,6 @@ Stack *stack_push(Stack *stack, void *value)
 
 	if (stack == NULL)
 	{
-		fprintf(stderr, "You need to initialise the stack before puting some values in.\n");
 		return NULL;
 	}
 

@@ -1,3 +1,8 @@
+/*
+ * SAI project - 3D Laby
+ * File : config.h
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+  */
 #include "k-tree.h"
 #include "laby.h"
 
@@ -17,6 +22,7 @@
 #define CHARACTER_SIZE	10
 #define NEAR 			1
 #define FAR				(WIDTH * CELL_SIZE / 2)
+
 typedef struct Config {
 	Point *eye;
 	Point *center;

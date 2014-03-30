@@ -4,9 +4,6 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include <stdlib.h>
-#include <stdio.h>
-#include <GL/gl.h>
-#include <GL/glut.h>
 #include "config.h"
 
 Config *config_new()
