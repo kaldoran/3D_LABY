@@ -453,7 +453,7 @@ void Object_fir_tree_print(Object *fir_tree, Config *conf) {
 
 void Object_wall_print(Object *wall, Config *conf)
 {
-	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
+	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = 0;
 	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
 	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
