@@ -308,50 +308,81 @@ void Object_border_print()
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10);
 	glEnd();
 
-	glColor3f(1, 0, 0);
 	glBegin(GL_QUADS);
 		/* LEFT_BORDER */
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, 0, 4.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 4.5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, 0, 5);
 
+		glColor4f(1, 0, 0,0.1);
 		glVertex3f(0, 0, 10);
+		glColor4f(1, 0, 0,0.1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10);
+		glColor4f(1, 0, 0,1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10.5);
+		glColor4f(1, 0, 0,1);
 		glVertex3f(0, 0, 10.5);
 
 		/* TOP BORDER */
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 4.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 4.5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 5);
 
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, HEIGHT * CELL_SIZE, 10.5);
 
 		/* RIGHT BORDER */
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 4.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 4.5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 5);
 
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 10.5);
 
 		/* BOTTOM BORDER */
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 4.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, 0, 4.5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, 0, 5);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 5);
 
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10);
+		glColor4f(1, 0, 0, 0.1);
 		glVertex3f(0, 0, 10);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(0, 0, 10.5);
+		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
 	glEnd();
 }
