@@ -16,6 +16,12 @@
 #include "config.h"
 #include "object.h"
 
+
+void forward_move(Point *save_eye, float speed);
+void backward_move(Point *save_eye, float speed);
+void left_move(Point *save_eye, float speed);
+void right_move(Point *save_eye, float speed);
+
 void keyboard(unsigned char key, int x , int y);
 void special_keyboard(int key, int x, int y);
 void mouse_motion(int x, int z);
@@ -97,11 +103,31 @@ void change_center()
 	conf->center->z = conf->eye->z + conf->eye_direction->z;
 }
 
-void keyboard(unsigned char key, int x , int y) {
-	int modifiers = glutGetModifiers();
-	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
-	float speed = 1.5;
+void forward_move(Point *save_eye, float speed) {
+	save_eye->x += speed * conf->body_direction->x;
+	save_eye->y += speed * conf->body_direction->y;
+}
 
+void backward_move(Point *save_eye, float speed) {
+	save_eye->x -= speed * conf->body_direction->x;
+	save_eye->y -= speed * conf->body_direction->y;
+}
+
+void left_move(Point *save_eye, float speed) {
+	save_eye->x += -(speed * conf->body_direction->y);
+	save_eye->y += speed * conf->body_direction->x;
+}
+
+void right_move(Point *save_eye, float speed) {
+	save_eye->x += speed * conf->body_direction->y;
+	save_eye->y += -(speed * conf->body_direction->x);
+}
+
+void keyboard(unsigned char key, int x , int y) {
+	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
+	int modifiers = glutGetModifiers();
+	float speed = 1.5;
+	
 	if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT)
 	{
 		speed = 3.1337;	
@@ -113,21 +139,17 @@ void keyboard(unsigned char key, int x , int y) {
 	}
 
 	if ( key == 's' || key == 'S')
-	{
-		save_eye->x -= speed * conf->body_direction->x;
-		save_eye->y -= speed * conf->body_direction->y;
+	{	
+		backward_move(save_eye, speed);
 	}
 	else if ( key == 'z' || key == 'Z') {
-		save_eye->x += speed * conf->body_direction->x;
-		save_eye->y += speed * conf->body_direction->y;
+		forward_move(save_eye, speed);
 	}
 	if ( key == 'q' || key == 'Q') { 
-		save_eye->x += -(speed * conf->body_direction->y);
-		save_eye->y += speed * conf->body_direction->x;
+		left_move(save_eye, speed);
 	}	
 	else if ( key == 'd' || key == 'D') {
-		save_eye->x += speed * conf->body_direction->y;
-		save_eye->y += -(speed * conf->body_direction->x);
+		right_move(save_eye, speed);
 	}
 	else if ( key == '2') {
 		save_eye->z -= 3;
@@ -160,10 +182,46 @@ free(save_eye);
 }
 
 void special_keyboard(int key, int x, int y) {
+	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
+	int modifiers = glutGetModifiers();
+	float speed = 1.5;
+
+	if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT) {
+		speed = 3.1337;	
+	}
+
+
 	if ( key == GLUT_KEY_F3 ) {
 		printf("Prepare uranus for Debug mode [%c %d %d]\n", (char)key, x, y);
 	}
+	if ( key == GLUT_KEY_DOWN) {
+		backward_move(save_eye, speed);
+	}
+	else if ( key == GLUT_KEY_UP) {
+		forward_move(save_eye, speed);
+	}
+	if ( key == GLUT_KEY_LEFT) { 
+		left_move(save_eye, speed);
+	}	
+	else if ( key == GLUT_KEY_RIGHT) {
+		right_move(save_eye, speed);
+	}
 
+	if ( save_eye->x > 2 && save_eye->y > 2
+		&& save_eye->x < (CELL_SIZE * WIDTH) - 2
+		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2
+		&& ((IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE)))))
+	) {
+		conf->eye->x = save_eye->x;
+		conf->eye->y = save_eye->y;
+		conf->eye->z = save_eye->z;
+	} 
+change_center();
+free(save_eye);
 }
 
 void mouse_motion(int x, int z) {
