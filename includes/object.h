@@ -52,13 +52,15 @@ Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby);
 Object_list *object_list_generate_fir_trees(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
-void Object_floor_print();
-void Object_border_print();
-void Object_sun_print(Object *sun);
-void Object_fir_tree_print(Object *fir_tree);
-void Object_wall_print(Object *wall);
-void Object_entry_print(Object *object);
-void Object_exit_print(Object *object);
-void Object_teapot_print(Object *teapot);
+void time_color(Config *conf);
+
+void Object_floor_print(Config *conf);
+void Object_border_print(Config *conf);
+void Object_sun_print(Object *sun, Config *conf);
+void Object_fir_tree_print(Object *fir_tree, Config *conf);
+void Object_wall_print(Object *wall, Config *conf);
+void Object_entry_print(Object *object, Config *conf);
+void Object_exit_print(Object *object, Config *conf);
+void Object_teapot_print(Object *teapot, Config *conf);
 
 #endif

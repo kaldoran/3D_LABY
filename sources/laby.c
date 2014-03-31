@@ -107,7 +107,7 @@ Laby *maze_generation(Laby *laby)
 	/*
 	 * We generate some rooms at borders of the maze.
 	  */
-	for (i = 0; i < (SIZE / 100); ++i)
+	for (i = 0; i < (SIZE / 300); ++i)
 	{
 		rand_room_width  = (rand() % ((WIDTH / 6) - 2)) + 2;
 		rand_room_height = (rand() % ((HEIGHT / 6) - 2)) + 2;

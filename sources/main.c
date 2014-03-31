@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <math.h>
+#include <string.h>
 #include <float.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -37,7 +38,6 @@ int main(int argc, char *argv[])
 	ol = object_list_new();
 	laby = maze_generation(laby);
 
-	laby_print(laby);
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
 	ol = object_list_push(ol, sun);
@@ -46,35 +46,45 @@ int main(int argc, char *argv[])
 	ol = object_list_push(ol, giant_teapot);
 	ol = object_list_push(ol, teapot1);
 
-	if(argc == 1)
+	if(argc == 2)
 	{
-		glutInit(&argc, argv);
-		glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-		
-		glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
-		glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
-
-		glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-
-		glEnable(GL_DEPTH_TEST);
-		glutSetCursor(GLUT_CURSOR_NONE);
-		glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
-
-		glutDisplayFunc(display);
-		glutIdleFunc(display);
-			
-		glutMotionFunc(mouse_motion);
-		glutPassiveMotionFunc(mouse_motion);
-		glutKeyboardFunc(keyboard);
-		
-		glutMainLoop();
-
-		object_list_free(ol);
-		config_free(conf);
-		laby_free(laby);
+		if (argv[1] == 0)
+		{
+			laby_print(laby);
+			return 0;
+		} else if (strcmp(argv[1], "day") == 0) {
+			conf->time = DAY;
+		} else {
+			conf->time = NIGHT;
+		}
 	}
+
+	glutInit(&argc, argv);
+	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
+	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
+
+	glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+
+	glEnable(GL_DEPTH_TEST);
+	glutSetCursor(GLUT_CURSOR_NONE);
+	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
+
+	glutDisplayFunc(display);
+	glutIdleFunc(display);
+		
+	glutMotionFunc(mouse_motion);
+	glutPassiveMotionFunc(mouse_motion);
+	glutKeyboardFunc(keyboard);
+	
+	glutMainLoop();
+
+	object_list_free(ol);
+	config_free(conf);
+	laby_free(laby);
 return 0;
 }
 
@@ -191,69 +201,44 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	iterator = ol->last;
-	while (iterator->next != NULL)
+	while (1)
 	{
 		switch ((iterator->object)->type)
 		{
 			case FLOOR:
-				Object_floor_print();
+				Object_floor_print(conf);
 			break;
 			case BORDER:
-				Object_border_print();
+				Object_border_print(conf);
 			break;
 			case SUN:
-				Object_sun_print(iterator->object);
+				Object_sun_print(iterator->object, conf);
 			break;
 			case FIR_TREE:
-				Object_fir_tree_print(iterator->object);
+				Object_fir_tree_print(iterator->object, conf);
 			break;
 			case WALL:
-				Object_wall_print(iterator->object);
+				Object_wall_print(iterator->object, conf);
 			break;
 			case ENTRY:
-				Object_entry_print(iterator->object);
+				Object_entry_print(iterator->object, conf);
 			break;
 			case EXIT:
-				Object_exit_print(iterator->object);
+				Object_exit_print(iterator->object, conf);
 			break;
 			case TEAPOT:
-				Object_teapot_print(iterator->object);
+				Object_teapot_print(iterator->object, conf);
 			break;
 			default:
 			break;
 		}
-		iterator = iterator->next;
+		if (iterator->next != NULL)
+		{
+			iterator = iterator->next;
+		} else {
+			break;
+		}
 	}
-	switch ((iterator->object)->type)
-	{
-		case FLOOR:
-			Object_floor_print();
-		break;
-		case BORDER:
-			Object_border_print();
-		break;
-		case SUN:
-			Object_sun_print(iterator->object);
-		break;
-		case FIR_TREE:
-			Object_fir_tree_print(iterator->object);
-		break;
-		case WALL:
-			Object_wall_print(iterator->object);
-		break;
-		case ENTRY:
-			Object_entry_print(iterator->object);
-		break;
-		case EXIT:
-			Object_exit_print(iterator->object);
-		break;
-		case TEAPOT:
-			Object_teapot_print(iterator->object);
-		break;
-		default:
-		break;
-	}
-
 
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
 	glutPostRedisplay();

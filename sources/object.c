@@ -283,7 +283,7 @@ Object_list *object_list_push_object(Object_list *ol, float x, float y, float z,
 return ol;
 }
 
-void Object_border_print()
+void Object_border_print(Config *conf)
 {
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
@@ -387,16 +387,16 @@ void Object_border_print()
 	glEnd();
 }
 
-void Object_sun_print(Object *sun)
+void Object_sun_print(Object *sun, Config *conf)
 {
 	glPushMatrix();
-		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z); 
-		glColor3f(1, 1, 0);
+		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z);
+		time_color(conf);
 		glutWireSphere(30., 15, 15);
 	glPopMatrix();
 }
 
-void Object_floor_print()
+void Object_floor_print(Config *conf)
 {
 	int i, j;
 
@@ -413,7 +413,7 @@ void Object_floor_print()
 	}
 }
 
-void Object_fir_tree_print(Object *fir_tree) {
+void Object_fir_tree_print(Object *fir_tree, Config *conf) {
 	float ratio = 0.2;
 	/* TRONC Arbre */
 	glColor3f(0.95, 0.7, 0.05);
@@ -451,10 +451,10 @@ void Object_fir_tree_print(Object *fir_tree) {
 	glPopMatrix();
 }
 
-void Object_wall_print(Object *wall)
+void Object_wall_print(Object *wall, Config *conf)
 {
-	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z + 1;
-	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE + 1; 
+	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
+	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
 	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
 		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
@@ -488,7 +488,7 @@ void Object_wall_print(Object *wall)
 		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
 	glEnd();
 
-	glColor3f(1, 0.5, 0);
+	glColor3f(0, 1, 1);
 	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x1, y2, z1);
@@ -497,33 +497,46 @@ void Object_wall_print(Object *wall)
 	glEnd();
 	/*glColor3f(0, 0, 1);*/
 	glBegin(GL_LINE_LOOP);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1, y1, z1);
+		time_color(conf);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x2, y1, z2);
+		glColor3f(0, 1, 1);
 		glVertex3f(x2, y1, z1);
 	glEnd();
 	/*glColor3f(0, 1, 0);*/
 	glBegin(GL_LINE_LOOP);
+		glColor3f(0, 1, 1);
 		glVertex3f(x2, y1, z1);
+		time_color(conf);
 		glVertex3f(x2, y1, z2);
 		glVertex3f(x2, y2, z2);
+		glColor3f(0, 1, 1);
 		glVertex3f(x2, y2, z1);
 	glEnd();
 	/*glColor3f(1, 0, 0);*/
 	glBegin(GL_LINE_LOOP);
+		glColor3f(0, 1, 1);
 		glVertex3f(x2, y2, z1);
 		glVertex3f(x1, y2, z1);
+		time_color(conf);
 		glVertex3f(x1, y2, z2);
 		glVertex3f(x2, y2, z2);
+		glColor3f(0, 1, 1);
 	glEnd();
 	/*glColor3f(1, 0, 1);*/
 	glBegin(GL_LINE_LOOP);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1, y1, z1);
+		time_color(conf);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x1, y2, z2);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1, y2, z1);
 	glEnd();
 	/*glColor3f(1, 1, 0);*/
+	time_color(conf);
 	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x1, y2, z2);
@@ -532,7 +545,17 @@ void Object_wall_print(Object *wall)
 	glEnd();
 }
 
-void Object_entry_print(Object *entry)
+void time_color(Config *conf)
+{
+	if (conf->time == NIGHT)
+	{
+		glColor3f(0.8, 0.5, 1);
+	} else {
+		glColor3f(1, 1, 0);
+	}
+}
+
+void Object_entry_print(Object *entry, Config *conf)
 {
 	float x1 = (entry->anchor)->x, y1 = (entry->anchor)->y;
 	glColor3f(1, 0.5, 0);
@@ -544,7 +567,7 @@ void Object_entry_print(Object *entry)
 	glEnd();
 }
 
-void Object_exit_print(Object *exit)
+void Object_exit_print(Object *exit, Config *conf)
 {
 	float x1 = (exit->anchor)->x, y1 = (exit->anchor)->y;
 	glColor3f(0, 0.8, 0);
@@ -556,13 +579,15 @@ void Object_exit_print(Object *exit)
 	glEnd();
 }
 
-void Object_teapot_print(Object *teapot)
+void Object_teapot_print(Object *teapot, Config *conf)
 {
 	glPushMatrix();
 		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
 		glRotatef(90,1,0,0);
 		glRotatef(90,0,1,0);
-		glColor3f((float)((int)(teapot->anchor)->x % 10)/10 , (float)((int)(teapot->anchor)->z % 10)/10, (float)((int)(teapot->anchor)->y % 10)/10);
+		glColor3f((float)((int)(teapot->anchor)->x % 10)/10,
+					(float)((int)(teapot->anchor)->z % 10)/10,
+					(float)((int)(teapot->anchor)->y % 10)/10);
 		glutWireTeapot((teapot->anchor)->z);
 	glPopMatrix();
 }

@@ -23,6 +23,9 @@
 #define NEAR 			1
 #define FAR				800
 
+#define DAY		1
+#define NIGHT 	0
+
 typedef struct Config {
 	Point *eye;
 	Point *center;
@@ -33,6 +36,8 @@ typedef struct Config {
 
 	float theta;
 	float phi;
+
+	int time;
 } Config;
 
 /*

@@ -17,6 +17,7 @@ Config *config_new()
 							conf->eye->z + conf->eye_direction->z);
 	conf->theta = 90.;
 	conf->phi = 0.;
+	conf->time = NIGHT;
 return conf;
 }
 
