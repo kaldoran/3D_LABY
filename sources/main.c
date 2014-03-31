@@ -25,6 +25,7 @@ void right_move(Point *save_eye, float speed);
 void keyboard(unsigned char key, int x , int y);
 void special_keyboard(int key, int x, int y);
 void mouse_motion(int x, int z);
+void mouse_trigger(int button, int state, int x, int y);
 void display();
 void change_center();
 
@@ -85,6 +86,7 @@ int main(int argc, char *argv[])
 		
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mouse_motion);
+	glutMouseFunc(mouse_trigger);
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(special_keyboard);
 	
@@ -255,6 +257,23 @@ void mouse_motion(int x, int z) {
 	
 	change_center();
 	return;
+}
+
+
+void mouse_trigger(int button, int state, int x, int y) {
+	if ( state == GLUT_UP ) {
+		printf("Click\n");
+	}
+	else {
+		printf("Relache\n");
+	}
+	
+	if ( button == GLUT_LEFT_BUTTON ) {
+		printf("Portail bleu\n");
+	}
+	else if ( button == GLUT_RIGHT_BUTTON ) {
+		printf("Portail rouge \n");
+	}
 }
 
 void display() {
