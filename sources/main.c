@@ -26,20 +26,23 @@ Laby *laby;
 
 int main(int argc, char *argv[])
 {
-	laby = laby_new();
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
-	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 300, SUN);
+	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 500, SUN);
+	Object *teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE	 / 2, 0, TEAPOT);
 
+	laby = laby_new();
 	conf = config_new();
 	ol = object_list_new();
 	laby = maze_generation(laby);
 
+	laby_print(laby);
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
 	ol = object_list_push(ol, sun);
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol, laby);
+	ol = object_list_push(ol, teapot);
 
 	if(argc == 1)
 	{
@@ -90,6 +93,11 @@ void keyboard(unsigned char key, int x , int y) {
 		speed = 3.1337;	
 	}
 
+	if (save_eye->z > CELL_SIZE + 7) 
+	{
+		speed = 8;
+	}
+
 	if ( key == 's' || key == 'S')
 	{
 		save_eye->x -= speed * conf->body_direction->x;
@@ -108,10 +116,10 @@ void keyboard(unsigned char key, int x , int y) {
 		save_eye->y += -(speed * conf->body_direction->x);
 	}
 	else if ( key == '2') {
-		save_eye->z--;
+		save_eye->z -= 3;
 	}
 	else if ( key == '8' ) {
-		save_eye->z++;
+		save_eye->z += 3;
 	}
 	else if ( (int)key == 27) {
 		/*glutLeaveMainLoop();*/
@@ -122,11 +130,11 @@ void keyboard(unsigned char key, int x , int y) {
 		&& save_eye->x < (CELL_SIZE * WIDTH) - 2
 		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2
 		&& save_eye->z > 5
-		&& (IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE)))
+		&& ((IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE)))
 			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
 			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE)))
 			&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
-			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE)))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE))))
 			|| save_eye->z > CELL_SIZE + 7)
 	) {
 		conf->eye->x = save_eye->x;
@@ -200,6 +208,15 @@ void display() {
 			case WALL:
 				Object_wall_print(iterator->object);
 			break;
+			case ENTRY:
+				Object_entry_print(iterator->object);
+			break;
+			case EXIT:
+				Object_exit_print(iterator->object);
+			break;
+			case TEAPOT:
+				Object_teapot_print(iterator->object);
+			break;
 			default:
 			break;
 		}
@@ -222,9 +239,19 @@ void display() {
 		case WALL:
 			Object_wall_print(iterator->object);
 		break;
+		case ENTRY:
+			Object_entry_print(iterator->object);
+		break;
+		case EXIT:
+			Object_exit_print(iterator->object);
+		break;
+		case TEAPOT:
+			Object_teapot_print(iterator->object);
+		break;
 		default:
 		break;
 	}
+
 
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
 	glutPostRedisplay();

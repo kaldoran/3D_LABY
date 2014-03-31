@@ -4,14 +4,13 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include "k-tree.h"
+ 
 #ifndef __OBJECT
 #define __OBJECT
 
 #define FLOOR		0
-#define BORDER 		1
-#define FIR_TREE 	2
-#define SUN			3
-#define WALL 		4
+#define FIR_TREE 	1
+#define SUN			2
 #define TEAPOT		418
 
 typedef struct Object
@@ -58,5 +57,8 @@ void Object_border_print();
 void Object_sun_print(Object *sun);
 void Object_fir_tree_print(Object *fir_tree);
 void Object_wall_print(Object *wall);
+void Object_entry_print(Object *object);
+void Object_exit_print(Object *object);
+void Object_teapot_print(Object *teapot);
 
 #endif

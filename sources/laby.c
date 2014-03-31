@@ -30,10 +30,8 @@ Laby *laby_new(void)
 
 	while (IS_IN(x))
 	{
-		laby->matrix[x++] = 1;
+		laby->matrix[x++] = WALL;
 	}
-
-	laby->end = 0;
 return laby;
 }
 
@@ -75,8 +73,8 @@ Laby *maze_carving (Laby *laby, int x, int y)
 
 		if (!IS_BORDER(COORD(x2,y2)) && IS_WALL(COORD(x2,y2)) && IS_WALL(COORD(x1,y1)))
 		{
-			laby->matrix[COORD(x1,y1)] = 0;
-			laby->matrix[COORD(x2,y2)] = 0;
+			laby->matrix[COORD(x1,y1)] = PASS;
+			laby->matrix[COORD(x2,y2)] = PASS;
 			x = x2;
 			y = y2;
 			direction = rand() % 4;
@@ -95,9 +93,8 @@ Laby *maze_generation(Laby *laby)
 	int cell_x, cell_y;
 
 	srand(time(0));
-	laby->matrix[WIDTH + 1] = 0;
-	laby->matrix[WIDTH] = 0;
-	laby->matrix[0] = 0;
+	laby->matrix[WIDTH + 1] = PASS;
+	laby->matrix[WIDTH] = PASS;
 
 	for (x = 1; x < WIDTH; x += 2)
 	{
@@ -131,11 +128,14 @@ Laby *maze_generation(Laby *laby)
 			{
 				if (IS_IN(COORD(x,y)))
 				{
-					laby->matrix[COORD(x,y)] = 0;
+					laby->matrix[COORD(x,y)] = PASS;
 				}
 			}
 		}
 	}
+
+	laby->matrix[0] = ENTRY;
+	laby->matrix[COORD((WIDTH - 2), (HEIGHT - 1))] = EXIT;
 return laby;
 }
 
@@ -152,11 +152,13 @@ void laby_print(Laby *laby)
 		fprintf(stdout, "│");
 		for (x = 0; x < WIDTH; ++x)
 		{
-			if (laby->matrix[COORD(x,y)] == 1)
+			if (laby->matrix[COORD(x,y)] == WALL)
 			{
 				fprintf(stdout, "█");
-			} else {
+			} else if (laby->matrix[COORD(x,y)] == PASS) {
 				fprintf(stdout, "░");
+			}  else if (laby->matrix[COORD(x,y)] == ENTRY || laby->matrix[COORD(x,y)] == EXIT) {
+				fprintf(stdout, "X");
 			}
 		}
 		fprintf(stdout, "\n");

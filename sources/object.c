@@ -166,11 +166,11 @@ return ol;
 Object_list *object_list_generate_fir_trees(Object_list *ol)
 {
 	int x, y;
-	int density = 3, gap = 14, space = 100;
+	int density = 3, gap = 14, space = 300;
 	srand(time(NULL));
-	for (x = -12; x > -100 ; x -= CELL_SIZE)
+	for (x = -12; x > -space ; x -= CELL_SIZE)
 	{
-		for (y = -100; y < (HEIGHT * CELL_SIZE) + 100; y += CELL_SIZE)
+		for (y = -space; y < (HEIGHT * CELL_SIZE) + space; y += CELL_SIZE)
 		{
 			if (rand() % density == 1)
 			{
@@ -226,9 +226,13 @@ Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby)
 	{
 		for (y = 0; y < HEIGHT; ++y)
 		{
-			if (laby->matrix[COORD(x,y)] == 1)
+			if (laby->matrix[COORD(x,y)] == WALL)
 			{
 				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, WALL);
+			} else if (laby->matrix[COORD(x,y)] == ENTRY) {
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, ENTRY);
+			} else if (laby->matrix[COORD(x,y)] == EXIT) {
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, EXIT);
 			}
 		}
 	}
@@ -418,8 +422,8 @@ void Object_fir_tree_print(Object *fir_tree) {
 
 void Object_wall_print(Object *wall)
 {
-	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
-	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
+	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z + 1;
+	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE + 1; 
 	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
 		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
@@ -495,5 +499,39 @@ void Object_wall_print(Object *wall)
 		glVertex3f(x2, y2, z2);
 		glVertex3f(x2, y1, z2);
 	glEnd();
-	
+}
+
+void Object_entry_print(Object *entry)
+{
+	float x1 = (entry->anchor)->x, y1 = (entry->anchor)->y;
+	glColor3f(1, 0.5, 0);
+	glBegin(GL_QUADS);
+		glVertex3f(x1 + 1, y1 + 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
+	glEnd();
+}
+
+void Object_exit_print(Object *exit)
+{
+	float x1 = (exit->anchor)->x, y1 = (exit->anchor)->y;
+	glColor3f(0, 0.8, 0);
+	glBegin(GL_QUADS);
+		glVertex3f(x1 + 1, y1 + 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
+	glEnd();
+}
+
+void Object_teapot_print(Object *teapot)
+{
+	glPushMatrix();
+		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, 200);
+		glRotatef(90,1,0,0);
+		glRotatef(90,0,1,0);
+		glColor3f(1, 0.3, 0.7);
+		glutWireTeapot(300);
+	glPopMatrix();
 }
