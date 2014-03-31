@@ -16,7 +16,8 @@
 #include "config.h"
 #include "object.h"
 
-void keyboard(unsigned char touche, int x , int y);
+void keyboard(unsigned char key, int x , int y);
+void special_keyboard(int key, int x, int y);
 void mouse_motion(int x, int z);
 void display();
 void change_center();
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mouse_motion);
 	glutKeyboardFunc(keyboard);
-	glutSpecialFunc(keyboard);
+	glutSpecialFunc(special_keyboard);
 	
 	glutMainLoop();
 
@@ -101,10 +102,6 @@ void keyboard(unsigned char key, int x , int y) {
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 	float speed = 1.5;
 
-	if ( key == GLUT_KEY_F3 ) {
-		printf("Prepare uranus for Debug mode\n");
-	}
-
 	if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT)
 	{
 		speed = 3.1337;	
@@ -115,20 +112,20 @@ void keyboard(unsigned char key, int x , int y) {
 		speed = 8;
 	}
 
-	if ( key == 's' || key == 'S' || key == GLUT_KEY_DOWN)
+	if ( key == 's' || key == 'S')
 	{
 		save_eye->x -= speed * conf->body_direction->x;
 		save_eye->y -= speed * conf->body_direction->y;
 	}
-	else if ( key == 'z' || key == 'Z' || key == GLUT_KEY_UP) {
+	else if ( key == 'z' || key == 'Z') {
 		save_eye->x += speed * conf->body_direction->x;
 		save_eye->y += speed * conf->body_direction->y;
 	}
-	else if ( key == 'q' || key == 'Q' || key == GLUT_KEY_LEFT) { 
+	if ( key == 'q' || key == 'Q') { 
 		save_eye->x += -(speed * conf->body_direction->y);
 		save_eye->y += speed * conf->body_direction->x;
 	}	
-	else if ( key == 'd' || key == 'D' || key == GLUT_KEY_RIGHT) {
+	else if ( key == 'd' || key == 'D') {
 		save_eye->x += speed * conf->body_direction->y;
 		save_eye->y += -(speed * conf->body_direction->x);
 	}
@@ -160,6 +157,13 @@ void keyboard(unsigned char key, int x , int y) {
 	} 
 change_center();
 free(save_eye);
+}
+
+void special_keyboard(int key, int x, int y) {
+	if ( key == GLUT_KEY_F3 ) {
+		printf("Prepare uranus for Debug mode [%c %d %d]\n", (char)key, x, y);
+	}
+
 }
 
 void mouse_motion(int x, int z) {
