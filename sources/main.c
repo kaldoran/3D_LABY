@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mouse_motion);
 	glutKeyboardFunc(keyboard);
+	glutSpecialFunc(keyboard);
 	
 	glutMainLoop();
 
@@ -100,6 +101,10 @@ void keyboard(unsigned char key, int x , int y) {
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 	float speed = 1.5;
 
+	if ( key == GLUT_KEY_F3 ) {
+		printf("Prepare uranus for Debug mode\n");
+	}
+
 	if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT)
 	{
 		speed = 3.1337;	
@@ -110,20 +115,20 @@ void keyboard(unsigned char key, int x , int y) {
 		speed = 8;
 	}
 
-	if ( key == 's' || key == 'S')
+	if ( key == 's' || key == 'S' || key == GLUT_KEY_DOWN)
 	{
 		save_eye->x -= speed * conf->body_direction->x;
 		save_eye->y -= speed * conf->body_direction->y;
 	}
-	else if ( key == 'z' || key == 'Z') {
+	else if ( key == 'z' || key == 'Z' || key == GLUT_KEY_UP) {
 		save_eye->x += speed * conf->body_direction->x;
 		save_eye->y += speed * conf->body_direction->y;
 	}
-	else if ( key == 'q' || key == 'Q') { 
+	else if ( key == 'q' || key == 'Q' || key == GLUT_KEY_LEFT) { 
 		save_eye->x += -(speed * conf->body_direction->y);
 		save_eye->y += speed * conf->body_direction->x;
 	}	
-	else if ( key == 'd' || key == 'D') {
+	else if ( key == 'd' || key == 'D' || key == GLUT_KEY_RIGHT) {
 		save_eye->x += speed * conf->body_direction->y;
 		save_eye->y += -(speed * conf->body_direction->x);
 	}
