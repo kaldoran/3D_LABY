@@ -549,7 +549,7 @@ void time_color(Config *conf)
 {
 	if (conf->time == NIGHT)
 	{
-		glColor3f(0.8, 0.5, 1);
+		glColor3f(0.54, 0.18, 0.9);
 	} else {
 		glColor3f(1, 1, 0);
 	}
@@ -558,24 +558,72 @@ void time_color(Config *conf)
 void Object_entry_print(Object *entry, Config *conf)
 {
 	float x1 = (entry->anchor)->x, y1 = (entry->anchor)->y;
-	glColor3f(1, 0.5, 0);
+	
 	glBegin(GL_QUADS);
+		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + 1, y1 + 1, 0);
-		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
-		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(1, 0.5, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(1, 0.5, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(1, 0.5, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
+
+		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(1, 0.5, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 	glEnd();
 }
 
 void Object_exit_print(Object *exit, Config *conf)
 {
 	float x1 = (exit->anchor)->x, y1 = (exit->anchor)->y;
-	glColor3f(0, 0.8, 0);
+	
 	glBegin(GL_QUADS);
+		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + 1, y1 + 1, 0);
-		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
-		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(0, 0.8, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(0, 0.8, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(0, 0.8, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
+
+		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		time_color(conf);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
+		glColor3f(0, 0.8, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 	glEnd();
 }
 
