@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
 	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 500, SUN);
-	Object *teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE	 / 2, 0, TEAPOT);
+	Object *teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE	 / 2, 300, TEAPOT);
+	Object *teapot1 = object_new(-CELL_SIZE / 2, CELL_SIZE / 2, 5, TEAPOT);
 
 	laby = laby_new();
 	conf = config_new();
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol, laby);
 	ol = object_list_push(ol, teapot);
+	ol = object_list_push(ol, teapot1);
 
 	if(argc == 1)
 	{

@@ -528,10 +528,10 @@ void Object_exit_print(Object *exit)
 void Object_teapot_print(Object *teapot)
 {
 	glPushMatrix();
-		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, 200);
+		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
 		glRotatef(90,1,0,0);
 		glRotatef(90,0,1,0);
-		glColor3f(1, 0.3, 0.7);
-		glutWireTeapot(300);
+		glColor3f((float)((int)(teapot->anchor)->x % 10)/10 , (float)((int)(teapot->anchor)->z % 10)/10, (float)((int)(teapot->anchor)->y % 10)/10);
+		glutWireTeapot((teapot->anchor)->z);
 	glPopMatrix();
 }
