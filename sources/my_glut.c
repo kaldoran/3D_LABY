@@ -300,7 +300,7 @@ void write_string(char* string, int x, int y, void* font) {
 }
 
 void display() {
-	Point *tmp = point_new(0,0,0);
+	Point *tmp;
 
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 
@@ -358,7 +358,12 @@ void display() {
 	if ( shoot == 1 ) glColor3f(0, 1, 1);
 	if ( shoot == 2 ) glColor3f(1, 1, 0);
 	if ( shoot != 0 ) {
+
+		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
 		
+			fprintf(stderr,"%f %f %f\n", tmp->x, tmp->y, tmp->z);
+		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->x < 1250 && tmp->x > 0; tmp->x += conf->center->x, tmp->y += conf->center->x)
+			fprintf(stderr,"%f %f %f - %d\n", tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)));
 		glPushMatrix();
 		glTranslatef((conf->center)->x, (conf->center)->y, (conf->center)->z);
 		glRotatef(90,1,0,0);
@@ -368,8 +373,9 @@ void display() {
 
 		glLineWidth(50); 
 		glBegin( GL_LINE_LOOP );
+		/*
 		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
-
+		*/
 		glVertex3f(conf->eye->x, conf->eye->y, conf->eye->z);
 		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
 		glEnd();
