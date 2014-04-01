@@ -25,10 +25,14 @@ Config *config_new()
 	conf->print_config = 0;
 	conf->free_fly = 0;
 
-	conf->keys[0] = 0;
-	conf->keys[1] = 0;
-	conf->keys[2] = 0;
-	conf->keys[3] = 0;
+	conf->keys[0] = 0; /* Up */
+	conf->keys[1] = 0; /* Down */
+	conf->keys[2] = 0; /* Left */
+	conf->keys[3] = 0; /* Right */
+	conf->keys[4] = 0; /* Maj - Alt */
+	conf->keys[5] = 0; /* 2 - Down on Z */
+	conf->keys[6] = 0; /* 8 - Up on Z */
+	conf->keys[7] = 0; /* CTRL */
 return conf;
 }
 

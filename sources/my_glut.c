@@ -16,63 +16,52 @@
 
 int shoot = 0;
 
-void keyboard(unsigned char key, int x , int y) {
+/* calcule réellement le mouvement */
+void move() {
+
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
-	int modifiers = glutGetModifiers();
 	float speed = 1.5;
 	
-	if (conf->free_fly) 
-	{
+	if ( conf->free_fly) {
 		speed = 8;
-	} else if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT) {
-		speed = 3.1337;	
+	}	
+
+	if ( conf->keys[4] ) {
+		speed = (conf->free_fly) ? 20 : 5.1337;
 	}
 
-	if ( key == 's' || key == 'S')
-	{	
-		/* Go straight */
-		save_eye = backward_move(conf, save_eye, speed);
+	if ( conf->keys[7] ) {
+		speed = (conf->free_fly) ? 4 : 0.5;
 	}
-	else if ( key == 'z' || key == 'Z') {
+
+	if ( conf->keys[0] ) {
 		/* Go back */
 		save_eye = forward_move(conf, save_eye, speed);
 	}
-	if ( key == 'q' || key == 'Q') { 
+
+	if ( conf->keys[1] ) {
+		/* Go straight */
+		save_eye = backward_move(conf, save_eye, speed);
+	}
+	
+	if ( conf->keys[2] ) {
 		/* Go left */
 		save_eye = left_move(conf, save_eye, speed);
-	}	
-	else if ( key == 'd' || key == 'D') {
+	}
+
+	if ( conf->keys[3] ) {
 		/* Go right */
 		save_eye = right_move(conf, save_eye, speed);
 	}
-	else if (key == 'r' || key == 'R' ) {
-		/* Restart the maze */
-		(conf->eye)->x = CELL_SIZE / 2;
-		(conf->eye)->y = CELL_SIZE / 2;
-		(conf->eye)->z = CHARACTER_SIZE;
-		conf = change_center(conf);
-		point_free(save_eye);
-		return;
-	}
-	else if (key == 'a' || key == 'A') {
-		/* Make a 180° */
-		conf->theta += 180;
-		conf->phi = 0;
-		conf = modify_direction(conf);
-		return;
-	}
-	else if ( key == '2') {
+	
+	if ( conf->keys[5] ) {
 		/* Go down */
 		save_eye->z -= 3;
 	}
-	else if ( key == '8' ) {
+
+	if ( conf->keys[6] ) {
 		/* Go up */
 		save_eye->z += 3;
-	}
-	else if ( (int)key == 27) {
-		/* Quit */
-		glutDestroyWindow(conf->id_windows); /*glutLeaveMainLoop();*/
-		exit(EXIT_SUCCESS);
 	}
 
 	if ((( save_eye->x > 2 && save_eye->y > 2 
@@ -90,22 +79,108 @@ void keyboard(unsigned char key, int x , int y) {
 		conf->eye->x = save_eye->x;
 		conf->eye->y = save_eye->y;
 		conf->eye->z = save_eye->z;
-	} 
+	}
+
 conf = change_center(conf);
 point_free(save_eye);
 }
 
-void special_keyboard(int key, int x, int y) {
-	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
-	int modifiers = glutGetModifiers();
-	float speed = 1.5;
+void keyboard(unsigned char key, int x , int y) {
 
-	if (conf->free_fly) 
-	{
-		speed = 8;
-	} else if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT) {
-		speed = 3.1337;	
+	int modifiers = glutGetModifiers();
+	
+	UNUSED(x);
+	UNUSED(y);
+	
+	if (modifiers == GLUT_ACTIVE_SHIFT || modifiers == GLUT_ACTIVE_ALT) {
+		conf->keys[4] = 1;	
 	}
+
+	if (modifiers == GLUT_ACTIVE_CTRL ) {
+		conf->keys[7] = 1;
+	}
+
+	if ( key == 'z' || key == 'Z') {
+		conf->keys[0] = 1;
+	}
+	else if ( key == 's' || key == 'S') {	
+		conf->keys[1] = 1;
+	}
+	else if ( key == 'q' || key == 'Q') { 
+		conf->keys[2] = 1;
+	}	
+	else if ( key == 'd' || key == 'D') {
+		conf->keys[3] = 1;
+	}
+	else if (key == 'r' || key == 'R' ) {
+		/* Restart the maze */
+		(conf->eye)->x = CELL_SIZE / 2;
+		(conf->eye)->y = CELL_SIZE / 2;
+		(conf->eye)->z = CHARACTER_SIZE;
+		conf = change_center(conf);
+		return;
+	}
+	else if (key == 'a' || key == 'A') {
+		/* Make a 180° */
+		conf->theta += 180;
+		conf->phi = 0;
+		conf = modify_direction(conf);
+		return;
+	}
+	else if ( key == '2') {
+		conf->keys[5] = 1;
+	}
+	else if ( key == '8' ) {
+		conf->keys[6] = 1;
+	}
+	else if ( (int)key == 27) {
+		/* Quit */
+		glutDestroyWindow(conf->id_windows); /*glutLeaveMainLoop();*/
+		exit(EXIT_SUCCESS);
+	}
+
+}
+
+void keyboard_up(unsigned char key, int x, int y) {
+
+	int modifiers = glutGetModifiers();
+	
+	UNUSED(x);
+	UNUSED(y);
+	
+	if (modifiers != GLUT_ACTIVE_SHIFT && modifiers != GLUT_ACTIVE_ALT) {
+		conf->keys[4] = 0;
+	}
+
+	if (modifiers != GLUT_ACTIVE_CTRL ) {
+		conf->keys[7] = 0;
+	}
+
+	if ( key == 'z' || key == 'Z') {
+		conf->keys[0] = 0;
+	}
+	else if ( key == 's' || key == 'S') {	
+		conf->keys[1] = 0;
+	}
+	else if ( key == 'q' || key == 'Q') { 
+		conf->keys[2] = 0;
+	}	
+	else if ( key == 'd' || key == 'D') {
+		conf->keys[3] = 0;
+	}
+	else if ( key == '2' ) {
+		conf->keys[5] = 0;
+	}
+	else if ( key == '8' ) {
+		conf->keys[6] = 0;
+	}
+
+}
+
+void special_keyboard(int key, int x, int y) {
+
+	UNUSED(x);
+	UNUSED(y);
 
 	if ( key == GLUT_KEY_F1 ) {
 		/* FREE FLY ! */
@@ -116,7 +191,6 @@ void special_keyboard(int key, int x, int y) {
 			(conf->eye)->y = CELL_SIZE / 2;
 			(conf->eye)->z = CHARACTER_SIZE;
 			conf = change_center(conf);
-			point_free(save_eye);
 			return;
 		}
 	}
@@ -130,41 +204,37 @@ void special_keyboard(int key, int x, int y) {
 		conf->time = ( conf->time == DAY ) ? NIGHT : DAY;
 	}
 
-	if ( key == GLUT_KEY_DOWN) {
-		/* Go back */
-		save_eye = backward_move(conf, save_eye, speed);
+	if ( key == GLUT_KEY_UP) {
+		conf->keys[0] = 1;
 	}
-	else if ( key == GLUT_KEY_UP) {
-		/* Go straight */
-		save_eye = forward_move(conf, save_eye, speed);
+	else if ( key == GLUT_KEY_DOWN) {
+		conf->keys[1] = 1;
 	}
-	if ( key == GLUT_KEY_LEFT) { 
-		/* Go left */
-		save_eye = left_move(conf, save_eye, speed);
+	else if ( key == GLUT_KEY_LEFT) { 
+		conf->keys[2] = 1;
 	}	
 	else if ( key == GLUT_KEY_RIGHT) {
-		/* Go right */
-		save_eye = right_move(conf, save_eye, speed);
+		conf->keys[3] = 1;
 	}
+}
 
-	if ((( save_eye->x > 2 && save_eye->y > 2 
-		&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
-		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
-		&& save_eye->z <= CHARACTER_SIZE 
-		&& save_eye->z > 5 
-		&& IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE))) 
-		) || conf->free_fly == 1
-	)) {
-		conf->eye->x = save_eye->x;
-		conf->eye->y = save_eye->y;
-		conf->eye->z = save_eye->z;
+void special_keyboard_up(int key, int x, int y) {
+
+	UNUSED(x);
+	UNUSED(y);
+
+	if ( key == GLUT_KEY_UP) {
+		conf->keys[0] = 0;
 	}
-conf = change_center(conf);
-point_free(save_eye);
+	else if ( key == GLUT_KEY_DOWN) {	
+		conf->keys[1] = 0;
+	}
+	else if ( key == GLUT_KEY_LEFT) { 
+		conf->keys[2] = 0;
+	}	
+	else if ( key == GLUT_KEY_RIGHT) {
+		conf->keys[3] = 0;
+	}
 }
 
 void mouse_motion(int x, int z) {
@@ -173,12 +243,16 @@ void mouse_motion(int x, int z) {
 	conf->phi -= (z - SCREEN_MID_HEIGHT) * SENSITIVITY;
 
 	conf = modify_direction(conf);
+
 	return;
 }
 
 
 
 void mouse_trigger(int button, int state, int x, int y) {
+
+	UNUSED(x);
+	UNUSED(y);
 
 	if ( state != GLUT_UP && button == GLUT_LEFT_BUTTON ) {
 		shoot = 1;
@@ -303,10 +377,10 @@ void display() {
 	}
 	else {
 		glColor3f(0.5, 0.7, 0.5);
-		write_string("M'en fou que tu puisse pas jouer", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
+		write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 	}
 	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
-		
+	move();
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
 	glutPostRedisplay();
 	glutSwapBuffers();

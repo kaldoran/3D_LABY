@@ -9,6 +9,8 @@
 #ifndef __CONF
 #define __CONF
 
+#define UNUSED(x) (void)(x)
+
 #define SCREEN_POSITION_X	300
 #define SCREEN_POSITION_Y	600
 #define SCREEN_HEIGHT 		800
@@ -36,7 +38,7 @@ typedef struct Config {
 
 	float theta;
 	float phi;
-	char keys[4];
+	char keys[8];		/* Up , Down , Left , Right, Alt - Maj, 8, 2 */
 	
 	int time;
 	int free_fly;

@@ -285,6 +285,8 @@ return ol;
 
 void Object_border_print(Config *conf)
 {
+	UNUSED(conf);
+
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
 		glVertex3f(0, 0, 5);
@@ -400,6 +402,8 @@ void Object_floor_print(Config *conf)
 {
 	int i, j;
 
+	UNUSED(conf);
+
 	glColor3f(0, 1, 1);
 	glBegin(GL_LINE_LOOP);
 		glVertex3f(0, 0, 0);
@@ -421,6 +425,9 @@ void Object_floor_print(Config *conf)
 
 void Object_fir_tree_print(Object *fir_tree, Config *conf) {
 	float ratio = 0.2;
+	
+	UNUSED(conf);
+	
 	/* TRONC Arbre */
 	glColor3f(0.95, 0.7, 0.05);
 	glPushMatrix();
@@ -619,6 +626,9 @@ void Object_exit_print(Object *exit, Config *conf)
 
 void Object_teapot_print(Object *teapot, Config *conf)
 {
+
+	UNUSED(conf);
+
 	glPushMatrix();
 		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
 		glRotatef(90,1,0,0);
