@@ -38,6 +38,9 @@ typedef struct Config {
 	float phi;
 
 	int time;
+	int id_windows;
+	
+	int print_config;
 } Config;
 
 /*

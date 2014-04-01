@@ -18,6 +18,9 @@ Config *config_new()
 	conf->theta = 90.;
 	conf->phi = 0.;
 	conf->time = NIGHT;
+	conf->id_windows = 0;
+	
+	conf->print_config = 0;
 return conf;
 }
 

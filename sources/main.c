@@ -10,6 +10,7 @@
 #include <float.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <setjmp.h>
 #include "laby.h"
 #include "stack.h"
 #include "k-tree.h"
@@ -32,7 +33,7 @@ void change_center();
 Config *conf;
 Object_list *ol;
 Laby *laby;
-
+int shoot = 0;
 int main(int argc, char *argv[])
 {
 	Object *floor = object_new(0, 0, 0, FLOOR);
@@ -66,14 +67,14 @@ int main(int argc, char *argv[])
 			conf->time = NIGHT;
 		}
 	}
-
+	
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
 	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
 
-	glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
+	conf->id_windows = glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
@@ -160,6 +161,7 @@ void keyboard(unsigned char key, int x , int y) {
 		save_eye->z += 3;
 	}
 	else if ( (int)key == 27) {
+		glutDestroyWindow(conf->id_windows);
 		/*glutLeaveMainLoop();*/
 		exit(EXIT_SUCCESS);
 	}
@@ -194,8 +196,13 @@ void special_keyboard(int key, int x, int y) {
 
 
 	if ( key == GLUT_KEY_F3 ) {
-		printf("Prepare uranus for Debug mode [%c %d %d]\n", (char)key, x, y);
+		conf->print_config = !conf->print_config;
 	}
+	
+	if ( key == GLUT_KEY_F7 ) {
+		conf->time = ( conf->time == DAY ) ? NIGHT : DAY;
+	}
+
 	if ( key == GLUT_KEY_DOWN) {
 		backward_move(save_eye, speed);
 	}
@@ -261,19 +268,49 @@ void mouse_motion(int x, int z) {
 
 
 void mouse_trigger(int button, int state, int x, int y) {
-	if ( state == GLUT_UP ) {
-		printf("Click\n");
+
+	if ( state != GLUT_UP && button == GLUT_LEFT_BUTTON ) {
+		shoot = 1;
+
 	}
-	else {
-		printf("Relache\n");
+	else if ( state != GLUT_UP && button == GLUT_RIGHT_BUTTON ) {
+		shoot = 2;
 	}
 	
-	if ( button == GLUT_LEFT_BUTTON ) {
-		printf("Portail bleu\n");
+	if ( state == GLUT_UP ) {
+		printf("Relache\n");
+		shoot = 0;
 	}
-	else if ( button == GLUT_RIGHT_BUTTON ) {
-		printf("Portail rouge \n");
+	else {
+		printf("shoot\n");
+	}	
+
+
+}
+
+
+void write_string(char* string, int x, int y, void* font) {	
+	int i, width;
+
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+	glPushMatrix();
+	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+	glScalef(1, -1, 1);
+	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
+	
+	width = x - (glutBitmapLength(font, (unsigned char *)string) / 2);
+	if ( width > 0 ) {
+		x = width; 
 	}
+	
+	glRasterPos2i(x, y);
+	for (i=0; string[i] != '\0'; i++) {
+		glutBitmapCharacter(font, string[i]);
+	}
+	
+	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void display() {
@@ -285,7 +322,7 @@ void display() {
 	/*glFrustum(-5, 5, -5, 5, 5, 500);*/
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	iterator = ol->last;
 	while (1)
 	{
@@ -325,7 +362,30 @@ void display() {
 			break;
 		}
 	}
-
+	
+	/************************************************* ULTRA TEMPORAIRE ******************************************************/
+	if ( shoot == 1 ) glColor3f(0, 1, 1);
+	if ( shoot == 2 ) glColor3f(1, 1, 0);
+	if ( shoot != 0 ) {
+		glLineWidth(15); 
+		glBegin( GL_LINES );
+		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
+		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
+		glVertex3f(conf->eye->x, conf->eye->y + 2, conf->eye->z);
+		glEnd();
+		glLineWidth(1); 
+	}
+		/* Balance le text franky */
+	if ( conf->print_config ) {
+		glColor3f(1, 0.7, 0.5);
+		write_string("Salut le pd, si tu me lis c'est que tu as fais F3 alors arrete de jouer et travail", 0, 0, GLUT_BITMAP_HELVETICA_18);
+	}
+	else {
+		glColor3f(0.5, 0.7, 0.5);
+		write_string("M'en fou que tu puisse pas jouer", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
+	}
+	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
+		
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
 	glutPostRedisplay();
 	glutSwapBuffers();
