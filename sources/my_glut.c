@@ -287,7 +287,14 @@ void display() {
 		glutWireTeapot(3);
 		glPopMatrix();
 
+		glLineWidth(15); 
+		glBegin( GL_LINES );
+		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
+		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
+		glVertex3f(conf->eye->x, conf->eye->y + 2, conf->eye->z);
+		glEnd();
 		glLineWidth(1); 
+
 	}
 		/* Balance le text franky */
 	if ( conf->print_config ) {
