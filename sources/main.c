@@ -90,9 +90,6 @@ int main(int argc, char *argv[])
 
 	glutMainLoop();
 
-	object_list_free(ol);
-	config_free(conf);
-	laby_free(laby);
 return 0;
 }
 
