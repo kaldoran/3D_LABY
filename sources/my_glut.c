@@ -135,6 +135,9 @@ void keyboard(unsigned char key, int x , int y) {
 		conf->keys[6] = 1;
 	}
 	else if ( (int)key == 27) {
+		object_list_free(ol);
+		config_free(conf);
+		laby_free(laby);
 		/* Quit */
 		glutDestroyWindow(conf->id_windows); /*glutLeaveMainLoop();*/
 		exit(EXIT_SUCCESS);
@@ -260,7 +263,7 @@ void mouse_trigger(int button, int state, int x, int y) {
 	else if ( state != GLUT_UP && button == GLUT_RIGHT_BUTTON ) {
 		shoot = 2;
 	}
-	
+	fprintf(stderr, "%d", shoot);	
 	if ( state == GLUT_UP ) {
 		printf("Relache\n");
 		shoot = 0;
@@ -297,6 +300,8 @@ void write_string(char* string, int x, int y, void* font) {
 }
 
 void display() {
+	Point *tmp = point_new(0,0,0);
+
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 
 	glMatrixMode(GL_PROJECTION);
@@ -354,20 +359,19 @@ void display() {
 	if ( shoot == 2 ) glColor3f(1, 1, 0);
 	if ( shoot != 0 ) {
 		
-		printf("%f %f %f - %f %f %f\n", conf->body_direction->x, conf->body_direction->y, conf->body_direction->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
 		glPushMatrix();
 		glTranslatef((conf->center)->x, (conf->center)->y, (conf->center)->z);
 		glRotatef(90,1,0,0);
 		glRotatef(conf->theta,0,1,0);
-		glColor3f(0,1,1);
 		glutWireTeapot(3);
 		glPopMatrix();
 
-		glLineWidth(15); 
-		glBegin( GL_LINES );
+		glLineWidth(50); 
+		glBegin( GL_LINE_LOOP );
 		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
-		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
+
 		glVertex3f(conf->eye->x, conf->eye->y, conf->eye->z);
+		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
 		glEnd();
 		glLineWidth(1); 
 

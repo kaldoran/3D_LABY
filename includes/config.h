@@ -18,7 +18,7 @@
 #define SCREEN_MID_WIDTH 	(SCREEN_WIDTH / 2)
 
 #define CELL_SIZE 		25
-#define HORIZON 		5 * CELL_SIZE
+#define HORIZON 		1
 #define SENSITIVITY 	0.07
 #define CHARACTER_SIZE	10
 #define NEAR 			1
