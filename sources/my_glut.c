@@ -280,11 +280,11 @@ void display() {
 		
 		printf("%f %f %f - %f %f %f\n", conf->body_direction->x, conf->body_direction->y, conf->body_direction->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
 		glPushMatrix();
-		glTranslatef((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
+		glTranslatef((conf->eye)->x + conf->eye_direction->x * HORIZON, (conf->eye)->y + conf->eye_direction->y * HORIZON, (conf->eye)->z + conf->eye_direction->z * HORIZON);
 		glRotatef(90,1,0,0);
 		glRotatef(conf->theta,0,1,0);
 		glColor3f(0,1,1);
-		glutWireTeapot(3);
+		glutWireTeapot(2);
 		glPopMatrix();
 
 		glLineWidth(1); 
