@@ -24,13 +24,14 @@ int main(int argc, char *argv[])
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
 	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 500, SUN);
-	Object *giant_teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE	 / 2, 300, TEAPOT);
+	Object *giant_teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE / 2, 300, TEAPOT);
 	Object *teapot1 = object_new(-CELL_SIZE / 2, CELL_SIZE / 2, 5, TEAPOT);
 
 	laby = laby_new();
 	conf = config_new();
 	ol = object_list_new();
 	maze_generation();
+	maze_moving_walls_generation();
 
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);

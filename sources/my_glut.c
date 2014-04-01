@@ -80,6 +80,8 @@ void move() {
 		conf->eye->x = save_eye->x;
 		conf->eye->y = save_eye->y;
 		conf->eye->z = save_eye->z;
+	} else {
+		fprintf(stderr, "NONONONO %d\n", rand() % 10);
 	}
 
 change_center();

@@ -186,4 +186,5 @@ void maze_moving_walls_generation()
 			}
 		}
 	}
+	fprintf(stderr, "\n");
 }

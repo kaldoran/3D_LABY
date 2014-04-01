@@ -49,31 +49,31 @@ free(conf);
 }
 
 Point *forward_move(Point *save_eye, float speed) {
-	/*Doubly_linked_node *iterator;*/
-	/*int direction, dx, dy, count;*/
-	/*int x, y;*/
+	Doubly_linked_node *iterator;
+	int direction, dx, dy, count;
+	int x, y;
 
 	save_eye->x += speed * conf->body_direction->x;
 	save_eye->y += speed * conf->body_direction->y;
 	/*
-	 * If we go on an another cell
+	 * If we go on an other cell
 	  */
-	if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+	/*if (!conf->free_fly && COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
 			!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
 	{
-		/*
-		 * Objects list go through to search for MOVING_WALL objects.
-		 * The Object list ol is a global variable.
-		  */
-		/*iterator = ol->last;*/
-		/*while (1)
+		iterator = ol->last;
+		while (1)
 		{
 			if ((iterator->object)->type == MOVING_WALL)
 			{
-				x = (int)((((iterator->object)->anchor)->x + 2) / CELL_SIZE);
-				y = (int)((((iterator->object)->anchor)->y + 2) / CELL_SIZE);
+				x = (int)((((iterator->object)->anchor)->x ) / CELL_SIZE);
+				y = (int)((((iterator->object)->anchor)->y ) / CELL_SIZE);
 
-					fprintf(stderr, "%i %i\n", x, y);
+				if (!IS_IN(COORD(x,y)))
+				{
+					fprintf(stderr, "WTF !!!\n");
+					return save_eye;
+				}
 				count = 0;
 				while (count < 4)
 				{	
@@ -95,9 +95,11 @@ Point *forward_move(Point *save_eye, float speed) {
 							dy = -1;
 						break;
 					}
-					if(COORD(x + dx, y + dy) != COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+					if(COORD(x + dx, y + dy) != COORD((int)(save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
 						&& IS_PLAYABLE(COORD(x + dx, y + dy)))
 					{
+						laby->matrix[COORD(x,y)] = PASS;
+						laby->matrix[COORD(x+dx,y+dy)] = MOVING_WALL;
 						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
 						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
 						break;
@@ -111,11 +113,13 @@ Point *forward_move(Point *save_eye, float speed) {
 			if (iterator->next != NULL)
 			{
 				iterator = iterator->next;
+				fprintf(stderr, ".");
 			} else {
 				break;
 			}
-		}*/
+		}
 	}
+	fprintf(stderr, "\n");*/
 return save_eye;
 }
 
