@@ -30,16 +30,14 @@ int main(int argc, char *argv[])
 	laby = laby_new();
 	conf = config_new();
 	ol = object_list_new();
-
-	maze_generation();
-	maze_moving_walls_generation();
+	laby = maze_generation(laby);
 
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
 	ol = object_list_push(ol, sun);
 
-	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_fir_trees(ol);
+	ol = object_list_push_maze_walls(ol, laby);
 
 	ol = object_list_push(ol, giant_teapot);
 	ol = object_list_push(ol, teapot1);
@@ -48,7 +46,7 @@ int main(int argc, char *argv[])
 	{
 		if (strcmp(argv[1], "0") == 0)
 		{
-			laby_print();
+			laby_print(laby);
 			fprintf(stdout, "%d\n", ol->size);
 			return 0;
 		} else if (strcmp(argv[1], "day") == 0) {
@@ -84,6 +82,7 @@ int main(int argc, char *argv[])
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyboard_up);
 	glutSpecialFunc(special_keyboard);
+	glutSpecialUpFunc(special_keyboard_up);
 
 	glutDisplayFunc(display);
 	glutIdleFunc(display);
