@@ -30,6 +30,12 @@ int main(int argc, char *argv[])
 	laby = laby_new();
 	conf = config_new();
 	ol = object_list_new();
+
+	if(laby == NULL || conf == NULL || ol == NULL)
+	{
+		exit(EXIT_FAILURE);
+	}
+	
 	maze_generation();
 	maze_moving_walls_generation();
 

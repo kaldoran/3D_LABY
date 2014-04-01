@@ -13,7 +13,12 @@
   */
 Point *point_new(float x, float y, float z)
 {
-	Point *p = malloc(sizeof *p);
+	Point *p;
+	if ((p = malloc(sizeof *p)) == NULL)
+	{
+		return NULL;
+	}
+	
 	p->x = x;
 	p->y = y;
 	p->z = z;
@@ -33,7 +38,12 @@ void point_free(Point *p)
   */
 Element *element_new(Point *s1, Point *s2, char p)
 {
-	Element *e = malloc(sizeof *e);
+	Element *e;
+
+	if ((e = malloc(sizeof *e)) == NULL)
+	{
+		return NULL;
+	}
 	e->s1 = s1;
 	e->s2 = s2;
 	e->p = p;
