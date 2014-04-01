@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_fir_trees(ol);
 
-	fprintf(stdout, "%d\n", ol->size);
 	ol = object_list_push(ol, giant_teapot);
 	ol = object_list_push(ol, teapot1);
 
@@ -79,15 +78,16 @@ int main(int argc, char *argv[])
 	glutSetCursor(GLUT_CURSOR_NONE);
 	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
 
-	glutDisplayFunc(display);
-	glutIdleFunc(display);
-		
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mouse_motion);
 	glutMouseFunc(mouse_trigger);
 	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyboard_up);
 	glutSpecialFunc(special_keyboard);
-	
+
+	glutDisplayFunc(display);
+	glutIdleFunc(display);
+
 	glutMainLoop();
 
 	object_list_free(ol);

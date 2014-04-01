@@ -28,10 +28,14 @@ Config *config_new()
 	conf->print_config = 0;
 	conf->free_fly = 0;
 
-	conf->keys[0] = 0;
-	conf->keys[1] = 0;
-	conf->keys[2] = 0;
-	conf->keys[3] = 0;
+	conf->keys[0] = 0; /* Up */
+	conf->keys[1] = 0; /* Down */
+	conf->keys[2] = 0; /* Left */
+	conf->keys[3] = 0; /* Right */
+	conf->keys[4] = 0; /* Maj - Alt */
+	conf->keys[5] = 0; /* 2 - Down on Z */
+	conf->keys[6] = 0; /* 8 - Up on Z */
+	conf->keys[7] = 0; /* CTRL */
 return conf;
 }
 
@@ -45,9 +49,9 @@ free(conf);
 }
 
 Point *forward_move(Point *save_eye, float speed) {
-	Doubly_linked_node *iterator;
-	int direction, dx, dy, count;
-	int x, y;
+	/*Doubly_linked_node *iterator;*/
+	/*int direction, dx, dy, count;*/
+	/*int x, y;*/
 
 	save_eye->x += speed * conf->body_direction->x;
 	save_eye->y += speed * conf->body_direction->y;
@@ -61,8 +65,8 @@ Point *forward_move(Point *save_eye, float speed) {
 		 * Objects list go through to search for MOVING_WALL objects.
 		 * The Object list ol is a global variable.
 		  */
-		iterator = ol->last;
-		while (1)
+		/*iterator = ol->last;*/
+		/*while (1)
 		{
 			if ((iterator->object)->type == MOVING_WALL)
 			{
@@ -110,7 +114,7 @@ Point *forward_move(Point *save_eye, float speed) {
 			} else {
 				break;
 			}
-		}
+		}*/
 	}
 return save_eye;
 }
