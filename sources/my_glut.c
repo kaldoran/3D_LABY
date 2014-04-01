@@ -280,7 +280,7 @@ void display() {
 		
 		printf("%f %f %f - %f %f %f\n", conf->body_direction->x, conf->body_direction->y, conf->body_direction->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
 		glPushMatrix();
-		glTranslatef((conf->eye)->y, (conf->eye)->y, (conf->eye)->z);
+		glTranslatef((conf->center)->x, (conf->center)->y, (conf->center)->z);
 		glRotatef(90,1,0,0);
 		glRotatef(conf->theta,0,1,0);
 		glColor3f(0,1,1);
@@ -291,7 +291,7 @@ void display() {
 		glBegin( GL_LINES );
 		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
 		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
-		glVertex3f(conf->eye->x, conf->eye->y + 2, conf->eye->z);
+		glVertex3f(conf->eye->x, conf->eye->y, conf->eye->z);
 		glEnd();
 		glLineWidth(1); 
 
