@@ -4,9 +4,12 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <float.h>
 #include "config.h"
+#include "object.h"
+#include "laby.h"
 
 Config *config_new()
 {
@@ -41,40 +44,104 @@ void config_free(Config *conf)
 free(conf);
 }
 
-Point *forward_move(Config *conf, Point *save_eye, float speed) {
+Point *forward_move(Point *save_eye, float speed) {
+	Doubly_linked_node *iterator;
+	int direction, dx, dy, count;
+	int x, y;
+
 	save_eye->x += speed * conf->body_direction->x;
 	save_eye->y += speed * conf->body_direction->y;
+	/*
+	 * If we go on an another cell
+	  */
+	if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+			!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
+	{
+		/*
+		 * Objects list go through to search for MOVING_WALL objects.
+		 * The Object list ol is a global variable.
+		  */
+		iterator = ol->last;
+		while (1)
+		{
+			if ((iterator->object)->type == MOVING_WALL)
+			{
+				x = (int)((((iterator->object)->anchor)->x + 2) / CELL_SIZE);
+				y = (int)((((iterator->object)->anchor)->y + 2) / CELL_SIZE);
+
+					fprintf(stderr, "%i %i\n", x, y);
+				count = 0;
+				while (count < 4)
+				{	
+					direction = rand() % 4;
+					dx = 0;
+					dy = 0;
+					switch (direction)
+					{
+						case 0:
+							dx = 1;
+						break;
+						case 1:
+							dy = 1;
+						break;
+						case 2:
+							dx = -1;
+						break;
+						default:
+							dy = -1;
+						break;
+					}
+					if(COORD(x + dx, y + dy) != COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+						&& IS_PLAYABLE(COORD(x + dx, y + dy)))
+					{
+						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
+						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
+						break;
+					} else {
+						direction = (direction + 1) % 4;
+						++count;
+					}
+				}
+			}
+
+			if (iterator->next != NULL)
+			{
+				iterator = iterator->next;
+			} else {
+				break;
+			}
+		}
+	}
 return save_eye;
 }
 
-Point *backward_move(Config *conf, Point *save_eye, float speed) {
+Point *backward_move(Point *save_eye, float speed) {
 	save_eye->x -= speed * conf->body_direction->x;
 	save_eye->y -= speed * conf->body_direction->y;
 return save_eye;
 }
 
-Point *left_move(Config *conf, Point *save_eye, float speed) {
+Point *left_move(Point *save_eye, float speed) {
 	save_eye->x += -(speed * conf->body_direction->y);
 	save_eye->y += speed * conf->body_direction->x;
 return save_eye;
 }
 
-Point *right_move(Config *conf, Point *save_eye, float speed) {
+Point *right_move(Point *save_eye, float speed) {
 	save_eye->x += speed * conf->body_direction->y;
 	save_eye->y += -(speed * conf->body_direction->x);
 return save_eye;
 }
 
-Config *change_center(Config *conf)
+void change_center()
 {
 	conf->center->x = conf->eye->x + conf->eye_direction->x;
 	conf->center->y = conf->eye->y + conf->eye_direction->y;
 	conf->center->z = conf->eye->z + conf->eye_direction->z;
-return conf;
 }
 
 
-Config *modify_direction(Config *conf)
+void modify_direction()
 {
 	float tmp;
 	if (conf->theta > 360 )
@@ -101,5 +168,4 @@ Config *modify_direction(Config *conf)
 	conf->eye_direction->z = HORIZON * sin(conf->phi * M_PI / 180);
 	
 	change_center(conf);
-return conf;
 }

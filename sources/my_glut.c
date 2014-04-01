@@ -30,27 +30,27 @@ void keyboard(unsigned char key, int x , int y) {
 
 	if ( key == 's' || key == 'S')
 	{	
-		/* Go straight */
-		save_eye = backward_move(conf, save_eye, speed);
+		/* Go back */
+		backward_move(save_eye, speed);
 	}
 	else if ( key == 'z' || key == 'Z') {
-		/* Go back */
-		save_eye = forward_move(conf, save_eye, speed);
+		/* Go ahead */
+		forward_move(save_eye, speed);
 	}
 	if ( key == 'q' || key == 'Q') { 
 		/* Go left */
-		save_eye = left_move(conf, save_eye, speed);
+		left_move(save_eye, speed);
 	}	
 	else if ( key == 'd' || key == 'D') {
 		/* Go right */
-		save_eye = right_move(conf, save_eye, speed);
+		right_move(save_eye, speed);
 	}
 	else if (key == 'r' || key == 'R' ) {
 		/* Restart the maze */
 		(conf->eye)->x = CELL_SIZE / 2;
 		(conf->eye)->y = CELL_SIZE / 2;
 		(conf->eye)->z = CHARACTER_SIZE;
-		conf = change_center(conf);
+		change_center();
 		point_free(save_eye);
 		return;
 	}
@@ -58,7 +58,7 @@ void keyboard(unsigned char key, int x , int y) {
 		/* Make a 180° */
 		conf->theta += 180;
 		conf->phi = 0;
-		conf = modify_direction(conf);
+		modify_direction();
 		return;
 	}
 	else if ( key == '2') {
@@ -91,7 +91,7 @@ void keyboard(unsigned char key, int x , int y) {
 		conf->eye->y = save_eye->y;
 		conf->eye->z = save_eye->z;
 	} 
-conf = change_center(conf);
+change_center();
 point_free(save_eye);
 }
 
@@ -115,7 +115,7 @@ void special_keyboard(int key, int x, int y) {
 			(conf->eye)->x = CELL_SIZE / 2;
 			(conf->eye)->y = CELL_SIZE / 2;
 			(conf->eye)->z = CHARACTER_SIZE;
-			conf = change_center(conf);
+			change_center();
 			point_free(save_eye);
 			return;
 		}
@@ -132,19 +132,19 @@ void special_keyboard(int key, int x, int y) {
 
 	if ( key == GLUT_KEY_DOWN) {
 		/* Go back */
-		save_eye = backward_move(conf, save_eye, speed);
+		backward_move(save_eye, speed);
 	}
 	else if ( key == GLUT_KEY_UP) {
-		/* Go straight */
-		save_eye = forward_move(conf, save_eye, speed);
+		/* Go ahead */
+		forward_move(save_eye, speed);
 	}
 	if ( key == GLUT_KEY_LEFT) { 
 		/* Go left */
-		save_eye = left_move(conf, save_eye, speed);
+		left_move(save_eye, speed);
 	}	
 	else if ( key == GLUT_KEY_RIGHT) {
 		/* Go right */
-		save_eye = right_move(conf, save_eye, speed);
+		right_move(save_eye, speed);
 	}
 
 	if ((( save_eye->x > 2 && save_eye->y > 2 
@@ -163,7 +163,7 @@ void special_keyboard(int key, int x, int y) {
 		conf->eye->y = save_eye->y;
 		conf->eye->z = save_eye->z;
 	}
-conf = change_center(conf);
+change_center();
 point_free(save_eye);
 }
 
@@ -172,7 +172,7 @@ void mouse_motion(int x, int z) {
 	conf->theta -= (x - SCREEN_MID_WIDTH) * SENSITIVITY;
 	conf->phi -= (z - SCREEN_MID_HEIGHT) * SENSITIVITY;
 
-	conf = modify_direction(conf);
+	modify_direction();
 	return;
 }
 
@@ -239,28 +239,31 @@ void display() {
 		switch ((iterator->object)->type)
 		{
 			case FLOOR:
-				Object_floor_print(conf);
+				Object_floor_print();
 			break;
 			case BORDER:
-				Object_border_print(conf);
+				Object_border_print();
 			break;
 			case SUN:
-				Object_sun_print(iterator->object, conf);
+				Object_sun_print(iterator->object);
 			break;
 			case FIR_TREE:
-				Object_fir_tree_print(iterator->object, conf);
+				Object_fir_tree_print(iterator->object);
 			break;
 			case WALL:
-				Object_wall_print(iterator->object, conf);
+				Object_wall_print(iterator->object);
+			break;
+			case MOVING_WALL:
+				Object_moving_wall_print(iterator->object);
 			break;
 			case ENTRY:
-				Object_entry_print(iterator->object, conf);
+				Object_entry_print(iterator->object);
 			break;
 			case EXIT:
-				Object_exit_print(iterator->object, conf);
+				Object_exit_print(iterator->object);
 			break;
 			case TEAPOT:
-				Object_teapot_print(iterator->object, conf);
+				Object_teapot_print(iterator->object);
 			break;
 			default:
 			break;

@@ -4,7 +4,6 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include "k-tree.h"
-#include "laby.h"
 
 #ifndef __CONF
 #define __CONF
@@ -64,13 +63,13 @@ typedef struct Config {
 Config *conf;
 
 Config *config_new();
-void config_free();
+void config_free(Config *conf);
 
-Point *forward_move(Config *conf, Point *save_eye, float speed);
-Point *backward_move(Config *conf, Point *save_eye, float speed);
-Point *left_move(Config *conf, Point *save_eye, float speed);
-Point *right_move(Config *conf, Point *save_eye, float speed);
+Point *forward_move(Point *save_eye, float speed);
+Point *backward_move(Point *save_eye, float speed);
+Point *left_move(Point *save_eye, float speed);
+Point *right_move(Point *save_eye, float speed);
 
-Config *change_center(Config *conf);
-Config *modify_direction(Config *conf);
+void change_center();
+void modify_direction();
 #endif

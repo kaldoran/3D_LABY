@@ -41,7 +41,7 @@ void laby_free(Laby *laby)
 	free(laby);
 }
 
-Laby *maze_carving (Laby *laby, int x, int y)
+void maze_carving (int x, int y)
 {
 	int x1, y1, x2, y2, dx, dy;
 	int direction = rand() % 4, count = 0;
@@ -84,9 +84,9 @@ Laby *maze_carving (Laby *laby, int x, int y)
 			++count;
 		}
 	}
-return laby;
 }
-Laby *maze_generation(Laby *laby)
+
+void maze_generation()
 {
 	int i, x, y;
 	int rand_room_width, rand_room_height;
@@ -100,7 +100,7 @@ Laby *maze_generation(Laby *laby)
 	{
 		for (y = 1; y < HEIGHT; y += 2)
 		{
-			laby = maze_carving(laby, x, y);
+			maze_carving(x, y);
 		}
 	}
 
@@ -136,10 +136,9 @@ Laby *maze_generation(Laby *laby)
 
 	laby->matrix[0] = ENTRY;
 	laby->matrix[COORD((WIDTH - 2), (HEIGHT - 1))] = EXIT;
-return laby;
 }
 
-void laby_print(Laby *laby)
+void laby_print()
 {
 	int x,y;
 	fprintf(stdout, "%i : %d\n",HEIGHT, WIDTH);
@@ -172,4 +171,19 @@ void laby_print(Laby *laby)
 
 	fprintf(stdout, "→ X\n");
 	fprintf(stdout, "(0,0)\n");
+}
+
+void maze_moving_walls_generation()
+{
+	int x, y;
+	for (x = 1; x < WIDTH; ++x)
+	{
+		for (y = 1; y < HEIGHT; ++y)
+		{
+			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 200)
+			{
+				laby->matrix[COORD(x,y)] = MOVING_WALL;
+			}
+		}
+	}
 }

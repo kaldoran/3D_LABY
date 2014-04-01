@@ -10,7 +10,6 @@
 #include <time.h>
 #include "laby.h"
 #include "config.h"
-#include "k-tree.h"
 #include "object.h"
 
 Object *object_new(float x, float y, float z, unsigned int type)
@@ -218,7 +217,7 @@ Object_list *object_list_generate_fir_trees(Object_list *ol)
 return ol;
 }
 
-Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby)
+Object_list *object_list_push_maze_walls(Object_list *ol)
 {
 	int x, y;
 
@@ -233,6 +232,8 @@ Object_list *object_list_push_maze_walls(Object_list *ol, Laby *laby)
 				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, ENTRY);
 			} else if (laby->matrix[COORD(x,y)] == EXIT) {
 				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, EXIT);
+			} else if (laby->matrix[COORD(x,y)] == MOVING_WALL) {
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, MOVING_WALL);
 			}
 		}
 	}
@@ -283,7 +284,7 @@ Object_list *object_list_push_object(Object_list *ol, float x, float y, float z,
 return ol;
 }
 
-void Object_border_print(Config *conf)
+void Object_border_print()
 {
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
@@ -387,7 +388,7 @@ void Object_border_print(Config *conf)
 	glEnd();
 }
 
-void Object_sun_print(Object *sun, Config *conf)
+void Object_sun_print(Object *sun)
 {
 	glPushMatrix();
 		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z);
@@ -396,7 +397,7 @@ void Object_sun_print(Object *sun, Config *conf)
 	glPopMatrix();
 }
 
-void Object_floor_print(Config *conf)
+void Object_floor_print()
 {
 	int i, j;
 
@@ -419,7 +420,7 @@ void Object_floor_print(Config *conf)
 	}
 }
 
-void Object_fir_tree_print(Object *fir_tree, Config *conf) {
+void Object_fir_tree_print(Object *fir_tree) {
 	float ratio = 0.2;
 	/* TRONC Arbre */
 	glColor3f(0.95, 0.7, 0.05);
@@ -457,7 +458,7 @@ void Object_fir_tree_print(Object *fir_tree, Config *conf) {
 	glPopMatrix();
 }
 
-void Object_wall_print(Object *wall, Config *conf)
+void Object_wall_print(Object *wall)
 {
 	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = 0;
 	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
@@ -535,7 +536,36 @@ void Object_wall_print(Object *wall, Config *conf)
 	glEnd();
 }
 
-void time_color(Config *conf)
+void Object_moving_wall_print(Object *wall)
+{
+	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = 0;
+	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
+	time_color(conf);
+	glBegin(GL_QUADS);
+		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
+		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
+
+		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
+		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
+
+		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
+		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
+		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
+
+		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
+		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
+		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
+
+	glEnd();
+}
+
+void time_color()
 {
 	if (conf->time == NIGHT)
 	{
@@ -545,7 +575,7 @@ void time_color(Config *conf)
 	}
 }
 
-void Object_entry_print(Object *entry, Config *conf)
+void Object_entry_print(Object *entry)
 {
 	float x1 = (entry->anchor)->x, y1 = (entry->anchor)->y;
 	
@@ -581,7 +611,7 @@ void Object_entry_print(Object *entry, Config *conf)
 	glEnd();
 }
 
-void Object_exit_print(Object *exit, Config *conf)
+void Object_exit_print(Object *exit)
 {
 	float x1 = (exit->anchor)->x, y1 = (exit->anchor)->y;
 	
@@ -617,7 +647,7 @@ void Object_exit_print(Object *exit, Config *conf)
 	glEnd();
 }
 
-void Object_teapot_print(Object *teapot, Config *conf)
+void Object_teapot_print(Object *teapot)
 {
 	glPushMatrix();
 		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);

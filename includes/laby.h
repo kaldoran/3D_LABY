@@ -31,7 +31,7 @@
 #define IS_IN(X)			(X >= 0  && X < SIZE)
 #define IS_BORDER(X)		(END_TOP(X) || END_BOTTOM(X) || END_RIGHT(X) || END_LEFT(X))
 #define IS_PLAYABLE(X)		(IS_IN(X) && (laby->matrix[X] == PASS || laby->matrix[X] == ENTRY || laby->matrix[X] == EXIT))
-#define IS_WALL(X)			(IS_IN(X) && laby->matrix[X] == WALL)
+#define IS_WALL(X)			(IS_IN(X) && (laby->matrix[X] == WALL || laby->matrix[X] == MOVING_WALL))
 #define IS_WALL_OR_OUT(X) 	(!IS_IN(X) || IS_WALL(X))
 
 typedef struct Laby
@@ -57,14 +57,13 @@ void laby_free(Laby *laby);
  * Maze generation.
  * Take an empty labyrith and create walls in it by
  * modifying the matrix.
- * 1 will represente a wall, 0 somewhere the user can go.
- * 2 is the entry. 3 is the exit.
   */
-Laby *maze_generation(Laby *laby);
-Laby *maze_carving(Laby *laby, int x, int y);
+void maze_generation(void);
+void maze_carving(int x, int y);
+void maze_moving_walls_generation(void);
 
 /* 
  * Print the maze in the standard output.
   */
-void laby_print(Laby *laby);
+void laby_print(void);
 #endif
