@@ -58,7 +58,7 @@ Point *forward_move(Point *save_eye, float speed) {
 	/*
 	 * If we go on an other cell
 	  */
-	/*if (!conf->free_fly && COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+	if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
 			!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
 	{
 		iterator = ol->last;
@@ -66,20 +66,15 @@ Point *forward_move(Point *save_eye, float speed) {
 		{
 			if ((iterator->object)->type == MOVING_WALL)
 			{
-				x = (int)((((iterator->object)->anchor)->x ) / CELL_SIZE);
-				y = (int)((((iterator->object)->anchor)->y ) / CELL_SIZE);
+				x = (((int)((iterator->object)->anchor)->x ) / CELL_SIZE);
+				y = (((int)((iterator->object)->anchor)->y ) / CELL_SIZE);
 
-				if (!IS_IN(COORD(x,y)))
-				{
-					fprintf(stderr, "WTF !!!\n");
-					return save_eye;
-				}
 				count = 0;
-				while (count < 4)
+				direction = rand() % 4;
+				dx = 0;
+				dy = 0;
+				while (count < 7)
 				{	
-					direction = rand() % 4;
-					dx = 0;
-					dy = 0;
 					switch (direction)
 					{
 						case 0:
@@ -95,17 +90,22 @@ Point *forward_move(Point *save_eye, float speed) {
 							dy = -1;
 						break;
 					}
-					if(COORD(x + dx, y + dy) != COORD((int)(save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
-						&& IS_PLAYABLE(COORD(x + dx, y + dy)))
-					{
+					if(COORD((x+dx),(y+dy)) == COORD(((int)save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
+						|| !IS_PLAYABLE(COORD((x+dx),(y+dy)))
+						|| (dx == 1 && END_RIGHT(COORD(x,y)))
+						|| (dy == 1 && END_TOP(COORD(x,y)))
+						|| (dx == -1 && END_LEFT(COORD(x,y)))
+						|| (dy == -1 && END_BOTTOM(COORD(x,y)))
+					) {
+						direction = (direction + 1) % 4;
+						++count;
+					} else {
 						laby->matrix[COORD(x,y)] = PASS;
-						laby->matrix[COORD(x+dx,y+dy)] = MOVING_WALL;
+						laby->matrix[COORD((x+dx),(y+dy))] = MOVING_WALL;
+
 						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
 						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
 						break;
-					} else {
-						direction = (direction + 1) % 4;
-						++count;
 					}
 				}
 			}
@@ -113,13 +113,11 @@ Point *forward_move(Point *save_eye, float speed) {
 			if (iterator->next != NULL)
 			{
 				iterator = iterator->next;
-				fprintf(stderr, ".");
 			} else {
 				break;
 			}
 		}
 	}
-	fprintf(stderr, "\n");*/
 return save_eye;
 }
 

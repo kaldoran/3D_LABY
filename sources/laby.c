@@ -154,6 +154,8 @@ void laby_print()
 			if (laby->matrix[COORD(x,y)] == WALL)
 			{
 				fprintf(stdout, "█");
+			} else if (laby->matrix[COORD(x,y)] == MOVING_WALL) {
+				fprintf(stdout, "?");
 			} else if (laby->matrix[COORD(x,y)] == PASS) {
 				fprintf(stdout, "░");
 			}  else if (laby->matrix[COORD(x,y)] == ENTRY || laby->matrix[COORD(x,y)] == EXIT) {
@@ -180,7 +182,7 @@ void maze_moving_walls_generation()
 	{
 		for (y = 1; y < HEIGHT; ++y)
 		{
-			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 200)
+			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 20)
 			{
 				laby->matrix[COORD(x,y)] = MOVING_WALL;
 			}

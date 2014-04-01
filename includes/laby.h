@@ -11,7 +11,7 @@
 #define HEIGHT 	51
 #define SIZE 	(WIDTH * HEIGHT)
 
-#define COORD(I,J) 			((J * WIDTH) + I)
+#define COORD(I,J) 			(((J) * WIDTH) + (I))
 #define LINE(X)				(X / WIDTH)
 #define COLUMN(X)			(X % WIDTH)
 
