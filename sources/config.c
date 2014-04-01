@@ -91,14 +91,14 @@ Config *modify_direction(Config *conf)
 		conf->phi = -89;
 	}
 
-	tmp = cos(conf->phi * M_PI / 180);
+	tmp = HORIZON * cos(conf->phi * M_PI / 180);
 
 	conf->body_direction->x = cos(conf->theta * M_PI / 180);
 	conf->body_direction->y = sin(conf->theta * M_PI / 180);
 
 	conf->eye_direction->x = tmp * conf->body_direction->x;
 	conf->eye_direction->y = tmp * conf->body_direction->y;
-	conf->eye_direction->z = sin(conf->phi * M_PI / 180);
+	conf->eye_direction->z = HORIZON * sin(conf->phi * M_PI / 180);
 	
 	change_center(conf);
 return conf;
