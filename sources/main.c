@@ -194,6 +194,10 @@ void special_keyboard(int key, int x, int y) {
 		speed = 3.1337;	
 	}
 
+	if (save_eye->z > CELL_SIZE + 7) 
+	{
+		speed = 8;
+	}
 
 	if ( key == GLUT_KEY_F3 ) {
 		conf->print_config = !conf->print_config;
@@ -223,7 +227,8 @@ void special_keyboard(int key, int x, int y) {
 			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
 			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE)))
 			&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE)))
-			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE)))))
+			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE))))
+			|| save_eye->z > CELL_SIZE + 7)
 	) {
 		conf->eye->x = save_eye->x;
 		conf->eye->y = save_eye->y;
