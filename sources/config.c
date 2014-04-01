@@ -4,6 +4,8 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include <stdlib.h>
+#include <math.h>
+#include <float.h>
 #include "config.h"
 
 Config *config_new()
@@ -21,6 +23,12 @@ Config *config_new()
 	conf->id_windows = 0;
 	
 	conf->print_config = 0;
+	conf->free_fly = 0;
+
+	conf->keys[0] = 0;
+	conf->keys[1] = 0;
+	conf->keys[2] = 0;
+	conf->keys[3] = 0;
 return conf;
 }
 
@@ -31,4 +39,67 @@ void config_free(Config *conf)
 	point_free(conf->eye);
 	point_free(conf->center);
 free(conf);
+}
+
+Point *forward_move(Config *conf, Point *save_eye, float speed) {
+	save_eye->x += speed * conf->body_direction->x;
+	save_eye->y += speed * conf->body_direction->y;
+return save_eye;
+}
+
+Point *backward_move(Config *conf, Point *save_eye, float speed) {
+	save_eye->x -= speed * conf->body_direction->x;
+	save_eye->y -= speed * conf->body_direction->y;
+return save_eye;
+}
+
+Point *left_move(Config *conf, Point *save_eye, float speed) {
+	save_eye->x += -(speed * conf->body_direction->y);
+	save_eye->y += speed * conf->body_direction->x;
+return save_eye;
+}
+
+Point *right_move(Config *conf, Point *save_eye, float speed) {
+	save_eye->x += speed * conf->body_direction->y;
+	save_eye->y += -(speed * conf->body_direction->x);
+return save_eye;
+}
+
+Config *change_center(Config *conf)
+{
+	conf->center->x = conf->eye->x + conf->eye_direction->x;
+	conf->center->y = conf->eye->y + conf->eye_direction->y;
+	conf->center->z = conf->eye->z + conf->eye_direction->z;
+return conf;
+}
+
+
+Config *modify_direction(Config *conf)
+{
+	float tmp;
+	if (conf->theta > 360 )
+	{
+		conf->theta = (int)conf->theta % 360;
+	} else if (conf->theta < -360 ) {
+		conf->theta = abs((int)conf->theta) % 360;
+	}
+
+	if (conf->phi > 89 )
+	{
+		conf->phi = 89;
+	} else if (conf->phi < -89) {
+		conf->phi = -89;
+	}
+
+	tmp = cos(conf->phi * M_PI / 180);
+
+	conf->body_direction->x = cos(conf->theta * M_PI / 180);
+	conf->body_direction->y = sin(conf->theta * M_PI / 180);
+
+	conf->eye_direction->x = tmp * conf->body_direction->x;
+	conf->eye_direction->y = tmp * conf->body_direction->y;
+	conf->eye_direction->z = sin(conf->phi * M_PI / 180);
+	
+	change_center(conf);
+return conf;
 }

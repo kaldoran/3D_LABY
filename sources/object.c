@@ -401,8 +401,14 @@ void Object_floor_print(Config *conf)
 	int i, j;
 
 	glColor3f(0, 1, 1);
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(0, 0, 0);
+		glVertex3f(WIDTH * CELL_SIZE, 0, 0);
+		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 0); 
+		glVertex3f(0, HEIGHT * CELL_SIZE, 0);
+	glEnd();
 	for ( i = 0; i < WIDTH * CELL_SIZE; i += CELL_SIZE ) {
-		for ( j = 0; j < HEIGHT * CELL_SIZE; j += CELL_SIZE) { 
+		for ( j = i % (2 * CELL_SIZE); j < HEIGHT * CELL_SIZE; j += CELL_SIZE * 2) { 
 			glBegin(GL_LINE_LOOP);
 				glVertex3f(i, j, 0);
 				glVertex3f(i + CELL_SIZE, j, 0);
@@ -458,11 +464,6 @@ void Object_wall_print(Object *wall, Config *conf)
 	glColor3f(0, 0, 0);
 	glBegin(GL_QUADS);
 		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
-		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
-		glVertex3f(x2 - 1, y2 - 1, z1 + 1);
-		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
-
-		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
 		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
 		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
 		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
@@ -482,19 +483,8 @@ void Object_wall_print(Object *wall, Config *conf)
 		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
 		glVertex3f(x1 + 1, y2 - 1, z1 + 1);
 
-		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
-		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
-		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
-		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
 	glEnd();
 
-	glColor3f(0, 1, 1);
-	glBegin(GL_LINE_LOOP);
-		glVertex3f(x1, y1, z1);
-		glVertex3f(x1, y2, z1);
-		glVertex3f(x2, y2, z1);
-		glVertex3f(x2, y1, z1);
-	glEnd();
 	/*glColor3f(0, 0, 1);*/
 	glBegin(GL_LINE_LOOP);
 		glColor3f(0, 1, 1);

@@ -33,6 +33,9 @@ typedef struct Object_list
 	unsigned int size;
 } Object_list;
 
+/* Global list */
+Object_list *ol;
+
 Object *object_new(float x, float y, float z, unsigned int type);
 void object_free(Object *object);
 
@@ -53,7 +56,6 @@ Object_list *object_list_generate_fir_trees(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
 void time_color(Config *conf);
-
 void Object_floor_print(Config *conf);
 void Object_border_print(Config *conf);
 void Object_sun_print(Object *sun, Config *conf);

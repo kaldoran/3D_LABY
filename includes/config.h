@@ -36,10 +36,12 @@ typedef struct Config {
 
 	float theta;
 	float phi;
-
-	int time;
-	int id_windows;
+	char keys[4];
 	
+	int time;
+	int free_fly;
+
+	int id_windows;
 	int print_config;
 } Config;
 
@@ -58,6 +60,17 @@ typedef struct Config {
  *				GLdouble upZ);
  */
 
+/* Global config structure */
+Config *conf;
+
 Config *config_new();
 void config_free();
+
+Point *forward_move(Config *conf, Point *save_eye, float speed);
+Point *backward_move(Config *conf, Point *save_eye, float speed);
+Point *left_move(Config *conf, Point *save_eye, float speed);
+Point *right_move(Config *conf, Point *save_eye, float speed);
+
+Config *change_center(Config *conf);
+Config *modify_direction(Config *conf);
 #endif

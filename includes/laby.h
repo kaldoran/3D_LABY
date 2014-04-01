@@ -37,6 +37,9 @@ typedef struct Laby
 	char *matrix;
 } Laby;
 
+/* Global laby */
+Laby *laby;
+
 /*
  * Create an empty labyrinth.
  * Return a maze or NULL in case of failure.

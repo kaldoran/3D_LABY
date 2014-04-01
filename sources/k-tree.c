@@ -1,3 +1,8 @@
+/*
+ * SAI project - 3D Laby
+ * File : k-tree.c
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+  */
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
