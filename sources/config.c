@@ -13,7 +13,12 @@
 
 Config *config_new()
 {
-	Config *conf = malloc(sizeof *conf);
+	Config *conf;
+	if ((conf = malloc(sizeof *conf)) == NULL)
+	{
+		return NULL;
+	}
+	
 	conf->eye_direction = point_new(0, HORIZON, 0);
 	conf->body_direction = point_new(0, 1, 0);
 	conf->eye = point_new(CELL_SIZE / 2, CELL_SIZE / 2, CHARACTER_SIZE);
@@ -50,73 +55,12 @@ free(conf);
 }
 
 Point *forward_move(Point *save_eye, float speed) {
-	/*Doubly_linked_node *iterator;*/
-	/*int direction, dx, dy, count;*/
-	/*int x, y;*/
 
 	save_eye->x += speed * conf->body_direction->x;
 	save_eye->y += speed * conf->body_direction->y;
 	/*
-	 * If we go on an another cell
+	 * If we go on an other cell
 	  */
-	if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
-			!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
-	{
-		/*
-		 * Objects list go through to search for MOVING_WALL objects.
-		 * The Object list ol is a global variable.
-		  */
-		/*iterator = ol->last;*/
-		/*while (1)
-		{
-			if ((iterator->object)->type == MOVING_WALL)
-			{
-				x = (int)((((iterator->object)->anchor)->x + 2) / CELL_SIZE);
-				y = (int)((((iterator->object)->anchor)->y + 2) / CELL_SIZE);
-
-					fprintf(stderr, "%i %i\n", x, y);
-				count = 0;
-				while (count < 4)
-				{	
-					direction = rand() % 4;
-					dx = 0;
-					dy = 0;
-					switch (direction)
-					{
-						case 0:
-							dx = 1;
-						break;
-						case 1:
-							dy = 1;
-						break;
-						case 2:
-							dx = -1;
-						break;
-						default:
-							dy = -1;
-						break;
-					}
-					if(COORD(x + dx, y + dy) != COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
-						&& IS_PLAYABLE(COORD(x + dx, y + dy)))
-					{
-						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
-						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
-						break;
-					} else {
-						direction = (direction + 1) % 4;
-						++count;
-					}
-				}
-			}
-
-			if (iterator->next != NULL)
-			{
-				iterator = iterator->next;
-			} else {
-				break;
-			}
-		}*/
-	}
 return save_eye;
 }
 

@@ -19,7 +19,10 @@ int shoot = 0;
 
 /* calcule réellement le mouvement */
 void move() {
-
+	Doubly_linked_node *iterator;
+	int direction, dx, dy, count;
+	int x, y;
+	
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 	float speed = 1.5;
 	
@@ -66,16 +69,77 @@ void move() {
 		save_eye->z += 3;
 	}
 
+	if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
+			!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
+	{
+		iterator = ol->last;
+		while (1)
+		{
+			if ((iterator->object)->type == MOVING_WALL)
+			{
+				x = (((int)((iterator->object)->anchor)->x ) / CELL_SIZE);
+				y = (((int)((iterator->object)->anchor)->y ) / CELL_SIZE);
+
+				count = 0;
+				direction = rand() % 4;
+				dx = 0;
+				dy = 0;
+				while (count < 7)
+				{	
+					switch (direction)
+					{
+						case 0:
+							dx = 1;
+						break;
+						case 1:
+							dy = 1;
+						break;
+						case 2:
+							dx = -1;
+						break;
+						default:
+							dy = -1;
+						break;
+					}
+					if(COORD((x+dx),(y+dy)) == COORD(((int)save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
+						|| !IS_PLAYABLE(COORD((x+dx),(y+dy)))
+						|| (dx == 1 && END_RIGHT(COORD(x,y)))
+						|| (dy == 1 && END_TOP(COORD(x,y)))
+						|| (dx == -1 && END_LEFT(COORD(x,y)))
+						|| (dy == -1 && END_BOTTOM(COORD(x,y)))
+					) {
+						direction = (direction + 1) % 4;
+						++count;
+					} else {
+						laby->matrix[COORD(x,y)] = PASS;
+						laby->matrix[COORD((x+dx),(y+dy))] = MOVING_WALL;
+
+						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
+						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
+						break;
+					}
+				}
+			}
+
+			if (iterator->next != NULL)
+			{
+				iterator = iterator->next;
+			} else {
+				break;
+			}
+		}
+	}
+
 	if ((( save_eye->x > 2 && save_eye->y > 2 
 		&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
 		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
 		&& save_eye->z <= CHARACTER_SIZE 
 		&& save_eye->z > 5 
-		&& IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD(((int)save_eye->x / CELL_SIZE),((int)save_eye->y / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((((int)save_eye->x + 2) / CELL_SIZE),((int)(save_eye->y) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((((int)save_eye->x) / CELL_SIZE),(((int)save_eye->y + 2) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((((int)save_eye->x - 2) / CELL_SIZE),(((int)save_eye->y) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((((int)save_eye->x) / CELL_SIZE),(((int)save_eye->y - 2) / CELL_SIZE))) 
 		) || conf->free_fly == 1
 	)) {
 		conf->eye->x = save_eye->x;
