@@ -21,6 +21,10 @@ int shoot = 0;
 /* calcule réellement le mouvement */
 void move() {
 
+	Doubly_linked_node *iterator;
+	int direction, dx, dy, count;
+	int x, y;
+	
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 	float speed = 1.5;
 	
@@ -361,7 +365,7 @@ void write_string(char* string, int x, int y, void* font) {
 	glEnable(GL_DEPTH_TEST);
 }
 
-/*void DrawEllipse(float radiusX, float radiusY)
+void DrawEllipse(float radiusX, float radiusY)
 {
 	int i;
 	float rad;
@@ -371,7 +375,7 @@ void write_string(char* string, int x, int y, void* font) {
 		glVertex2f(cos(rad)*radiusX, sin(rad)*radiusY);
 	}
 	glEnd();
-}*/
+}
 
 void display() {
 	Point *tmp;
