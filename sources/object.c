@@ -164,17 +164,17 @@ return ol;
 
 Object_list *object_list_generate_fir_trees(Object_list *ol)
 {
-	int x, y;
-	int density = 3, gap = 14, space = 300;
+	int x, y, step = CELL_SIZE / 5;
+	int density = 4, gap = CELL_SIZE, space = 5 * CELL_SIZE;
 	srand(time(NULL));
-	for (x = -12; x > -space ; x -= CELL_SIZE)
+	for (x = -gap; x > -space ; x -= CELL_SIZE)
 	{
 		for (y = -space; y < (HEIGHT * CELL_SIZE) + space; y += CELL_SIZE)
 		{
 			if (rand() % density == 1)
 			{
 				ol = object_list_push_object(ol, x, y, (rand() % 8) + 7, FIR_TREE);
-				y += 5;
+				y += step;
 			}
 		}
 	}
@@ -186,7 +186,7 @@ Object_list *object_list_generate_fir_trees(Object_list *ol)
 			if (rand() % density == 1)
 			{
 				ol = object_list_push_object(ol, x, y, (rand() % 8) + 7, FIR_TREE);
-				x += 5;
+				x += step;
 			}
 		}
 	}
@@ -198,7 +198,7 @@ Object_list *object_list_generate_fir_trees(Object_list *ol)
 			if (rand() % density == 1)
 			{
 				ol = object_list_push_object(ol, x, y, (rand() % 8) + 7, FIR_TREE);
-				y += 5;
+				y += step;
 			}
 		}
 	}
@@ -210,7 +210,7 @@ Object_list *object_list_generate_fir_trees(Object_list *ol)
 			if (rand() % density == 1)
 			{
 				ol = object_list_push_object(ol, x, y, (rand() % 8) + 7, FIR_TREE);
-				x += 5;
+				x += step;
 			}
 		}
 	}
@@ -395,7 +395,7 @@ void Object_sun_print(Object *sun)
 	glPushMatrix();
 		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z);
 		time_color(conf);
-		glutWireSphere(30., 15, 15);
+		glutWireSphere(40., 15, 15);
 	glPopMatrix();
 }
 
@@ -412,6 +412,7 @@ void Object_floor_print()
 		glVertex3f(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE, 0); 
 		glVertex3f(0, HEIGHT * CELL_SIZE, 0);
 	glEnd();
+
 	for ( i = 0; i < WIDTH * CELL_SIZE; i += CELL_SIZE ) {
 		for ( j = i % (2 * CELL_SIZE); j < HEIGHT * CELL_SIZE; j += CELL_SIZE * 2) { 
 			glBegin(GL_LINE_LOOP);
@@ -426,6 +427,7 @@ void Object_floor_print()
 
 void Object_fir_tree_print(Object *fir_tree) {
 	float ratio = 0.2;
+	int i,j, size = CELL_SIZE / 5;
 	
 	UNUSED(conf);
 	
@@ -456,7 +458,18 @@ void Object_fir_tree_print(Object *fir_tree) {
 
 		/* Sapin les murs */
 		glColor3f(0, 1, 0);
-		glTranslatef(0, 0, (fir_tree->anchor)->z); 
+		glTranslatef(-CELL_SIZE / 2, -CELL_SIZE / 2, 0);
+		for ( i = 0; i < CELL_SIZE; i += size) {
+			for ( j = i % (2 * size); j < CELL_SIZE; j += 2 * size) { 
+				glBegin(GL_LINE_LOOP);
+					glVertex3f(i, j, 0);
+					glVertex3f(i + size, j, 0);
+					glVertex3f(i + size, j + size, 0); 
+					glVertex3f(i, j + size, 0);
+				glEnd();
+			}
+		}
+		glTranslatef(CELL_SIZE / 2, CELL_SIZE / 2, (fir_tree->anchor)->z); 
 		/*glutWireCone(Largeur Base, Hauteur Cone, Nombre de Facette, Nombre de Facette) */
 		glutWireCone((fir_tree->anchor)->z, 3 * (fir_tree->anchor)->z, (fir_tree->anchor)->z, (fir_tree->anchor)->z);
 
@@ -533,14 +546,14 @@ void Object_wall_print(Object *wall)
 		glColor3f(0, 1, 1);
 		glVertex3f(x1, y2, z1);
 	glEnd();
-	/*glColor3f(1, 1, 0);*/
+	/*glColor3f(1, 1, 0);*//*
 	time_color(conf);
 	glBegin(GL_LINE_LOOP);
 		glVertex3f(x1, y1, z2);
 		glVertex3f(x1, y2, z2);
 		glVertex3f(x2, y2, z2);
 		glVertex3f(x2, y1, z2);
-	glEnd();
+	glEnd();*/
 }
 
 void Object_moving_wall_print(Object *wall)

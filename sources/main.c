@@ -25,9 +25,8 @@ int main(int argc, char *argv[])
 	char pc = '%', buffer[BUFFER_SIZE];
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
-	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 500, SUN);
-	Object *giant_teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE / 2, 300, TEAPOT);
-	Object *teapot1 = object_new(-CELL_SIZE / 2, CELL_SIZE / 2, 5, TEAPOT);
+	Object *sun = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);
+	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
 
 	portals = portals_new();
 	laby = laby_new();
@@ -60,6 +59,7 @@ int main(int argc, char *argv[])
 	if(laby == NULL || conf == NULL || ol == NULL)
 	{
 		fprintf(stderr, "We are sorry an error as occurred.\n");
+		fprintf(stderr, "%s \n", CRESET);
 		exit(EXIT_FAILURE);
 	}
 	
@@ -71,7 +71,6 @@ int main(int argc, char *argv[])
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_push(ol, giant_teapot);
-	ol = object_list_push(ol, teapot1);
 
 	if(argc > 1)
 	{
@@ -80,6 +79,7 @@ int main(int argc, char *argv[])
 			fprintf(stdout, "Hello Human and Welcome to our new computer-NON-aided DEBUG MODE.\n\n");
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
+			fprintf(stderr, "%s \n", CRESET);
 			return 0;
 		}
 	}
