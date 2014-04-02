@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "Before we start, however, keep in mind that although fun and learning are the primary goals of\n");
 	fprintf(stdout, "all enrichment center activities, serious injuries may occur.\n");
 	fprintf(stdout, "For your own safety and the safety of others, please refrain from MM@MM@MM#H\n");
-	fprintf(stdout, "Do you choose your environment ? (yes / No)\n");
+	fprintf(stdout, "Do you want to choose your environment ? (yes / No)\n");
 	
 	fgets (buffer, BUFFER_SIZE - 1, stdin);
 	buffer[strlen(buffer) - 1] = '\0';
