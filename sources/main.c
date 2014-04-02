@@ -5,10 +5,8 @@
   */
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <math.h>
 #include <string.h>
-#include <float.h>
+#include <strings.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <setjmp.h>
@@ -20,8 +18,11 @@
 #include "my_glut.h"
 #include "portals.h"
 
+#define BUFFER_SIZE 512
+
 int main(int argc, char *argv[])
 {
+	char pc = '%', buffer[BUFFER_SIZE];
 	Object *floor = object_new(0, 0, 0, FLOOR);
 	Object *border = object_new(0, 0, 0, BORDER);
 	Object *sun = object_new(CELL_SIZE * WIDTH / 2, CELL_SIZE * HEIGHT / 2, 500, SUN);
@@ -33,38 +34,89 @@ int main(int argc, char *argv[])
 	conf = config_new();
 	ol = object_list_new();
 
+	fprintf(stdout, "                             .,-:;//;:=\n");
+	fprintf(stdout, "                        . :H@@@MM@M#H/.,+%c;,\n", pc);
+	fprintf(stdout, "                     ,/X+ +M@@M@MM%c=,-%cHMMM@X/,\n", pc, pc);
+	fprintf(stdout, "                   -+@MM; $M@@MH+-,;XMMMM@MMMM@+-\n");
+	fprintf(stdout, "                  ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.\n");
+	fprintf(stdout, "                ,%cMM@@MH ,@%c=             .------=.\n", pc, pc);
+	fprintf(stdout, "                =@#@@@MX.                 -%cHX$$%c%c:;\n", pc, pc, pc);
+	fprintf(stdout, "               =-./@M@M$                   .;@MMMM@MM:\n");
+	fprintf(stdout, "               X@/ -$MM/                    . +MM@@@M$\n");
+	fprintf(stdout, "              ,@M@H: :@:   Teapot Science   . =X#@@@@-\n");
+	fprintf(stdout, "              ,@@@MMX,                      /H- ;@M@M=\n");
+	fprintf(stdout, "              .H@@@@M@+,          & Co.     %cMM+..%c#$.\n", pc, pc);
+	fprintf(stdout, "               /MMMM@MMH/.                  XM@MH; =;\n");
+	fprintf(stdout, "                /%c+%c$XHH@$=              , .H@@@@MX,\n", pc, pc);
+	fprintf(stdout, "                 .=--------.           -%cH.,@@@@@MX,\n", pc);
+	fprintf(stdout, "                 .%cMM@@@HHHXX$$$%c+- .:$MMX =M@@MM=%c.\n", pc, pc, pc);
+	fprintf(stdout, "                   =XMMM@MM@MM#H;,-+HMM@M+ /MMMX\n");
+	fprintf(stdout, "                     =%c@M@M#@$-.=$@MM@@@M; %cM%c=\n", pc, pc, pc);
+	fprintf(stdout, "                       ,:+$+-,/H#MMMMMMM@= =,\n");
+	fprintf(stdout, "                             =++%c%c%c%c+/:-.\n\n\n", pc, pc, pc, pc);
+
 	if(laby == NULL || conf == NULL || ol == NULL)
 	{
+		fprintf(stderr, "We are sorry an error as occurred.\n");
 		exit(EXIT_FAILURE);
 	}
 	
 	maze_generation();
 	maze_moving_walls_generation();
-
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
 	ol = object_list_push(ol, sun);
-
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
-
 	ol = object_list_push(ol, giant_teapot);
 	ol = object_list_push(ol, teapot1);
 
 	if(argc > 1)
 	{
-		if (strcmp(argv[1], "0") == 0)
+		if (!strcasecmp(argv[1], "Debug"))
 		{
+			fprintf(stdout, "Hello Human and Welcome to our new computer-NON-aided DEBUG MODE.\n\n");
 			laby_print();
-			fprintf(stdout, "%d\n", ol->size);
+			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			return 0;
-		} else if (strcmp(argv[1], "day") == 0) {
-			conf->time = DAY;
-		} else if (strcmp(argv[1], "night") == 0){
-			conf->time = NIGHT;
 		}
 	}
+
+	fprintf(stdout, "Hello Human and Welcome to our new computer-NON-aided enrichment center.\n\n");
+	fprintf(stdout, "We hope your brief detention in this NON-relaxation maze will be a pleasant one.\n");
+	fprintf(stdout, "Your specimen has not been processed and we hope we are now ready to begin the test proper.\n");
+	fprintf(stdout, "Before we start, however, keep in mind that although fun and learning are the primary goals of\n");
+	fprintf(stdout, "all enrichment center activities, serious injuries may occur.\n");
+	fprintf(stdout, "For your own safety and the safety of others, please refrain from MM@MM@MM#H\n");
+	fprintf(stdout, "Do you choose your environment ? (yes / No)\n");
 	
+	fgets (buffer, BUFFER_SIZE - 1, stdin);
+	buffer[strlen(buffer) - 1] = '\0';
+
+	if(!strcasecmp(buffer,"yes") || !strcasecmp(buffer,"y")) {
+		fprintf(stdout, "Night or Day ? (day | Night)\n");
+
+		buffer[0] = '\0';
+		fgets (buffer, BUFFER_SIZE - 1, stdin);
+		buffer[strlen(buffer) - 1] = '\0';
+
+		if (!strcasecmp(buffer,"Day") || !strcasecmp(buffer,"D")) {
+			conf->time = DAY;
+		}
+
+		fprintf(stdout, "Full screen ? (yes | No)\n");
+
+		buffer[0] = '\0';
+		fgets (buffer, BUFFER_SIZE - 1, stdin);
+		buffer[strlen(buffer) - 1] = '\0';
+
+		if (!strcasecmp(buffer,"Yes") || !strcasecmp(buffer,"Y")) {
+			conf->full_screen = 1;
+		}
+	}
+
+	fprintf(stdout, "\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n");
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	
@@ -73,7 +125,7 @@ int main(int argc, char *argv[])
 
 	conf->id_windows = glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
 
-	if ((argc == 2 && strcmp(argv[1], "full") == 0) || (argc == 3 && strcmp(argv[2], "full") == 0))
+	if (conf->full_screen)
 	{
 		glutFullScreen();
 	}

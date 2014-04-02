@@ -33,6 +33,7 @@ Config *config_new()
 	
 	conf->print_config = 0;
 	conf->free_fly = 0;
+	conf->full_screen = 0;
 
 	conf->keys[0] = 0; /* Up */
 	conf->keys[1] = 0; /* Down */

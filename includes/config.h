@@ -41,11 +41,12 @@ typedef struct Config {
 	float phi;
 	char keys[8];		/* Up , Down , Left , Right, Alt - Maj, 8, 2 */
 	
-	int time;
-	int free_fly;
+	char time;
+	char free_fly;
 
-	int id_windows;
-	int print_config;
+	char id_windows;
+	char print_config;
+	char full_screen;
 } Config;
 
 /*
