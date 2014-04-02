@@ -571,7 +571,7 @@ void Object_moving_wall_print(Object *wall)
 
 		glVertex3f(x1 + 1, y1 + 1, z2 - 1);
 		glVertex3f(x2 - 1, y1 + 1, z2 - 1);
-		glVertex3f(x2 + 1, y2 - 1, z2 - 1);
+		glVertex3f(x2 - 1, y2 - 1, z2 - 1);
 		glVertex3f(x1 + 1, y2 - 1, z2 - 1);
 
 	glEnd();

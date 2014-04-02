@@ -13,7 +13,7 @@
 #include "k-tree.h"
 #include "config.h"
 #include "object.h"
-#include "portals.h"
+/*#include "portals.h"*/
 
 int shoot = 0;
 
@@ -82,10 +82,10 @@ void move() {
 
 				count = 0;
 				direction = rand() % 4;
-				dx = 0;
-				dy = 0;
-				while (count < 7)
+				while (count < 4)
 				{	
+					dx = 0;
+					dy = 0;
 					switch (direction)
 					{
 						case 0:
@@ -116,7 +116,7 @@ void move() {
 
 						((iterator->object)->anchor)->x += (dx * CELL_SIZE);
 						((iterator->object)->anchor)->y += (dy * CELL_SIZE);
-						break;
+						count = 7;
 					}
 				}
 			}
@@ -364,7 +364,7 @@ void write_string(char* string, int x, int y, void* font) {
 	glEnable(GL_DEPTH_TEST);
 }
 
-void DrawEllipse(float radiusX, float radiusY)
+/*void DrawEllipse(float radiusX, float radiusY)
 {
 	int i;
 	float rad;
@@ -374,7 +374,7 @@ void DrawEllipse(float radiusX, float radiusY)
 		glVertex2f(cos(rad)*radiusX, sin(rad)*radiusY);
 	}
 	glEnd();
-}
+}*/
 
 void display() {
 	Point *tmp;
@@ -382,11 +382,11 @@ void display() {
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(70, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, 1600);
+	gluPerspective(70, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, 500);
 	/*glFrustum(-5, 5, -5, 5, 5, 500);*/
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	iterator = ol->last;
 	while (1)
 	{
@@ -502,11 +502,9 @@ void display() {
 		glColor3f(1, 0.7, 0.5);
 		write_string("Salut le pd, si tu me lis c'est que tu as fais F3 alors arrete de jouer et travail", 0, 0, GLUT_BITMAP_HELVETICA_18);
 	}
-	else {
-		glColor3f(0.5, 0.7, 0.5);
-		write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
-	}
 
+	glColor3f(0.5, 0.7, 0.5);
+	write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 
 	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
 	move();
