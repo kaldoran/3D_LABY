@@ -7,22 +7,20 @@
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <math.h>
 #include "my_glut.h"
 #include "laby.h"
 #include "stack.h"
 #include "k-tree.h"
 #include "config.h"
 #include "object.h"
-/*#include "portals.h"*/
+#include "portals.h"
 
 int shoot = 0;
 
 /* calcule réellement le mouvement */
 void move() {
-	Doubly_linked_node *iterator;
-	int direction, dx, dy, count;
-	int x, y;
-	
+
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 	float speed = 1.5;
 	
@@ -129,17 +127,16 @@ void move() {
 			}
 		}
 	}
-
 	if ((( save_eye->x > 2 && save_eye->y > 2 
 		&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
 		&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
 		&& save_eye->z <= CHARACTER_SIZE 
 		&& save_eye->z > 5 
-		&& IS_PLAYABLE(COORD(((int)save_eye->x / CELL_SIZE),((int)save_eye->y / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((((int)save_eye->x + 2) / CELL_SIZE),((int)(save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((((int)save_eye->x) / CELL_SIZE),(((int)save_eye->y + 2) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((((int)save_eye->x - 2) / CELL_SIZE),(((int)save_eye->y) / CELL_SIZE))) 
-		&& IS_PLAYABLE(COORD((((int)save_eye->x) / CELL_SIZE),(((int)save_eye->y - 2) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((int)((save_eye->x - 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
+		&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y - 2) / CELL_SIZE))) 
 		) || conf->free_fly == 1
 	)) {
 		conf->eye->x = save_eye->x;
