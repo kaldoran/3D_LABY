@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 	conf = config_new();
 	ol = object_list_new();
 
+	fprintf(stdout, "%s %s", CYEL, CBLINK);
 	fprintf(stdout, "                             .,-:;//;:=\n");
 	fprintf(stdout, "                        . :H@@@MM@M#H/.,+%c;,\n", pc);
 	fprintf(stdout, "                     ,/X+ +M@@M@MM%c=,-%cHMMM@X/,\n", pc, pc);
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "                     =%c@M@M#@$-.=$@MM@@@M; %cM%c=\n", pc, pc, pc);
 	fprintf(stdout, "                       ,:+$+-,/H#MMMMMMM@= =,\n");
 	fprintf(stdout, "                             =++%c%c%c%c+/:-.\n\n\n", pc, pc, pc, pc);
+	fprintf(stdout, "%s %s", CRESET, CYEL);
 
 	if(laby == NULL || conf == NULL || ol == NULL)
 	{
@@ -89,12 +91,15 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "all enrichment center activities, serious injuries may occur.\n");
 	fprintf(stdout, "For your own safety and the safety of others, please refrain from MM@MM@MM#H\n");
 	fprintf(stdout, "Do you want to choose your environment ? (yes / No)\n");
+	fprintf(stderr, "%s \n", CRESET);
 	
 	fgets (buffer, BUFFER_SIZE - 1, stdin);
 	buffer[strlen(buffer) - 1] = '\0';
 
 	if(!strcasecmp(buffer,"yes") || !strcasecmp(buffer,"y")) {
+		fprintf(stdout, "%s", CYEL);
 		fprintf(stdout, "Night or Day ? (day | Night)\n");
+		fprintf(stderr, "%s \n", CRESET);
 
 		buffer[0] = '\0';
 		fgets (buffer, BUFFER_SIZE - 1, stdin);
@@ -104,7 +109,9 @@ int main(int argc, char *argv[])
 			conf->time = DAY;
 		}
 
+		fprintf(stdout, "%s", CYEL);
 		fprintf(stdout, "Full screen ? (yes | No)\n");
+		fprintf(stderr, "%s \n", CRESET);
 
 		buffer[0] = '\0';
 		fgets (buffer, BUFFER_SIZE - 1, stdin);
@@ -115,6 +122,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	fprintf(stdout, "%s", CYEL);
 	fprintf(stdout, "\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n");
 
 	glutInit(&argc, argv);
@@ -149,7 +157,6 @@ int main(int argc, char *argv[])
 	glutIdleFunc(display);
 	
 	glutMainLoop();
-
 return 0;
 }
 

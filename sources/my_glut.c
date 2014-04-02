@@ -206,6 +206,7 @@ void keyboard(unsigned char key, int x , int y) {
 		laby_free(laby);
 		/* Quit */
 		glutDestroyWindow(conf->id_windows); /*glutLeaveMainLoop();*/
+		fprintf(stdout, "%s\n", CRESET);
 		exit(EXIT_SUCCESS);
 	}
 }

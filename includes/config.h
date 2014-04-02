@@ -29,6 +29,10 @@
 #define DAY		1
 #define NIGHT 	0
 
+#define CRESET 	"\x1B[0m"
+#define CBLINK 	"\x1B[5m"
+#define CYEL 	"\x1B[93m"
+
 typedef struct Config {
 	Point *eye;
 	Point *center;
