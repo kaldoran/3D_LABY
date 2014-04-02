@@ -13,6 +13,7 @@
 #include "k-tree.h"
 #include "config.h"
 #include "object.h"
+#include "portals.h"
 
 int shoot = 0;
 
@@ -299,11 +300,22 @@ void write_string(char* string, int x, int y, void* font) {
 	glEnable(GL_DEPTH_TEST);
 }
 
+void DrawEllipse(float radiusX, float radiusY)
+{
+	int i;
+	float rad;
+	glBegin(GL_LINE_LOOP);
+	for(i=0;i<360;i++) {
+		rad = i*(3.14159 / 180.0);
+		glVertex2f(cos(rad)*radiusX, sin(rad)*radiusY);
+	}
+	glEnd();
+}
+
 void display() {
 	Point *tmp;
-
 	Doubly_linked_node *iterator = doubly_linked_node_new();
-
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, 1600);
@@ -355,34 +367,73 @@ void display() {
 	}
 	
 	/************************************************* ULTRA TEMPORAIRE ******************************************************/
-	if ( shoot == 1 ) glColor3f(0, 1, 1);
-	if ( shoot == 2 ) glColor3f(1, 1, 0);
+	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
 	if ( shoot != 0 ) {
-
 		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
-		
-			fprintf(stderr,"%f %f %f\n", tmp->x, tmp->y, tmp->z);
-		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->x < 1250 && tmp->x > 0; tmp->x += conf->center->x, tmp->y += conf->center->x)
-			fprintf(stderr,"%f %f %f - %d\n", tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)));
+		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y) {
+			if ( laby->matrix[COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE))] == WALL) {
+				if ( shoot == 2) {
+					portals->orange->actif = 1;
+					portals->orange->portail->x = tmp->x;
+					portals->orange->portail->y = tmp->y;
+				}
+				if ( shoot == 1) { 
+					portals->bleu->actif = 1;
+					portals->bleu->portail->x = tmp->x;
+					portals->bleu->portail->y = tmp->y;
+				}
+				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
+			break;
+			}
+		}
+	}
+
+	if ( portals->bleu->actif) {
+		glColor3f(0, 1, 1);
+
 		glPushMatrix();
-		glTranslatef((conf->center)->x, (conf->center)->y, (conf->center)->z);
-		glRotatef(90,1,0,0);
-		glRotatef(conf->theta,0,1,0);
-		glutWireTeapot(3);
+		glLineWidth(5);
+		glTranslatef(portals->bleu->portail->x, portals->bleu->portail->y, portals->bleu->portail->z);
+		glRotatef(90,1, 0, 0);
+
+		DrawEllipse(5.0, 8.0);
+		glLineWidth(1);
+		glPopMatrix();
+ 
+	}
+
+	if ( portals->orange->actif) {
+		glColor3f(1, 1, 0);
+
+		glPushMatrix();
+		glLineWidth(5);
+		glTranslatef(portals->orange->portail->x, portals->orange->portail->y, portals->orange->portail->z);
+		glRotatef(90,1, 0, 0);
+
+		DrawEllipse(5.0, 8.0);
+		glLineWidth(1);
 		glPopMatrix();
 
-		glLineWidth(50); 
-		glBegin( GL_LINE_LOOP );
-		/*
-		printf("%f %f %f - %f %f %f\n", conf->center->x, conf->center->y, conf->center->z, conf->eye->x, conf->eye->y + 2, conf->eye->z);
-		*/
-		glVertex3f(conf->eye->x, conf->eye->y, conf->eye->z);
-		glVertex3f(conf->center->x, conf->center->y, conf->center->z);
-		glEnd();
-		glLineWidth(1); 
-
 	}
-		/* Balance le text franky */
+
+	if ( portals->orange->actif && portals->bleu->actif ) {
+		if ( abs(conf->eye->x - portals->bleu->portail->x ) <= 10 && abs(conf->eye->y - portals->bleu->portail->y) <= 10) {
+			conf->eye->x = portals->orange->portail->x;
+			conf->eye->y = portals->orange->portail->y + 10;
+			conf->theta += 180;
+			conf->phi = 0;
+			modify_direction();
+		}
+		else if ( abs(conf->eye->x - portals->orange->portail->x ) <= 10 && abs(conf->eye->y - portals->orange->portail->y) <= 10) {
+			conf->eye->x = portals->bleu->portail->x;
+			conf->eye->y = portals->bleu->portail->y + 10;
+			conf->theta += 180;
+			conf->phi = 0;
+			modify_direction();
+		}
+	}
+
+	/* Balance le text franky */
 	if ( conf->print_config ) {
 		glColor3f(1, 0.7, 0.5);
 		write_string("Salut le pd, si tu me lis c'est que tu as fais F3 alors arrete de jouer et travail", 0, 0, GLUT_BITMAP_HELVETICA_18);
@@ -391,6 +442,8 @@ void display() {
 		glColor3f(0.5, 0.7, 0.5);
 		write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 	}
+
+
 	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
 	move();
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);

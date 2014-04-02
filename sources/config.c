@@ -20,6 +20,7 @@ Config *config_new()
 	conf->center = point_new(conf->eye->x + conf->eye_direction->x,
 							conf->eye->y + conf->eye_direction->y,
 							conf->eye->z + conf->eye_direction->z);
+	
 	conf->theta = 90.;
 	conf->phi = 0.;
 	conf->time = NIGHT;

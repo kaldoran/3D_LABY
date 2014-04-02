@@ -18,6 +18,7 @@
 #include "config.h"
 #include "object.h"
 #include "my_glut.h"
+#include "portals.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
 	Object *giant_teapot = object_new(-WIDTH * CELL_SIZE / 2, HEIGHT * CELL_SIZE	 / 2, 300, TEAPOT);
 	Object *teapot1 = object_new(-CELL_SIZE / 2, CELL_SIZE / 2, 5, TEAPOT);
 
+	portals = portals_new();
 	laby = laby_new();
 	conf = config_new();
 	ol = object_list_new();
