@@ -9,7 +9,7 @@
 #include <strings.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include <setjmp.h>
+#include <unistd.h>
 #include "laby.h"
 #include "stack.h"
 #include "k-tree.h"
@@ -123,7 +123,8 @@ int main(int argc, char *argv[])
 	}
 
 	fprintf(stdout, "%s", CYEL);
-	fprintf(stdout, "\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n");
+	fprintf(stdout, "\n\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n...\n");
+	sleep(1);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
