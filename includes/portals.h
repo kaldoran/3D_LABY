@@ -9,6 +9,9 @@
 #ifndef __PORTALS
 #define __PORTALS
 
+#define TRIGGER_DISTANCE 5
+#define PUSH_DISTANCE 7
+
 typedef struct Portal {
 	int actif;
 	int rotation;

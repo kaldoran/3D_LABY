@@ -372,13 +372,16 @@ void DrawEllipse(float radiusX, float radiusY)
 	float rad;
 	glBegin(GL_LINE_LOOP);
 	for(i=0;i<360;i++) {
-		rad = i*(3.14159 / 180.0);
+		rad = i*(M_PI / 180.0);
 		glVertex2f(cos(rad)*radiusX, sin(rad)*radiusY);
 	}
 	glEnd();
 }
 
 void display() {
+	int height_char = 0;
+	char buffer[256];
+	int coord_previous_bloc = 0, coord_current_bloc = 0;
 	Point *tmp;
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 	
@@ -433,17 +436,35 @@ void display() {
 	}
 	
 	/************************************************* ULTRA TEMPORAIRE ******************************************************/
-	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
 	if ( shoot != 0 ) {
 		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
-		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y) {
-			if ( laby->matrix[COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE))] == WALL) {
+		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
+			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
+			if ( laby->matrix[coord_current_bloc] == WALL) {
+				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
+								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
+				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
+				if ( coord_previous_bloc == 1) {
+					coord_previous_bloc = -90; 	   /* contient maintnant la rotation a faire */
+				}
+				else if ( coord_previous_bloc == -1) {
+					coord_previous_bloc = 90;
+				}
+				else if ( coord_previous_bloc == -WIDTH ) {
+					coord_previous_bloc = 180;
+				}
+				else {
+					coord_previous_bloc = 0;
+				}
+			fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
 				if ( shoot == 2) {
+					portals->orange->rotation = coord_previous_bloc;
 					portals->orange->actif = 1;
 					portals->orange->portail->x = tmp->x;
 					portals->orange->portail->y = tmp->y;
 				}
 				if ( shoot == 1) { 
+					portals->bleu->rotation = coord_previous_bloc;
 					portals->bleu->actif = 1;
 					portals->bleu->portail->x = tmp->x;
 					portals->bleu->portail->y = tmp->y;
@@ -460,8 +481,8 @@ void display() {
 		glPushMatrix();
 		glLineWidth(5);
 		glTranslatef(portals->bleu->portail->x, portals->bleu->portail->y, portals->bleu->portail->z);
-		glRotatef(90,1, 0, 0);
-
+		glRotatef(90, 1, 0, 0);
+		glRotatef(portals->bleu->rotation, 0, 1, 0);
 		DrawEllipse(5.0, 8.0);
 		glLineWidth(1);
 		glPopMatrix();
@@ -474,7 +495,9 @@ void display() {
 		glPushMatrix();
 		glLineWidth(5);
 		glTranslatef(portals->orange->portail->x, portals->orange->portail->y, portals->orange->portail->z);
-		glRotatef(90,1, 0, 0);
+			
+		glRotatef(90, 1, 0, 0);
+		glRotatef(portals->orange->rotation, 0, 1, 0);
 
 		DrawEllipse(5.0, 8.0);
 		glLineWidth(1);
@@ -483,17 +506,17 @@ void display() {
 	}
 
 	if ( portals->orange->actif && portals->bleu->actif ) {
-		if ( abs(conf->eye->x - portals->bleu->portail->x ) <= 10 && abs(conf->eye->y - portals->bleu->portail->y) <= 10) {
-			conf->eye->x = portals->orange->portail->x;
-			conf->eye->y = portals->orange->portail->y + 10;
-			conf->theta += 180;
+		if ( abs(conf->eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(conf->eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
+			conf->eye->x = portals->orange->portail->x - (sin(portals->orange->rotation) * PUSH_DISTANCE);
+			conf->eye->y = portals->orange->portail->y + (cos(portals->orange->rotation) * PUSH_DISTANCE);
+			conf->theta += 180 + ( portals->orange->rotation - portals->bleu->rotation);
 			conf->phi = 0;
 			modify_direction();
 		}
-		else if ( abs(conf->eye->x - portals->orange->portail->x ) <= 10 && abs(conf->eye->y - portals->orange->portail->y) <= 10) {
-			conf->eye->x = portals->bleu->portail->x;
-			conf->eye->y = portals->bleu->portail->y + 10;
-			conf->theta += 180;
+		else if ( abs(conf->eye->x - portals->orange->portail->x ) < TRIGGER_DISTANCE && abs(conf->eye->y - portals->orange->portail->y) < TRIGGER_DISTANCE) {
+			conf->eye->x = portals->bleu->portail->x - (sin(portals->bleu->rotation) * PUSH_DISTANCE);
+			conf->eye->y = portals->bleu->portail->y + (cos(portals->bleu->rotation) * PUSH_DISTANCE);
+			conf->theta += 180 + ( portals->bleu->rotation - portals->orange->rotation);
 			conf->phi = 0;
 			modify_direction();
 		}
@@ -501,13 +524,35 @@ void display() {
 
 	/* Balance le text franky */
 	if ( conf->print_config ) {
-		glColor3f(1, 0.7, 0.5);
-		write_string("Salut le pd, si tu me lis c'est que tu as fais F3 alors arrete de jouer et travail", 0, 0, GLUT_BITMAP_HELVETICA_18);
+		glColor3f(0.2, 0.7, 0.7);
+		sprintf(buffer,"X : %.2f - Y : %.2f - Z : %.2f - Angle X : %.2f - Angle Z : %.2f", conf->eye->x, conf->eye->y, conf->eye->z, conf->theta, conf->phi);
+		write_string(buffer, 5, height_char, GLUT_BITMAP_HELVETICA_18);
+		if ( portals->bleu->actif ) {
+			height_char += HEIGHT_CHAR;
+			sprintf(buffer,"Portail bleu : X : %.2f - Y : %.2f - Z : %.2f",portals->bleu->portail->x, portals->bleu->portail->y, portals->bleu->portail->z);
+			write_string(buffer, 5, height_char, GLUT_BITMAP_HELVETICA_18);
+		}
+		if ( portals->orange->actif ) {
+			height_char += HEIGHT_CHAR;
+			sprintf(buffer,"Portail orange : X : %.2f - Y : %.2f - Z : %.2f",portals->orange->portail->x, portals->orange->portail->y, portals->orange->portail->z);
+			write_string(buffer, 5, height_char, GLUT_BITMAP_HELVETICA_18);
+		}
+		
+		height_char += HEIGHT_CHAR;
+		sprintf(buffer,"Life : %d", conf->life);
+		write_string(buffer, 5, height_char, GLUT_BITMAP_HELVETICA_18);
+
 	}
 
 	glColor3f(0.5, 0.7, 0.5);
 	write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, conf->textu);
+	glutSolidTeapot(5);
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
 	move();
 	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);

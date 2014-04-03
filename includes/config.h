@@ -17,21 +17,23 @@
 #define SCREEN_WIDTH 		800
 #define SCREEN_MID_WIDTH 	(SCREEN_WIDTH / 2)
 
-#define CELL_SIZE 			25
+#define CELL_SIZE               25
 
-#define HORIZON 			1
+#define HORIZON                 1
 #define SENSITIVITY 		0.07
 
-#define CHARACTER_SIZE		10
-#define NEAR 				1
-#define FAR					800
+#define CHARACTER_SIZE          10
+#define NEAR                    1
+#define FAR                     800
 
-#define DAY					1
-#define NIGHT 				0
+#define DAY                     1
+#define NIGHT                   0
 
-#define CRESET 				"\x1B[0m"
-#define CBLINK 				"\x1B[5m"
-#define CYEL 				"\x1B[93m"
+#define CRESET                  "\x1B[0m"
+#define CBLINK                  "\x1B[5m"
+#define CYEL                    "\x1B[93m"
+
+#define HEIGHT_CHAR             20
 
 typedef struct Config {
 	Point *eye;
@@ -51,6 +53,10 @@ typedef struct Config {
 	char id_windows;
 	char print_config;
 	char full_screen;
+
+	int life;
+
+	int textu;
 } Config;
 
 /*

@@ -17,6 +17,7 @@
 #include "object.h"
 #include "my_glut.h"
 #include "portals.h"
+#include "texture.h"
 
 #define BUFFER_SIZE 512
 
@@ -152,6 +153,8 @@ int main(int argc, char *argv[])
 	glutKeyboardUpFunc(keyboard_up);
 	glutSpecialFunc(special_keyboard);
 	glutSpecialUpFunc(special_keyboard_up);
+
+	conf->textu = load_texture("./textures/heart.png", 17, 20);
 
 	glutDisplayFunc(display);
 	glutIdleFunc(display);

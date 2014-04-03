@@ -43,6 +43,10 @@ Config *config_new()
 	conf->keys[5] = 0; /* 2 - Down on Z */
 	conf->keys[6] = 0; /* 8 - Up on Z */
 	conf->keys[7] = 0; /* CTRL */
+
+	conf->life = 20;
+
+	conf->textu = 0;
 return conf;
 }
 
