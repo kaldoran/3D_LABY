@@ -18,6 +18,7 @@
 #include "object.h"
 #include "my_glut.h"
 #include "portals.h"
+#include "texture.h"
 
 #define BUFFER_SIZE 512
 
@@ -139,7 +140,9 @@ int main(int argc, char *argv[])
 	{
 		glutFullScreen();
 	}
-
+	fprintf(stderr, "LOAD %d", conf->text);
+	conf->text = LoadTexture("./heart.bmp", 17, 20);
+	fprintf(stderr, "LOAD %d", conf->text);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
