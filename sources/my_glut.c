@@ -436,12 +436,8 @@ void display() {
 	}
 	
 	/************************************************* ULTRA TEMPORAIRE ******************************************************/
-<<<<<<< HEAD
 /*	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
 */	if ( shoot != 0 ) {
-=======
-	if ( shoot != 0 ) {
->>>>>>> 4e6e3ff5c323791ff2660170248888df4b1d7b11
 		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
 		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
 			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
