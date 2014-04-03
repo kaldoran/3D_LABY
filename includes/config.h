@@ -20,7 +20,7 @@
 #define CELL_SIZE 			25
 
 #define HORIZON 			1
-#define SENSITIVITY 		0.07
+#define SENSITIVITY 		0.04
 
 #define CHARACTER_SIZE		10
 #define NEAR 				1

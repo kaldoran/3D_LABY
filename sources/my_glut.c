@@ -26,19 +26,19 @@ void move() {
 	int x, y;
 	
 	Point *save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
-	float speed = 1.5;
+	float speed = 0.45;
 	
 	if ( conf->free_fly) {
-		speed = 8;
+		speed = 4.5;
 	}	
 
 	if ( conf->keys[4] ) {
-		speed = (conf->free_fly) ? 20 : 5.1337;
+		speed = (conf->free_fly) ? 7.51337 : 0.751337;
 	}
 
 
 	if ( conf->keys[7] ) {
-		speed = (conf->free_fly) ? 4 : 0.5;
+		speed = (conf->free_fly) ? 0.1 : 0.3;
 	}
 
 	if ( conf->keys[0] ) {
@@ -433,8 +433,8 @@ void display() {
 	}
 	
 	/************************************************* ULTRA TEMPORAIRE ******************************************************/
-	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
-	if ( shoot != 0 ) {
+/*	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
+*/	if ( shoot != 0 ) {
 		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
 		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y) {
 			if ( laby->matrix[COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE))] == WALL) {
@@ -448,8 +448,8 @@ void display() {
 					portals->bleu->portail->x = tmp->x;
 					portals->bleu->portail->y = tmp->y;
 				}
-				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
-			break;
+/*				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
+*/			break;
 			}
 		}
 	}
