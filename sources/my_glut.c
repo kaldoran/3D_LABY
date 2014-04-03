@@ -33,7 +33,7 @@ void move() {
 	}	
 
 	if ( conf->keys[4] ) {
-		speed = (conf->free_fly) ? 7.51337 : 0.751337;
+		speed = (conf->free_fly) ? 7.51337 : 0.81337;
 	}
 
 
@@ -171,10 +171,10 @@ void keyboard(unsigned char key, int x , int y) {
 		conf->keys[0] = 1;
 	}
 	else if ( key == 's' || key == 'S') {	
-		conf->keys[1] = 1;
+	                                     	conf->keys[1] = 1;
 	}
 	else if ( key == 'q' || key == 'Q') { 
-		conf->keys[2] = 1;
+	 	conf->keys[2] = 1;
 	}	
 	else if ( key == 'd' || key == 'D') {
 		conf->keys[3] = 1;
@@ -200,7 +200,7 @@ void keyboard(unsigned char key, int x , int y) {
 	else if ( key == '8' ) {
 		conf->keys[6] = 1;
 	}
-	else if ( (int)key == 27) {
+	else if ( (int)key == ESC) {
 		object_list_free(ol);
 		config_free(conf);
 		laby_free(laby);
@@ -388,93 +388,92 @@ void display() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, 1600);
-	/*glFrustum(-5, 5, -5, 5, 5, 500);*/
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	iterator = ol->last;
-	while (1)
-	{
-		switch ((iterator->object)->type)
-		{
-			case FLOOR:
-				Object_floor_print();
-			break;
-			case BORDER:
-				Object_border_print();
-			break;
-			case SUN:
-				Object_sun_print(iterator->object);
-			break;
-			case FIR_TREE:
-				Object_fir_tree_print(iterator->object);
-			break;
-			case WALL:
-				Object_wall_print(iterator->object);
-			break;
-			case MOVING_WALL:
-				Object_moving_wall_print(iterator->object);
-			break;
-			case ENTRY:
-				Object_entry_print(iterator->object);
-			break;
-			case EXIT:
-				Object_exit_print(iterator->object);
-			break;
-			case TEAPOT:
-				Object_teapot_print(iterator->object);
-			break;
-			default:
-			break;
-		}
-		if (iterator->next != NULL)
-		{
-			iterator = iterator->next;
-		} else {
-			break;
-		}
-	}
-	
-	/************************************************* ULTRA TEMPORAIRE ******************************************************/
+  	iterator = ol->last;
+  	while (1)
+  	{
+  		switch ((iterator->object)->type)
+  		{
+  			case FLOOR:
+  				Object_floor_print();
+  			break;
+  			case BORDER:
+  				Object_border_print();
+  			break;
+  			case SUN:
+  				Object_sun_print(iterator->object);
+  			break;
+  			case FIR_TREE:
+  				Object_fir_tree_print(iterator->object);
+  			break;
+  			case WALL:
+  				Object_wall_print(iterator->object);
+  			break;
+  			case MOVING_WALL:
+  				Object_moving_wall_print(iterator->object);
+  			break;
+  			case ENTRY:
+  				Object_entry_print(iterator->object);
+  			break;
+  			case EXIT:
+  				Object_exit_print(iterator->object);
+  			break;
+  			case TEAPOT:
+  				Object_teapot_print(iterator->object);
+  			break;
+  			default:
+  			break;
+  		}
+  		if (iterator->next != NULL)
+  		{
+  			iterator = iterator->next;
+  		} else {
+  			break;
+  		}
+  	}
+  	
+  	/************************************************* ULTRA TEMPORAIRE ******************************************************/
 /*	fprintf(stderr,"Eye see what you did there %f %f %f\n", conf->eye_direction->x, conf->eye_direction->y, conf->eye_direction->z);
 */	if ( shoot != 0 ) {
-		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
-		for ( ; tmp->x < 1250 && tmp->x > 0 && tmp->y < 1250 && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
-			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
-			if ( laby->matrix[coord_current_bloc] == WALL) {
-				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
-								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
-				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
-				if ( coord_previous_bloc == 1) {
-					coord_previous_bloc = -90; 	   /* contient maintnant la rotation a faire */
-				}
-				else if ( coord_previous_bloc == -1) {
-					coord_previous_bloc = 90;
-				}
-				else if ( coord_previous_bloc == -WIDTH ) {
-					coord_previous_bloc = 180;
-				}
-				else {
-					coord_previous_bloc = 0;
-				}
-			fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
-				if ( shoot == 2) {
-					portals->orange->rotation = coord_previous_bloc;
-					portals->orange->actif = 1;
-					portals->orange->portail->x = tmp->x;
-					portals->orange->portail->y = tmp->y;
-				}
-				if ( shoot == 1) { 
-					portals->bleu->rotation = coord_previous_bloc;
-					portals->bleu->actif = 1;
-					portals->bleu->portail->x = tmp->x;
-					portals->bleu->portail->y = tmp->y;
-				}
+  		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
+  		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
+  			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
+  			if ( laby->matrix[coord_current_bloc] == WALL) {
+  				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
+  								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
+  				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
+  				if ( coord_previous_bloc == 1) {
+  					coord_previous_bloc = -90;	   /* contient maintnant la rotation a faire */
+  				}
+  				else if ( coord_previous_bloc == -1) {
+  					coord_previous_bloc = 90;
+  				}
+  				else if ( coord_previous_bloc == -WIDTH ) {
+  					coord_previous_bloc = 180;
+  				}
+  				else {
+  					coord_previous_bloc = 0;
+  				}
+  			fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
+  				if ( shoot == 2) {
+  					portals->orange->rotation = coord_previous_bloc;
+  					portals->orange->actif = 1;
+  					portals->orange->portail->x = tmp->x;
+  					portals->orange->portail->y = tmp->y;
+  				}
+  				if ( shoot == 1) { 
+  					portals->bleu->rotation = coord_previous_bloc;
+  					portals->bleu->actif = 1;
+  					portals->bleu->portail->x = tmp->x;
+  					portals->bleu->portail->y = tmp->y;
+  				}
 /*				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
 */			break;
-			}
-		}
-	}
+  			}
+  		}
+  	}
 
 	if ( portals->bleu->actif) {
 		glColor3f(0, 1, 1);
@@ -548,16 +547,16 @@ void display() {
 	glColor3f(0.5, 0.7, 0.5);
 	write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 
-	glPushMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, conf->textu);
-	glutSolidTeapot(5);
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
-	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
-	move();
-	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
-	glutPostRedisplay();
-	glutSwapBuffers();
+/*	glPushMatrix();
+  	glEnable(GL_TEXTURE_2D);
+  	glBindTexture(GL_TEXTURE_2D, conf->textu);
+  	glutSolidTeapot(5);
+  	glPopMatrix();
+  	glDisable(GL_TEXTURE_2D);*/
+  	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
+  	move();
+  	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);
+  	glutPostRedisplay();
+  	glutSwapBuffers();
 }
 

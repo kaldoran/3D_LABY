@@ -10,6 +10,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <unistd.h>
+
 #include "laby.h"
 #include "stack.h"
 #include "k-tree.h"
@@ -17,7 +18,6 @@
 #include "object.h"
 #include "my_glut.h"
 #include "portals.h"
-#include "texture.h"
 
 #define BUFFER_SIZE 512
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	{
 		if (!strcasecmp(argv[1], "Debug"))
 		{
-			fprintf(stdout, "Hello Human and Welcome to our new computer-NON-aided DEBUG MODE.\n\n");
+			fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided DEBUG MODE.\n\n");
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			fprintf(stderr, "%s \n", CRESET);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	fprintf(stdout, "Hello Human and Welcome to our new computer-NON-aided enrichment center.\n\n");
+	fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided enrichment center.\n\n");
 	fprintf(stdout, "We hope your brief detention in this NON-relaxation maze will be a pleasant one.\n");
 	fprintf(stdout, "Your specimen has not been processed and we hope we are now ready to begin the test proper.\n");
 	fprintf(stdout, "Before we start, however, keep in mind that although fun and learning are the primary goals of\n");
@@ -133,17 +133,17 @@ int main(int argc, char *argv[])
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
 
-	conf->id_windows = glutCreateWindow("SAI Project - 3D Laby Nicolas Reynaud && Kevin Hivert.");
+	conf->id_windows = glutCreateWindow(TITLE);
 
 	if (conf->full_screen)
 	{
 		glutFullScreen();
 	}
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-
 	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glutSetCursor(GLUT_CURSOR_NONE);
 	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
 
@@ -154,8 +154,6 @@ int main(int argc, char *argv[])
 	glutKeyboardUpFunc(keyboard_up);
 	glutSpecialFunc(special_keyboard);
 	glutSpecialUpFunc(special_keyboard_up);
-
-	conf->textu = load_texture("./textures/heart.png", 17, 20);
 
 	glutDisplayFunc(display);
 	glutIdleFunc(display);

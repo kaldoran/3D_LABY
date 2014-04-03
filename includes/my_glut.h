@@ -7,6 +7,8 @@
 #ifndef __GLUT
 #define __GLUT
 
+#define ESC 27
+ 
 void move();
 void keyboard(unsigned char key, int x , int y);
 void keyboard_up(unsigned char key, int x, int y);

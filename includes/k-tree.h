@@ -10,22 +10,22 @@
 
 typedef struct Point
 {
-	float x;
-	float y;
-	float z;	
+    float x;
+    float y;
+    float z;    
 } Point;
 
 typedef struct Element
 {
-	Point *s1;
-	Point *s2;
-	char p;
+    Point *s1;
+    Point *s2;
+    char p;
 } Element;
 
 typedef struct Ktree
 {
-	Element *e;
-	struct Ktree *son[K];
+    Element *e;
+    struct Ktree *son[K];
 } Ktree;
 
 Point *point_new(float x, float y, float z);

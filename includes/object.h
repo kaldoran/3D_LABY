@@ -8,29 +8,29 @@
 #ifndef __OBJECT
 #define __OBJECT
 
-#define FLOOR		0
-#define FIR_TREE 	1
-#define SUN			2
-#define TEAPOT		418
+#define FLOOR        0
+#define FIR_TREE     1
+#define SUN          2
+#define TEAPOT       418
 
 typedef struct Object
 {
-	Point *anchor;
-	unsigned int type;
+    Point *anchor;
+    unsigned int type;
 } Object;
 
 typedef struct Doubly_linked_node
 {
-	Object *object;
-	struct Doubly_linked_node *previous;
-	struct Doubly_linked_node *next;
+    Object *object;
+    struct Doubly_linked_node *previous;
+    struct Doubly_linked_node *next;
 } Doubly_linked_node;
 
 typedef struct Object_list
 {
-	Doubly_linked_node *first;
-	Doubly_linked_node *last;
-	unsigned int size;
+    Doubly_linked_node *first;
+    Doubly_linked_node *last;
+    unsigned int size;
 } Object_list;
 
 /* Global list */
