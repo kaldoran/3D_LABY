@@ -44,6 +44,7 @@ Config *config_new()
 	conf->keys[7]        = 0; /* CTRL */
 	
 	conf->life           = 20;
+	conf->text = 0;
 return conf;
 }
 

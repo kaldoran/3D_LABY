@@ -3,6 +3,8 @@
 #include <GL/glut.h>
 #include "texture.h"
 
+
+/*
 int load_texture(char *filename, int width, int height) {
 	FILE *file = NULL;	
 	unsigned int image;
@@ -15,7 +17,7 @@ int load_texture(char *filename, int width, int height) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glTexImage2D(GL_TEXTURE_2D, 
-			0, /* now */
+			0, 
 			GL_RGB,
 			width,
 			height,
@@ -30,7 +32,7 @@ int load_texture(char *filename, int width, int height) {
 	fclose(file);
 
 	return texture;
-}
+}*/
 /*
 GLuint LoadTexture( const char * filename )
 {

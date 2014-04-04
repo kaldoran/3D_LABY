@@ -544,15 +544,16 @@ void display() {
 
 	}
 
+		glPushMatrix();
+  	glEnable(GL_TEXTURE_2D);
+  	glBindTexture(GL_TEXTURE_2D, conf->text);
+  	glutSolidTeapot(5);
+  	glPopMatrix();
+  	glDisable(GL_TEXTURE_2D);
+  	
 	glColor3f(0.5, 0.7, 0.5);
 	write_string("+", SCREEN_MID_HEIGHT, SCREEN_MID_WIDTH, GLUT_BITMAP_TIMES_ROMAN_24);
 
-/*	glPushMatrix();
-  	glEnable(GL_TEXTURE_2D);
-  	glBindTexture(GL_TEXTURE_2D, conf->textu);
-  	glutSolidTeapot(5);
-  	glPopMatrix();
-  	glDisable(GL_TEXTURE_2D);*/
   	/************************************************* FIN ULTRA TEMPORAIRE ***************************************************/
   	move();
   	glutWarpPointer(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT);

@@ -63,7 +63,7 @@ typedef struct Config {
     char full_screen;
 
     int life;
-
+    GLuint text;
     GLuint texture[11];
 } Config;
 
