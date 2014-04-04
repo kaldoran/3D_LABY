@@ -4,7 +4,7 @@
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
 #include <GL/gl.h>
-#include <GL/glut.h>
+#include <SDL/SDL.h>
 #include "k-tree.h"
 
 #ifndef __CONF
@@ -15,17 +15,18 @@
 
 #define SCREEN_POSITION_X  300
 #define SCREEN_POSITION_Y  600
-#define SCREEN_HEIGHT      800
+#define SCREEN_HEIGHT      600
 #define SCREEN_MID_HEIGHT  (SCREEN_HEIGHT / 2)
-#define SCREEN_WIDTH       800
+#define SCREEN_WIDTH       600
 #define SCREEN_MID_WIDTH   (SCREEN_WIDTH / 2)
 
 #define CELL_SIZE       25
 #define HORIZON         1
 #define CHARACTER_SIZE  10
+#define FOVY            70
 #define NEAR            1
-#define FAR             800
-#define SENSITIVITY     0.04
+#define FAR             1200
+#define SENSITIVITY     0.05
 
 #define DAY   1
 #define NIGHT 0
@@ -44,43 +45,36 @@
 #define TOP    5
 
 typedef struct Config {
-    Point *eye;
-    Point *center;
-    Point *up;
+	Point *eye;
+	Point *center;
+	Point *up;
 
-    Point *eye_direction;
-    Point *body_direction;
+	Point *eye_direction;
+	Point *body_direction;
 
-    float theta;
-    float phi;
-    char  keys[8]; /* Up , Down , Left , Right, Alt - Maj, 8, 2 */
-    
-    char time;
-    char free_fly;
+	float theta;
+	float phi;
 
-    char id_windows;
-    char print_config;
-    char full_screen;
+	char time;
+	char free_fly;
 
-    int life;
-    GLuint text;
-    GLuint texture[11];
+	char life;
+	char shoot;
+	char print_config;
+
+	char full_screen;
+	SDL_Surface* pScreen;
+
+	char  key[SDLK_LAST];
+	int mousex;
+	int mousey;
+	int mousexrel;
+	int mouseyrel;
+	char mousebutton[8];
+	char quit;
+
+	GLuint texture[11];
 } Config;
-
-/*
- * void gluLookAt(
- *                GLdouble eyeX, 
- *                 GLdouble eyeY,
- *                 GLdouble eyeZ,
- *
- *                 GLdouble centerX,
- *                 GLdouble centerY,
- *                 GLdouble centerZ,
- *
- *                 GLdouble upX,
- *                 GLdouble upY,
- *                GLdouble upZ);
- */
 
 /* Global config structure */
 Config *conf;

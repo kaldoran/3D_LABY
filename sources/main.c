@@ -1,38 +1,46 @@
-/*
- * SAI project - 3D Laby
- * File : main.c
- * Authors : Hivert Kevin - Reynaud Nicolas.
-  */
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <strings.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
 #include <GL/gl.h>
-#include <GL/glut.h>
+#include <GL/glu.h>
+#include <stdint.h>
 #include <unistd.h>
 
 #include "laby.h"
 #include "k-tree.h"
 #include "config.h"
 #include "object.h"
-#include "my_glut.h"
+#include "display.h"
 #include "portals.h"
-#include "texture.h"
+#include "event.h"
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 16
 
-int main(int argc, char *argv[])
+int main( int argc, char* argv[] )
 {
+	const SDL_VideoInfo* info = NULL;
+	int value_att = 0;
 	char pc = '%', buffer[BUFFER_SIZE];
-	Object *floor = object_new(0, 0, 0, FLOOR);
-	Object *border = object_new(0, 0, 0, BORDER);
-	Object *sun = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);
+
+	Object *floor        = object_new(0, 0, 0, FLOOR);
+	Object *border       = object_new(0, 0, 0, BORDER);
+	Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);
 	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
 
+	laby    = laby_new();
+	conf    = config_new();
+	ol      = object_list_new();
 	portals = portals_new();
-	laby = laby_new();
-	conf = config_new();
-	ol = object_list_new();
+
+	maze_generation();
+	maze_moving_walls_generation();
+
+	ol = object_list_push(ol, floor);
+	ol = object_list_push(ol, border);
+	ol = object_list_push(ol, sun);
+	ol = object_list_generate_fir_trees(ol);
+	ol = object_list_push_maze_walls(ol);
+	ol = object_list_push(ol, giant_teapot);
 
 	fprintf(stdout, "%s %s", CYEL, CBLINK);
 	fprintf(stdout, "                             .,-:;//;:=\n");
@@ -63,15 +71,6 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "%s \n", CRESET);
 		exit(EXIT_FAILURE);
 	}
-	
-	maze_generation();
-	maze_moving_walls_generation();
-	ol = object_list_push(ol, floor);
-	ol = object_list_push(ol, border);
-	ol = object_list_push(ol, sun);
-	ol = object_list_generate_fir_trees(ol);
-	ol = object_list_push_maze_walls(ol);
-	ol = object_list_push(ol, giant_teapot);
 
 	if(argc > 1)
 	{
@@ -93,7 +92,7 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "For your own safety and the safety of others, please refrain from MM@MM@MM#H\n");
 	fprintf(stdout, "Do you want to choose your environment ? (yes / No)\n");
 	fprintf(stderr, "%s \n", CRESET);
-	
+
 	fgets (buffer, BUFFER_SIZE - 1, stdin);
 	buffer[strlen(buffer) - 1] = '\0';
 
@@ -127,40 +126,68 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "\n\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n...\n");
 	sleep(1);
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	/*
+	 * SDL initialisation. 
+	  */
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		fprintf(stderr, "We are sorry :SDL_Init Failure.\n");
+		fprintf(stderr, "%s \n", CRESET);
+		exit(EXIT_FAILURE);
+	}
+
+	info = SDL_GetVideoInfo();
+	if( !info ) {
+		/* This should probably never happen. */
+		fprintf( stderr, "We are sorry : Video query failed: %s\n",
+			SDL_GetError() );
+		fprintf(stderr, "%s \n", CRESET);
+		exit(EXIT_FAILURE);
+    }
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
-	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	glutInitWindowPosition(SCREEN_POSITION_X, SCREEN_POSITION_Y);
-
-	conf->id_windows = glutCreateWindow(TITLE);
-
 	if (conf->full_screen)
 	{
-		glutFullScreen();
+		conf->pScreen = SDL_SetVideoMode(SCREEN_HEIGHT, SCREEN_WIDTH, info->vfmt->BitsPerPixel, SDL_OPENGL | SDL_FULLSCREEN);
+	} else {
+		conf->pScreen = SDL_SetVideoMode(SCREEN_HEIGHT, SCREEN_WIDTH, info->vfmt->BitsPerPixel, SDL_OPENGL);
+		SDL_WM_SetCaption(TITLE, NULL);
 	}
-	/*fprintf(stderr, "LOAD %d", conf->text);
-	conf->text = LoadTexture("./heart.bmp", 17, 20);
-	fprintf(stderr, "LOAD %d", conf->text);*/
-	glEnable(GL_BLEND);
+
+	if (!conf->pScreen)
+	{
+		fprintf(stderr, "We are sorry : SDL_SetVideoMode Failure.\n");
+		fprintf(stderr, "%s \n", CRESET);
+		exit(EXIT_FAILURE);
+	}
+
+	if(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value_att) < 0 || value_att != 1)
+	{
+		fprintf(stderr, "We are sorry : Double buffer failure\n");
+		fprintf(stderr, "%s \n", CRESET);
+		exit (EXIT_FAILURE);
+	}
+
+	atexit(SDL_Quit);
+
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glutSetCursor(GLUT_CURSOR_NONE);
-	glutWarpPointer(SCREEN_MID_HEIGHT, SCREEN_MID_HEIGHT);
-
-	glutMotionFunc(mouse_motion);
-	glutPassiveMotionFunc(mouse_motion);
-	glutMouseFunc(mouse_trigger);
-	glutKeyboardFunc(keyboard);
-	glutKeyboardUpFunc(keyboard_up);
-	glutSpecialFunc(special_keyboard);
-	glutSpecialUpFunc(special_keyboard_up);
-
-	glutDisplayFunc(display);
-	glutIdleFunc(display);
 	
-	glutMainLoop();
-return 0;
-}
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FOVY, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR);
+	
+	SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_ShowCursor(SDL_DISABLE);
 
+	main_loop();
+
+	object_list_free(ol);
+	config_free(conf);
+	laby_free(laby);
+	fprintf(stdout, "Good bye !\n");
+	fprintf(stderr, "%s \n", CRESET);
+return EXIT_SUCCESS;
+}

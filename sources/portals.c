@@ -3,8 +3,6 @@
  * File : portals.c
  * Authors : Hivert Kevin - Reynaud Nicolas.
  */
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "portals.h"
@@ -16,6 +14,7 @@ Portal *portal_new() {
 		exit(EXIT_FAILURE);
 	}
 	portal->portail = point_new(0, 0, 10);
+	portal->actif = 0;
 	return portal;
 }
 

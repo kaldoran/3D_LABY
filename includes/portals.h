@@ -13,7 +13,7 @@
 #define PUSH_DISTANCE    7
 
 typedef struct Portal {
-	int actif;
+	char actif;
 	int rotation;
 	Point *portail;
 }Portal;

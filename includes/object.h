@@ -55,15 +55,6 @@ Object_list *object_list_push_maze_walls(Object_list *ol);
 Object_list *object_list_generate_fir_trees(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
-void time_color();
-void Object_floor_print();
-void Object_border_print();
-void Object_sun_print(Object *sun);
-void Object_fir_tree_print(Object *fir_tree);
-void Object_wall_print(Object *wall);
-void Object_moving_wall_print(Object *wall);
-void Object_entry_print(Object *object);
-void Object_exit_print(Object *object);
-void Object_teapot_print(Object *teapot);
+
 
 #endif

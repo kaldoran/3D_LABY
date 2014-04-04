@@ -22,29 +22,27 @@ Config *config_new()
 	conf->body_direction = point_new(0, 1, 0);
 	conf->eye            = point_new(CELL_SIZE / 2, CELL_SIZE / 2, CHARACTER_SIZE);
 	conf->center         = point_new(conf->eye->x + conf->eye_direction->x,
-	conf->eye->y + conf->eye_direction->y,
-	conf->eye->z + conf->eye_direction->z);
+									conf->eye->y + conf->eye_direction->y,
+									conf->eye->z + conf->eye_direction->z);
 	
 	conf->theta          = 90.;
 	conf->phi            = 0.;
+
 	conf->time           = NIGHT;
-	conf->id_windows     = 0;
+	conf->life           = 20;
+	conf->shoot          = 0;
 	
 	conf->print_config   = 0;
 	conf->free_fly       = 0;
 	conf->full_screen    = 0;
 	
-	conf->keys[0]        = 0; /* Up */
-	conf->keys[1]        = 0; /* Down */
-	conf->keys[2]        = 0; /* Left */
-	conf->keys[3]        = 0; /* Right */
-	conf->keys[4]        = 0; /* Maj - Alt */
-	conf->keys[5]        = 0; /* 2 - Down on Z */
-	conf->keys[6]        = 0; /* 8 - Up on Z */
-	conf->keys[7]        = 0; /* CTRL */
-	
-	conf->life           = 20;
-	conf->text = 0;
+	memset(conf->key,0,sizeof(conf->key));
+	memset(conf->mousebutton,0,sizeof(conf->mousebutton));
+	conf->mousex         = SCREEN_MID_WIDTH;
+	conf->mousey         = SCREEN_MID_HEIGHT;
+	conf->mousexrel      = 0;
+	conf->mouseyrel      = 0;
+	conf->quit           = 0;
 return conf;
 }
 
