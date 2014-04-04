@@ -127,6 +127,7 @@ void main_loop()
 
 		if (conf->mousebutton[SDL_BUTTON_LEFT])
 		{
+			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 2;
 		}
@@ -134,6 +135,7 @@ void main_loop()
 		if (conf->mousebutton[SDL_BUTTON_RIGHT])
 		{
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
+			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 1;
 		}
 
