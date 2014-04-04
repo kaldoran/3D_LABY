@@ -8,7 +8,6 @@
 #include <math.h>
 #include <float.h>
 #include "config.h"
-#include "object.h"
 #include "laby.h"
 
 Config *config_new()

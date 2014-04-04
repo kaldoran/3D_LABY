@@ -12,7 +12,6 @@
 #include <unistd.h>
 
 #include "laby.h"
-#include "stack.h"
 #include "k-tree.h"
 #include "config.h"
 #include "object.h"

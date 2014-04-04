@@ -17,5 +17,6 @@ void special_keyboard_up(int key, int x, int y);
 void mouse_motion(int x, int z);
 void mouse_trigger(int button, int state, int x, int y);
 void display();
-
+void DrawEllipse(float radiusX, float radiusY);
+void write_string(char* string, int x, int y, void* font);
 #endif
