@@ -185,6 +185,7 @@ int main( int argc, char* argv[] )
 	main_loop();
 
 	object_list_free(ol);
+	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
 	fprintf(stdout, "Good bye !\n");
