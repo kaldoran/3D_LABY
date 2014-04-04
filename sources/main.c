@@ -26,7 +26,7 @@ int main( int argc, char* argv[] )
 	const SDL_VideoInfo* info = NULL;
 	int value_att = 0;
 	char pc = '%', buffer[BUFFER_SIZE];
-	GLfloat fogColor[4] ={0,0,0,0.5};
+	GLfloat fogColor[4] ={0,0,0,0.8};
 
 	Object *floor        = object_new(0, 0, 0, FLOOR);
 	Object *border       = object_new(0, 0, 0, BORDER);
