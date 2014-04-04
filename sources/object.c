@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/gl.h>
-#include <GL/glut.h>
 #include <time.h>
 #include "laby.h"
 #include "config.h"
