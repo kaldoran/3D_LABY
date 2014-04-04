@@ -1,3 +1,8 @@
+/*
+ * SAI project - 3D Laby
+ * File : main.c
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+  */
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
@@ -80,6 +85,12 @@ int main( int argc, char* argv[] )
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			fprintf(stderr, "%s \n", CRESET);
+			
+			object_list_free(ol);
+			config_free(conf);
+			laby_free(laby);
+			portals_free(portals);
+			fprintf(stdout, "Good bye !\n");
 			return 0;
 		}
 	}
@@ -188,6 +199,7 @@ int main( int argc, char* argv[] )
 	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
+	portals_free(portals);
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s \n", CRESET);
 return EXIT_SUCCESS;
