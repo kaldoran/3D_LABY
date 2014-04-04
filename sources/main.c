@@ -198,7 +198,7 @@ int main( int argc, char* argv[] )
 	glFogi(GL_FOG_MODE,GL_LINEAR);
 	glFogfv(GL_FOG_COLOR,fogColor);
 	glFogf(GL_FOG_START,CELL_SIZE * 2);
-	glFogf(GL_FOG_END,CELL_SIZE * 10); 
+	glFogf(GL_FOG_END,CELL_SIZE * 12); 
 
 	main_loop();
 
