@@ -23,14 +23,16 @@
 
 int main( int argc, char* argv[] )
 {
-	const SDL_VideoInfo* info = NULL;
-	int value_att = 0;
-	char pc = '%', buffer[BUFFER_SIZE];
-	GLfloat fogColor[4] ={0,0,0,0.8};
+  	const SDL_VideoInfo* info = NULL;
+  	int value_att = 0;
+  	char pc = '%', buffer[BUFFER_SIZE];
+/*	GLfloat fogColor[4]     = {0, 0, 0, 0.8};
+  	float light_position[]  = { 1.0f, 1.0f, 10.0f, 0.0f };
+  	float diffuseMaterial[] = { 0.5f, 0.5f, 0.5f, 1.0f };*/
 
 	Object *floor        = object_new(0, 0, 0, FLOOR);
 	Object *border       = object_new(0, 0, 0, BORDER);
-	Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);
+	/*Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);*/
 	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
 
 	laby    = laby_new();
@@ -43,7 +45,7 @@ int main( int argc, char* argv[] )
 
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
-	ol = object_list_push(ol, sun);
+	/*ol = object_list_push(ol, sun);*/
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_push(ol, giant_teapot);
@@ -156,8 +158,6 @@ int main( int argc, char* argv[] )
 		fprintf(stderr, "%s \n", CRESET);
 		exit(EXIT_FAILURE);
     }
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	if (conf->full_screen)
 	{
@@ -174,6 +174,7 @@ int main( int argc, char* argv[] )
 		exit(EXIT_FAILURE);
 	}
 
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	if(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value_att) < 0 || value_att != 1)
 	{
 		fprintf(stderr, "We are sorry : Double buffer failure\n");
@@ -186,7 +187,15 @@ int main( int argc, char* argv[] )
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
+	/*glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseMaterial);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glColorMaterial(GL_FRONT, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);*/
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(FOVY, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR);
@@ -194,19 +203,23 @@ int main( int argc, char* argv[] )
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
 
-	glEnable(GL_FOG) ;
-	glFogi(GL_FOG_MODE,GL_LINEAR);
-	glFogfv(GL_FOG_COLOR,fogColor);
-	glFogf(GL_FOG_START,CELL_SIZE * 2);
-	glFogf(GL_FOG_END,CELL_SIZE * 12); 
+/*	glEnable(GL_FOG) ;
+  	glFogi(GL_FOG_MODE,GL_LINEAR);
+  	glFogfv(GL_FOG_COLOR,fogColor);
+  	glFogf(GL_FOG_START,CELL_SIZE * 2);
+  	glFogf(GL_FOG_END,CELL_SIZE * 12); */
+
+	sky_box_new();
 
 	main_loop();
 
+
+	sky_box_delete();
 	object_list_free(ol);
 	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
-	
+
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s \n", CRESET);
 return EXIT_SUCCESS;

@@ -5,25 +5,35 @@
   */
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
+
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+
 #include <time.h>
 #include <float.h>
 #include <math.h>
+
 #include "laby.h"
 #include "config.h"
 #include "object.h"
 #include "display.h"
 #include "portals.h"
 
+
+
 void display()
 {
 	Doubly_linked_node *iterator = doubly_linked_node_new();
-	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	sky_box_print(200 * CELL_SIZE);
 
 	iterator = ol->last;
 	while (1)
@@ -409,7 +419,7 @@ void time_color()
 	{
 		glColor3f(0.54, 0.18, 0.9);
 	} else {
-		glColor3f(1, 1, 0);
+		glColor3f(0.9, 0.46, 0.16);
 	}
 }
 
@@ -600,4 +610,137 @@ void portal_maker ()
 		glPopMatrix();
 
 	}
+}
+
+void sky_box_new()
+{
+	skybox[SKY_BACK] = load_texture("textures/back.png");
+	skybox[SKY_RIGHT] = load_texture("textures/right.png");
+	skybox[SKY_FRONT] = load_texture("textures/front.png");
+	skybox[SKY_LEFT] = load_texture("textures/left.png");
+	skybox[SKY_TOP] = load_texture("textures/top.png");
+	skybox[SKY_BOTTOM] = load_texture("textures/bottom.png");
+}
+
+void sky_box_delete()
+{
+	glDeleteTextures(6, &skybox[0]);
+}
+
+void sky_box_print(float size)
+{
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+
+
+	glColor3f(1,1,1);
+
+	glPushMatrix();
+	glTranslatef(conf->eye->x, conf->eye->y, conf->eye->z);
+
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_TOP]);
+	glBegin(GL_QUADS);
+		/* Top face */
+		glTexCoord2f(1,1);
+		glVertex3f(size/2,size/2,size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(-size/2,size/2,size/2);
+		glTexCoord2f(0,0);
+		glVertex3f(-size/2,-size/2,size/2);
+		glTexCoord2f(1,0);
+		glVertex3f(size/2,-size/2,size/2);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_LEFT]);
+	glBegin(GL_QUADS);
+		/* Left face */
+		glTexCoord2f(1,0);
+		glVertex3f(-size/2,size/2,size/2);
+		glTexCoord2f(1,1);
+		glVertex3f(-size/2,size/2,-size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(-size/2,-size/2,-size/2);
+		glTexCoord2f(0,0);
+		glVertex3f(-size/2,-size/2,size/2);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_BOTTOM]);
+	glBegin(GL_QUADS);
+		/* Bottom face */
+		glTexCoord2f(1,0);
+		glVertex3f(size/2,size/2,-size/2);
+		glTexCoord2f(0,0);
+		glVertex3f(-size/2,size/2,-size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(-size/2,-size/2,-size/2);
+		glTexCoord2f(1,1);
+		glVertex3f(size/2,-size/2,-size/2);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_RIGHT]);
+	glBegin(GL_QUADS);
+		/* Right face */
+		glTexCoord2f(0,0);
+		glVertex3f(size/2,size/2,size/2);
+		glTexCoord2f(1,0);
+		glVertex3f(size/2,-size/2,size/2);
+		glTexCoord2f(1,1);
+		glVertex3f(size/2,-size/2,-size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(size/2,size/2,-size/2);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_FRONT]);
+	glBegin(GL_QUADS);
+		/* Front face */
+		glTexCoord2f(1,0);
+		glVertex3f(size/2,size/2,size/2);
+		glTexCoord2f(0,0);
+		glVertex3f(-size/2,size/2,size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(-size/2,size/2,-size/2);
+		glTexCoord2f(1,1);
+		glVertex3f(size/2,size/2,-size/2);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,skybox[SKY_BACK]);
+	glBegin(GL_QUADS);
+		/* Back face */
+		glTexCoord2f(0,0);
+		glVertex3f(size/2,-size/2,size/2);
+		glTexCoord2f(1,0);
+		glVertex3f(-size/2,-size/2,size/2);
+		glTexCoord2f(1,1);
+		glVertex3f(-size/2,-size/2,-size/2);
+		glTexCoord2f(0,1);
+		glVertex3f(size/2,-size/2,-size/2);
+	glEnd();
+	glPopMatrix();
+
+	/*glEnable(GL_LIGHTING);*/
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_TEXTURE_2D);
+}
+
+
+GLuint load_texture(const char* file)
+{
+	SDL_PixelFormat *format;
+	SDL_Surface* surface = IMG_Load(file);
+	GLuint texture;
+	glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	format = surface->format;
+	if (format->Amask)
+	{
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
+			surface->w, surface->h, GL_RGBA,GL_UNSIGNED_BYTE, surface->pixels);
+	} else {
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3,
+			surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+	}
+	SDL_FreeSurface(surface);
+	return texture;
 }

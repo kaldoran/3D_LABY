@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall -Wextra -pedantic -lGL -lGLU -lSDL -ldl -lm
+CFLAGS = -W -Wall -Wextra -pedantic -lGL -lGLU -lSDL -lSDL_image -ldl -lm
 
 #
 # Repositories.

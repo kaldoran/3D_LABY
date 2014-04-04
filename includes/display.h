@@ -8,6 +8,16 @@
 #ifndef __DISPLAY
 #define __DISPLAY
 
+
+#define SKY_BACK   0
+#define SKY_FRONT  1
+#define SKY_LEFT   2
+#define SKY_RIGHT  3
+#define SKY_BOTTOM 4
+#define SKY_TOP    5
+
+unsigned int skybox[6];
+
 void display();
 
 void time_color();
@@ -23,4 +33,10 @@ void Object_teapot_print(Object *teapot);
 
 void DrawEllipse(float radiusX, float radiusY);
 void portal_maker ();
+
+void sky_box_print(float size);
+void sky_box_new();
+void sky_box_delete();
+GLuint load_texture(const char* file);
+
 #endif

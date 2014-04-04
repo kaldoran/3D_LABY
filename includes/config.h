@@ -6,6 +6,7 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 #include "k-tree.h"
+#include "laby.h"
 
 #ifndef __CONF
 #define __CONF
@@ -25,7 +26,7 @@
 #define CHARACTER_SIZE  10
 #define FOVY            70
 #define NEAR            1
-#define FAR             1200
+#define FAR             SIZE * 2 * CELL_SIZE
 #define SENSITIVITY     0.05
 
 #define DAY   1
@@ -36,13 +37,6 @@
 #define CYEL   "\x1B[93m"
 
 #define HEIGHT_CHAR 20
-
-#define BACK   0
-#define FRONT  1
-#define LEFT   2
-#define RIGHT  3
-#define BOTTOM 4
-#define TOP    5
 
 typedef struct Config {
 	Point *eye;
@@ -72,8 +66,6 @@ typedef struct Config {
 	int mouseyrel;
 	char mousebutton[8];
 	char quit;
-
-	GLuint texture[11];
 } Config;
 
 /* Global config structure */
