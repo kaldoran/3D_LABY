@@ -1,3 +1,9 @@
+/*
+ * SAI project - 3D Laby
+ * File : event.c
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+ *
+  */
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>

@@ -40,8 +40,8 @@ Portals *portals_new() {
 
 void portals_free(Portals *portals) {
 	if (portals != NULL ) {
-		free(portals->bleu);
-		free(portals->orange);
+		portal_free(portals->bleu);
+		portal_free(portals->orange);
 		free(portals);
 	}
 }

@@ -1,3 +1,8 @@
+/*
+ * SAI project - 3D Laby
+ * File : main.c
+ * Authors : Hivert Kevin - Reynaud Nicolas.
+  */
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
