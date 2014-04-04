@@ -80,6 +80,12 @@ int main( int argc, char* argv[] )
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			fprintf(stderr, "%s \n", CRESET);
+			
+			object_list_free(ol);
+			config_free(conf);
+			laby_free(laby);
+			portals_free(portals);
+			fprintf(stdout, "Good bye !\n");
 			return 0;
 		}
 	}
@@ -187,6 +193,7 @@ int main( int argc, char* argv[] )
 	object_list_free(ol);
 	config_free(conf);
 	laby_free(laby);
+	portals_free(portals);
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s \n", CRESET);
 return EXIT_SUCCESS;

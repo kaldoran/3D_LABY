@@ -225,7 +225,6 @@ void main_loop()
 		}
 
 		change_center();
-		point_free(save_eye);
 
 		if ( portals->orange->actif && portals->bleu->actif ) {
 			if ( abs(conf->eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(conf->eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
@@ -256,6 +255,8 @@ void main_loop()
 		{
 			SDL_Delay(10 - ellapsed_time);
 		}
+
+		point_free(save_eye);
 	}
 }
 
