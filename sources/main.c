@@ -203,9 +203,10 @@ int main( int argc, char* argv[] )
 	main_loop();
 
 	object_list_free(ol);
+	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
-	portals_free(portals);
+	
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s \n", CRESET);
 return EXIT_SUCCESS;
