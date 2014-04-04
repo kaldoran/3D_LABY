@@ -135,14 +135,14 @@ void main_loop()
 		{
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
-			conf->shoot = 2;
+			conf->shoot = 1;
 		}
 
 		if (conf->mousebutton[SDL_BUTTON_RIGHT])
 		{
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
-			conf->shoot = 1;
+			conf->shoot = 2;
 		}
 
 		/* Mouse motion */
