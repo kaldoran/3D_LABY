@@ -24,7 +24,7 @@
 
 
 
-void display()
+void display(void)
 {
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 
@@ -84,10 +84,8 @@ void display()
     SDL_GL_SwapBuffers();
 }
 
-void Object_border_print()
+void Object_border_print(void)
 {
-	UNUSED(conf);
-
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
 		glVertex3f(0, 0, 5);
@@ -219,7 +217,7 @@ void Object_sun_print(Object *sun)
 	GLUquadric* params = gluNewQuadric();
 	glPushMatrix();
 		glTranslatef((sun->anchor)->x, (sun->anchor)->y, (sun->anchor)->z);
-		time_color(conf);
+		time_color();
 
 		gluQuadricDrawStyle(params,GLU_LINE);
 		gluSphere(params,40.,15,15);
@@ -227,11 +225,9 @@ void Object_sun_print(Object *sun)
 	glPopMatrix();
 }
 
-void Object_floor_print()
+void Object_floor_print(void)
 {
 	int i, j;
-
-	UNUSED(conf);
 
 	glColor3f(0, 1, 1);
 
@@ -258,8 +254,6 @@ void Object_fir_tree_print(Object *fir_tree) {
 	float ratio = 0.2;
 	int i,j, size = CELL_SIZE / 5;
 	GLUquadric* params;
-	
-	UNUSED(conf);
 	
 	/* TRONC Arbre */
 	glColor3f(0.95, 0.7, 0.05);
@@ -346,28 +340,28 @@ void Object_wall_print(Object *wall)
 	glBegin(GL_LINE_STRIP);
 		glColor3f(0, 1, 1);
 		glVertex3f(x1, y1, z1);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1, y1, z2);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
 		glColor3f(0, 1, 1);
 		glVertex3f(x2, y1, z1);
-		time_color(conf);
+		time_color();
 		glVertex3f(x2, y1, z2);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
 		glColor3f(0, 1, 1);
 		glVertex3f(x1, y2, z1);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1, y2, z2);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
 		glColor3f(0, 1, 1);
 		glVertex3f(x2, y2, z1);
-		time_color(conf);
+		time_color();
 		glVertex3f(x2, y2, z2);
 	glEnd();
 
@@ -383,7 +377,7 @@ void Object_moving_wall_print(Object *wall)
 {
 	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
 	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
-	time_color(conf);
+	time_color();
 	glBegin(GL_QUADS);
 		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
 		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
@@ -413,7 +407,7 @@ void Object_moving_wall_print(Object *wall)
 	glEnd();
 }
 
-void time_color()
+void time_color(void)
 {
 	if (conf->time == NIGHT)
 	{
@@ -431,28 +425,28 @@ void Object_entry_print(Object *entry)
 		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + 1, y1 + 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 
 		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(1, 0.5, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
@@ -467,28 +461,28 @@ void Object_exit_print(Object *exit)
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + 1, y1 + 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 
 		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
-		time_color(conf);
+		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
@@ -497,20 +491,19 @@ void Object_exit_print(Object *exit)
 
 void Object_teapot_print(Object *teapot)
 {
-	GLUquadric* params;
-	UNUSED(conf);
+	/*GLUquadric* params;
 
-/*	glPushMatrix();
-  		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
-  		glRotatef(90,1,0,0);
-  		glRotatef(90,0,1,0);
-  		glColor3f((float)((int)(teapot->anchor)->x % 10)/10,
-  					(float)((int)(teapot->anchor)->z % 10)/10,
-  					(float)((int)(teapot->anchor)->y % 10)/10);
-  		params = gluNewQuadric();
-  		gluQuadricDrawStyle(params,GLU_LINE);
-  		
-  		glutSolidTeapot((teapot->anchor)->z);
+	glPushMatrix();
+		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
+		glRotatef(90,1,0,0);
+		glRotatef(90,0,1,0);
+		glColor3f((float)((int)(teapot->anchor)->x % 10)/10,
+					(float)((int)(teapot->anchor)->z % 10)/10,
+					(float)((int)(teapot->anchor)->y % 10)/10);
+		params = gluNewQuadric();
+		gluQuadricDrawStyle(params,GLU_LINE);
+		
+		glutSolidTeapot((teapot->anchor)->z);
 
 		gluDeleteQuadric(params);
 	glPopMatrix();*/
@@ -538,7 +531,7 @@ void DrawEllipse(float radiusX, float radiusY)
 	glEnd();
 }
 
-void portal_maker ()
+void portal_maker (void)
 {
   	int coord_previous_bloc = 0, coord_current_bloc = 0;
   	Point *tmp;
@@ -612,7 +605,7 @@ void portal_maker ()
 	}
 }
 
-void sky_box_new()
+void sky_box_new(void)
 {
 	skybox[SKY_BACK] = load_texture("textures/back.png");
 	skybox[SKY_RIGHT] = load_texture("textures/right.png");
@@ -622,7 +615,7 @@ void sky_box_new()
 	skybox[SKY_BOTTOM] = load_texture("textures/bottom.png");
 }
 
-void sky_box_delete()
+void sky_box_delete(void)
 {
 	glDeleteTextures(6, &skybox[0]);
 }
@@ -633,8 +626,12 @@ void sky_box_print(float size)
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
-
-	glColor3f(1,1,1);
+	if (skybox[SKY_BOTTOM])
+	{
+		glColor3f(1,1,1);
+	} else {
+		glColor3f(0,0,0);
+	}
 
 	glPushMatrix();
 	glTranslatef(conf->eye->x, conf->eye->y, conf->eye->z);
@@ -729,6 +726,12 @@ GLuint load_texture(const char* file)
 	SDL_PixelFormat *format;
 	SDL_Surface* surface = IMG_Load(file);
 	GLuint texture;
+
+	if(!surface)
+	{
+		return 0;
+	}
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT,4);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);

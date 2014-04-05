@@ -20,7 +20,7 @@
 #include "display.h"
 #include "portals.h"
 
-void main_loop()
+void main_loop(void)
 {
 	Doubly_linked_node *iterator;
 	int direction, dx, dy, count;
@@ -266,7 +266,7 @@ void main_loop()
 	}
 }
 
-void update_event()
+void update_event(void)
 {
 	SDL_Event event;
 	while(SDL_PollEvent(&event))

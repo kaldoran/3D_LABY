@@ -11,7 +11,6 @@
 #ifndef __CONF
 #define __CONF
 
-#define UNUSED(X) (void)(X)
 #define TITLE "Teapot Science and Co. new NON-computer-aided enrichment center."
 
 #define SCREEN_POSITION_X  300
@@ -70,7 +69,7 @@ typedef struct Config {
 /* Global config structure */
 Config *conf;
 
-Config *config_new();
+Config *config_new(void);
 void config_free(Config *conf);
 
 Point *forward_move(Point *save_eye, float speed);
@@ -78,6 +77,6 @@ Point *backward_move(Point *save_eye, float speed);
 Point *left_move(Point *save_eye, float speed);
 Point *right_move(Point *save_eye, float speed);
 
-void change_center();
-void modify_direction();
+void change_center(void);
+void modify_direction(void);
 #endif

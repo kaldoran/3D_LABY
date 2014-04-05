@@ -10,7 +10,7 @@
 #include "config.h"
 #include "laby.h"
 
-Config *config_new()
+Config *config_new(void)
 {
 	Config *conf;
 	if ((conf = malloc(sizeof *conf)) == NULL)
@@ -83,7 +83,7 @@ Point *right_move(Point *save_eye, float speed) {
 return save_eye;
 }
 
-void change_center()
+void change_center(void)
 {
 	conf->center->x = conf->eye->x + conf->eye_direction->x;
 	conf->center->y = conf->eye->y + conf->eye_direction->y;
@@ -91,7 +91,7 @@ void change_center()
 }
 
 
-void modify_direction()
+void modify_direction(void)
 {
 	float tmp;
 	if (conf->theta > 360 )
@@ -117,5 +117,5 @@ void modify_direction()
 	conf->eye_direction->y = tmp * conf->body_direction->y;
 	conf->eye_direction->z = HORIZON * sin(conf->phi * M_PI / 180);
 	
-	change_center(conf);
+	change_center();
 }

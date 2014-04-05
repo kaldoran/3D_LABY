@@ -86,7 +86,7 @@ void maze_carving (int x, int y)
 	}
 }
 
-void maze_generation()
+void maze_generation(void)
 {
 	int i, x, y;
 	int rand_room_width, rand_room_height;
@@ -138,7 +138,7 @@ void maze_generation()
 	laby->matrix[COORD((WIDTH - 2), (HEIGHT - 1))] = EXIT;
 }
 
-void laby_print()
+void laby_print(void)
 {
 	int x,y;
 	fprintf(stdout, "%i : %d\n",HEIGHT, WIDTH);
@@ -175,7 +175,7 @@ void laby_print()
 	fprintf(stdout, "(0,0)\n");
 }
 
-void maze_moving_walls_generation()
+void maze_moving_walls_generation(void)
 {
 	int x, y;
 	for (x = 1; x < WIDTH; ++x)

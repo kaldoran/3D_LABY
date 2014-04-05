@@ -39,10 +39,10 @@ Object_list *ol;
 Object *object_new(float x, float y, float z, unsigned int type);
 void object_free(Object *object);
 
-Doubly_linked_node *doubly_linked_node_new();
+Doubly_linked_node *doubly_linked_node_new(void);
 void doubly_linked_node_free(Doubly_linked_node *node);
 
-Object_list *object_list_new();
+Object_list *object_list_new(void);
 void object_list_free(Object_list *ol);
 
 /* Add an object at the end of the list.  */

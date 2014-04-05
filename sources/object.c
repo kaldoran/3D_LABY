@@ -33,7 +33,7 @@ void object_free(Object *object)
 	}
 }
 
-Doubly_linked_node *doubly_linked_node_new()
+Doubly_linked_node *doubly_linked_node_new(void)
 {
 	Doubly_linked_node *node;
 
@@ -63,7 +63,7 @@ void doubly_linked_node_free(Doubly_linked_node *node)
 	}
 }
 
-Object_list *object_list_new()
+Object_list *object_list_new(void)
 {
 	Object_list *ol;
 	if ((ol = malloc(sizeof *ol)) == NULL)
