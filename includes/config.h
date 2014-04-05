@@ -11,7 +11,7 @@
 #ifndef __CONF
 #define __CONF
 
-#define UNUSED(x) (void)(x)
+#define UNUSED(X) (void)(X)
 #define TITLE "Teapot Science and Co. new NON-computer-aided enrichment center."
 
 #define SCREEN_POSITION_X  300
@@ -49,9 +49,8 @@ typedef struct Config {
 	float theta;
 	float phi;
 
-	char time;
 	char free_fly;
-
+	char time;
 	char life;
 	char shoot;
 	char print_config;
@@ -59,11 +58,11 @@ typedef struct Config {
 	char full_screen;
 	SDL_Surface* pScreen;
 
-	char  key[SDLK_LAST];
-	int mousex;
-	int mousey;
-	int mousexrel;
-	int mouseyrel;
+	char key[SDLK_LAST];
+	int  mousex;
+	int  mousey;
+	int  mousexrel;
+	int  mouseyrel;
 	char mousebutton[8];
 	char quit;
 } Config;

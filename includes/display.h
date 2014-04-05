@@ -32,7 +32,7 @@ void Object_exit_print(Object *object);
 void Object_teapot_print(Object *teapot);
 
 void DrawEllipse(float radiusX, float radiusY);
-void portal_maker ();
+void portal_maker();
 
 void sky_box_print(float size);
 void sky_box_new();
