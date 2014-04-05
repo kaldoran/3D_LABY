@@ -25,11 +25,11 @@ typedef struct Portals {
 
 Portals *portals;
 
-Portal *portal_new();
+Portal *portal_new(void);
 void portal_free(Portal *portal);
 
 
-Portals *portals_new();
+Portals *portals_new(void);
 void portals_free(Portals *portals);
 
 #endif

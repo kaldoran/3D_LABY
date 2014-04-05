@@ -50,33 +50,33 @@ int main( int argc, char* argv[] )
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_push(ol, giant_teapot);
 
-	fprintf(stdout, "%s %s", CYEL, CBLINK);
+	fprintf(stdout, "%s%s", CYEL, CBLINK);
 	fprintf(stdout, "                             .,-:;//;:=\n");
 	fprintf(stdout, "                        . :H@@@MM@M#H/.,+%c;,\n", pc);
 	fprintf(stdout, "                     ,/X+ +M@@M@MM%c=,-%cHMMM@X/,\n", pc, pc);
 	fprintf(stdout, "                   -+@MM; $M@@MH+-,;XMMMM@MMMM@+-\n");
 	fprintf(stdout, "                  ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.\n");
-	fprintf(stdout, "                ,%cMM@@MH ,@%c=             .------=.\n", pc, pc);
+	fprintf(stdout, "                ,%cMM@@MH ,@%c=              .------=.\n", pc, pc);
 	fprintf(stdout, "                =@#@@@MX.                 -%cHX$$%c%c:;\n", pc, pc, pc);
-	fprintf(stdout, "               =-./@M@M$                   .;@MMMM@MM:\n");
-	fprintf(stdout, "               X@/ -$MM/                    . +MM@@@M$\n");
+	fprintf(stdout, "               =-./@M@M$                  .;@MMMM@MM:\n");
+	fprintf(stdout, "               X@/ -$MM/                   . +MM@@@M$\n");
 	fprintf(stdout, "              ,@M@H: :@:   Teapot Science   . =X#@@@@-\n");
 	fprintf(stdout, "              ,@@@MMX,                      /H- ;@M@M=\n");
 	fprintf(stdout, "              .H@@@@M@+,          & Co.     %cMM+..%c#$.\n", pc, pc);
 	fprintf(stdout, "               /MMMM@MMH/.                  XM@MH; =;\n");
 	fprintf(stdout, "                /%c+%c$XHH@$=              , .H@@@@MX,\n", pc, pc);
 	fprintf(stdout, "                 .=--------.           -%cH.,@@@@@MX,\n", pc);
-	fprintf(stdout, "                 .%cMM@@@HHHXX$$$%c+- .:$MMX =M@@MM=%c.\n", pc, pc, pc);
+	fprintf(stdout, "                 .%cMM@@@HHHXX$$$%c+- .:$MMX =M@@MM%c.\n", pc, pc, pc);
 	fprintf(stdout, "                   =XMMM@MM@MM#H;,-+HMM@M+ /MMMX\n");
 	fprintf(stdout, "                     =%c@M@M#@$-.=$@MM@@@M; %cM%c=\n", pc, pc, pc);
 	fprintf(stdout, "                       ,:+$+-,/H#MMMMMMM@= =,\n");
 	fprintf(stdout, "                             =++%c%c%c%c+/:-.\n\n\n", pc, pc, pc, pc);
-	fprintf(stdout, "%s %s", CRESET, CYEL);
+	fprintf(stdout, "%s%s", CRESET, CYEL);
 
 	if(laby == NULL || conf == NULL || ol == NULL)
 	{
 		fprintf(stderr, "We are sorry an error as occurred.\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 		exit(EXIT_FAILURE);
 	}
 
@@ -87,7 +87,7 @@ int main( int argc, char* argv[] )
 			fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided DEBUG MODE.\n\n");
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
-			fprintf(stderr, "%s \n", CRESET);
+			fprintf(stderr, "%s\n", CRESET);
 			
 			object_list_free(ol);
 			config_free(conf);
@@ -113,7 +113,7 @@ int main( int argc, char* argv[] )
 	if(!strcasecmp(buffer,"yes") || !strcasecmp(buffer,"y")) {
 		fprintf(stdout, "%s", CYEL);
 		fprintf(stdout, "Night or Day ? (day | Night)\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 
 		buffer[0] = '\0';
 		fgets (buffer, BUFFER_SIZE - 1, stdin);
@@ -125,7 +125,7 @@ int main( int argc, char* argv[] )
 
 		fprintf(stdout, "%s", CYEL);
 		fprintf(stdout, "Full screen ? (yes | No)\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 
 		buffer[0] = '\0';
 		fgets (buffer, BUFFER_SIZE - 1, stdin);
@@ -138,7 +138,29 @@ int main( int argc, char* argv[] )
 
 	fprintf(stdout, "%s", CYEL);
 	fprintf(stdout, "\n\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n...\n");
+	fprintf(stdout, "Here's a companion cube to help you in your test !\n");
+	fprintf(stdout,"+@##########M/             :@#########@/\n");
+	fprintf(stdout,"##############$;H#######@;+#############\n");
+	fprintf(stdout,"###############M########################\n");
+	fprintf(stdout,"##############X,-/++/+%c+/,%c#############\n", pc, pc);
+	fprintf(stdout,"############M$:           -X############\n");
+	fprintf(stdout,"##########H;.      ,--.     =X##########\n");
+	fprintf(stdout,":X######M;     -$H@M##MH%c:    :H#######@\n", pc);
+	fprintf(stdout,"  =%c#M+=,   ,+@#######M###H:    -=/M#%c\n", pc, pc);
+	fprintf(stdout,"  %cM##@+   .X##$, ./+- ./###;    +M##%c\n", pc, pc);
+	fprintf(stdout,"  %c####M.  /###=    .    @##M.   X###%c\n", pc, pc);
+	fprintf(stdout,"  %c####M.  ;M##H:.     =$###X.   $###%c\n", pc, pc);
+	fprintf(stdout,"  %c####@.   /####M$-./@#####:    %c###%c\n", pc, pc, pc);
+	fprintf(stdout,"  %cH#M/,     /H###########@:     ./M#%c\n", pc, pc);
+	fprintf(stdout," ;$H##@@H:    .;$HM#MMMH$;,   ./H@M##M$=\n");
+	fprintf(stdout,"X#########%c.      ..,,.     .;@#########\n", pc);
+	fprintf(stdout,"###########H+:.           ./@###########\n");
+	fprintf(stdout,"##############/ ./%c%c%c%c+/.-M#############\n", pc, pc, pc, pc);
+	fprintf(stdout,"##############H$@#######@@##############\n");
+	fprintf(stdout,"##############X%c########M$M#############\n", pc);
+	fprintf(stdout,"+M##########H:            .$##########X=\n");
 	sleep(1);
+	fprintf(stdout, "You wil have a cake if you win...\n");
 
 	/*
 	 * SDL initialisation. 
@@ -146,7 +168,7 @@ int main( int argc, char* argv[] )
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		fprintf(stderr, "We are sorry :SDL_Init Failure.\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 		exit(EXIT_FAILURE);
 	}
 
@@ -155,7 +177,7 @@ int main( int argc, char* argv[] )
 		/* This should probably never happen. */
 		fprintf( stderr, "We are sorry : Video query failed: %s\n",
 			SDL_GetError() );
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 		exit(EXIT_FAILURE);
     }
 	
@@ -170,7 +192,7 @@ int main( int argc, char* argv[] )
 	if (!conf->pScreen)
 	{
 		fprintf(stderr, "We are sorry : SDL_SetVideoMode Failure.\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 		exit(EXIT_FAILURE);
 	}
 
@@ -178,7 +200,7 @@ int main( int argc, char* argv[] )
 	if(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value_att) < 0 || value_att != 1)
 	{
 		fprintf(stderr, "We are sorry : Double buffer failure\n");
-		fprintf(stderr, "%s \n", CRESET);
+		fprintf(stderr, "%s\n", CRESET);
 		exit (EXIT_FAILURE);
 	}
 
@@ -203,16 +225,16 @@ int main( int argc, char* argv[] )
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
 
-/*	glEnable(GL_FOG) ;
-  	glFogi(GL_FOG_MODE,GL_LINEAR);
-  	glFogfv(GL_FOG_COLOR,fogColor);
-  	glFogf(GL_FOG_START,CELL_SIZE * 2);
-  	glFogf(GL_FOG_END,CELL_SIZE * 12); */
+	/*
+	glEnable(GL_FOG) ;
+	glFogi(GL_FOG_MODE,GL_LINEAR);
+	glFogfv(GL_FOG_COLOR,fogColor);
+	glFogf(GL_FOG_START,CELL_SIZE * 2);
+	glFogf(GL_FOG_END,CELL_SIZE * 12);
+	*/
 
 	sky_box_new();
-
 	main_loop();
-
 
 	sky_box_delete();
 	object_list_free(ol);
@@ -221,6 +243,6 @@ int main( int argc, char* argv[] )
 	laby_free(laby);
 
 	fprintf(stdout, "Good bye !\n");
-	fprintf(stderr, "%s \n", CRESET);
+	fprintf(stderr, "%s\n", CRESET);
 return EXIT_SUCCESS;
 }

@@ -34,7 +34,7 @@ void point_free(Point *point);
 Element *element_new(Point *s1, Point *s2, char p);
 void element_free(Element *e);
 
-Ktree *ktree_new();
+Ktree *ktree_new(void);
 void ktree_free(Ktree *k);
 
 Ktree *ktree_add(Ktree *k, Element *e, ...);

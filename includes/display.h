@@ -18,11 +18,11 @@
 
 unsigned int skybox[6];
 
-void display();
+void display(void);
 
-void time_color();
-void Object_floor_print();
-void Object_border_print();
+void time_color(void);
+void Object_floor_print(void);
+void Object_border_print(void);
 void Object_sun_print(Object *sun);
 void Object_fir_tree_print(Object *fir_tree);
 void Object_wall_print(Object *wall);
@@ -32,11 +32,11 @@ void Object_exit_print(Object *object);
 void Object_teapot_print(Object *teapot);
 
 void DrawEllipse(float radiusX, float radiusY);
-void portal_maker ();
+void portal_maker(void);
 
 void sky_box_print(float size);
-void sky_box_new();
-void sky_box_delete();
+void sky_box_new(void);
+void sky_box_delete(void);
 GLuint load_texture(const char* file);
 
 #endif

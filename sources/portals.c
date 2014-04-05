@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "portals.h"
 
-Portal *portal_new() {
+Portal *portal_new(void) {
 	Portal *portal;
 	if ( (portal = malloc(sizeof *portal)) == NULL ) {
 		fprintf(stderr,"Probleme de création de portal\n");
@@ -25,7 +25,7 @@ void portal_free(Portal *portal) {
 	}
 }
 
-Portals *portals_new() {
+Portals *portals_new(void) {
 	Portals *portals;
 
 	if ( (portals = malloc(sizeof *portals)) == NULL) {

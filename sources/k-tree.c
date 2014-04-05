@@ -62,7 +62,7 @@ void element_free(Element *e)
 /*
  * K-Tree allocation.
   */
-Ktree *ktree_new()
+Ktree *ktree_new(void)
 {
 	int i;
 

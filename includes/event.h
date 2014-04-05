@@ -7,8 +7,8 @@
 #ifndef __EVENT
 #define __EVENT
 
-void main_loop();
-void update_event();
-void move();
+void main_loop(void);
+void update_event(void);
+void move(void);
 
 #endif
