@@ -133,13 +133,11 @@ void main_loop(void)
 			}
 		}
 		
-		if ( conf->key[SDLK_PLUS] || conf->key[SDLK_m]) {
-			fprintf(stderr, "PLUS");
+		if ( conf->key[SDLK_PLUS] || conf->key[SDLK_m] || conf->key[SDLK_KP_PLUS] ) {
 			change_volume(CHANG_VOL);
 		}
 
-		if ( conf->key[SDLK_MINUS] || conf->key[SDLK_l]) {
-			fprintf(stderr, "MOINS");
+		if ( conf->key[SDLK_MINUS] || conf->key[SDLK_l] || conf->key[SDLK_KP_MINUS] ) {
 			change_volume(-CHANG_VOL);
 		}
 		
