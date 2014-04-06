@@ -21,6 +21,7 @@
 #include "object.h"
 #include "display.h"
 #include "portals.h"
+#include "font.h"
 
 
 
@@ -34,6 +35,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	sky_box_print(200 * CELL_SIZE);
+
 
 	iterator = ol->last;
 	while (1)
@@ -79,7 +81,7 @@ void display(void)
 	}
 
 	portal_maker();
-
+	font_print("Tim to test it out", 50, 50);
 	glFlush();
     SDL_GL_SwapBuffers();
 }
@@ -568,8 +570,7 @@ void portal_maker (void)
   					portals->bleu->portail->x = tmp->x;
   					portals->bleu->portail->y = tmp->y;
   				}
-/*				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
-*/			break;
+			break;
   			}
   		}
   	}
@@ -720,7 +721,6 @@ void sky_box_print(float size)
 	glDisable(GL_TEXTURE_2D);
 }
 
-
 GLuint load_texture(const char* file)
 {
 	SDL_PixelFormat *format;
@@ -746,4 +746,38 @@ GLuint load_texture(const char* file)
 	}
 	SDL_FreeSurface(surface);
 	return texture;
+}
+
+void font_print(char *string, int x, int y) {
+	SDL_Surface *text = NULL;
+	SDL_Color text_color;
+	SDL_Rect position;
+	
+	text_color.r = 255;
+	text_color.g = 0;
+	text_color.b = 0;
+	
+	glDisable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+	glScalef(1, -1, 1);
+	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
+
+	text = TTF_RenderText_Solid(font, string, text_color);
+	position.x = x;
+	position.y = y;
+	position.w = text->w;
+	position.h = text->h;
+ 
+ 
+	SDL_BlitSurface(text, NULL, conf->pScreen, &position);
+	SDL_FreeSurface (text);
+	   
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_MODELVIEW);
 }

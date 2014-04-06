@@ -18,6 +18,7 @@
 #include "display.h"
 #include "portals.h"
 #include "event.h"
+#include "font.h" 
 
 #define BUFFER_SIZE 16
 
@@ -203,7 +204,12 @@ int main( int argc, char* argv[] )
 		fprintf(stderr, "%s\n", CRESET);
 		exit (EXIT_FAILURE);
 	}
-
+	
+	if (TTF_Init() < 0) {
+		printf("Couldn't initialize SDL TTF: %s\n", SDL_GetError());
+		exit (EXIT_FAILURE);
+	}
+	
 	atexit(SDL_Quit);
 
 	glEnable(GL_DEPTH_TEST);
@@ -234,8 +240,10 @@ int main( int argc, char* argv[] )
 	*/
 
 	sky_box_new();
+	font_new();
 	main_loop();
 
+	font_delete();
 	sky_box_delete();
 	object_list_free(ol);
 	portals_free(portals);

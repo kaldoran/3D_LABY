@@ -39,4 +39,6 @@ void sky_box_new(void);
 void sky_box_delete(void);
 GLuint load_texture(const char* file);
 
+void font_print(char *string, int x, int y);
+
 #endif
