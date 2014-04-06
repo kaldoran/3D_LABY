@@ -23,19 +23,27 @@
 #include "portals.h"
 #include "font.h"
 
+float LightDif[4] = {0.98f,0.98f,1.0f,1.0f};
+int LightPos[4] = {CELL_SIZE * WIDTH / 2, 200 * CELL_SIZE, 10 * CELL_SIZE, 1};
+int MatSpec [4] = {1,1,1,0.5};
 
 
 void display(void)
 {
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 
+	glMaterialiv(GL_FRONT,GL_SPECULAR,MatSpec);
+	glMateriali(GL_FRONT,GL_SHININESS,10);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+	glLightfv(GL_LIGHT0,GL_DIFFUSE,LightDif);
 
 	sky_box_print(200 * CELL_SIZE);
-
 
 	iterator = ol->last;
 	while (1)
@@ -727,7 +735,7 @@ void sky_box_print(float size)
 	glEnd();
 	glPopMatrix();
 
-	/*glEnable(GL_LIGHTING);*/
+	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FOG) ;
 	glDisable(GL_TEXTURE_2D);

@@ -28,8 +28,6 @@ int main( int argc, char* argv[] )
 	int value_att = 0;
 	char pc = '%', buffer[BUFFER_SIZE];
 	GLfloat fogColor[4]     = {0, 0, 0, 1};
-	/*float light_position[]  = { 1.0f, 1.0f, 10.0f, 0.0f };
-	float diffuseMaterial[] = { 0.5f, 0.5f, 0.5f, 1.0f };*/
 
 	Object *floor        = object_new(0, 0, 0, FLOOR);
 	Object *border       = object_new(0, 0, 0, BORDER);
@@ -216,14 +214,6 @@ int main( int argc, char* argv[] )
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	/*glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseMaterial);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glColorMaterial(GL_FRONT, GL_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);*/
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(FOVY, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR);
@@ -236,6 +226,10 @@ int main( int argc, char* argv[] )
 	glFogfv(GL_FOG_COLOR,fogColor);
 	glFogf(GL_FOG_START, 1);
 	glFogf(GL_FOG_END,CELL_SIZE * 15);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
 
 	sky_box_new();
 	font_new();
