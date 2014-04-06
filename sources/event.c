@@ -51,7 +51,6 @@ void main_loop(void)
 				save_eye->x = CELL_SIZE / 2;
 				save_eye->y = CELL_SIZE / 2;
 				save_eye->z = CHARACTER_SIZE;
-				change_center();
 			}
 		}
 
@@ -100,8 +99,6 @@ void main_loop(void)
 		{
 			conf->key[SDLK_a] = 0;
 			conf->theta += 180;
-			conf->phi = 0;
-			modify_direction();
 		}
 
 		if (conf->key[SDLK_r])
@@ -113,7 +110,6 @@ void main_loop(void)
 			
 			portals->bleu->actif = 0;
 			portals->orange->actif = 0;
-			change_center();
 		}
 
 		if (conf->key[SDLK_KP2])
@@ -145,11 +141,18 @@ void main_loop(void)
 			conf->shoot = 2;
 		}
 
-		/* Mouse motion */
-		conf->theta -= (conf->mousex - SCREEN_MID_WIDTH) * SENSITIVITY;
-		conf->phi -= (conf->mousey - SCREEN_MID_HEIGHT) * SENSITIVITY;
-		SDL_WarpMouse(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT); 
-		modify_direction();
+		if ( portals->orange->actif && portals->bleu->actif ) {
+			if ( abs(save_eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(save_eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
+				save_eye->x = portals->orange->portail->x - (sin(portals->orange->rotation) * PUSH_DISTANCE);
+				save_eye->y = portals->orange->portail->y + (cos(portals->orange->rotation) * PUSH_DISTANCE);
+				conf->theta += 180 + ( portals->orange->rotation - portals->bleu->rotation);
+			}
+			else if ( abs(save_eye->x - portals->orange->portail->x ) < TRIGGER_DISTANCE && abs(save_eye->y - portals->orange->portail->y) < TRIGGER_DISTANCE) {
+				save_eye->x = portals->bleu->portail->x - (sin(portals->bleu->rotation) * PUSH_DISTANCE);
+				save_eye->y = portals->bleu->portail->y + (cos(portals->bleu->rotation) * PUSH_DISTANCE);
+				conf->theta += 180 + ( portals->bleu->rotation - portals->orange->rotation);
+			}
+		}
 
 		if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
 				!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
@@ -230,24 +233,12 @@ void main_loop(void)
 			conf->eye->z = save_eye->z;
 		}
 
+		/* Mouse motion */
+		conf->theta -= (conf->mousex - SCREEN_MID_WIDTH) * SENSITIVITY;
+		conf->phi -= (conf->mousey - SCREEN_MID_HEIGHT) * SENSITIVITY;
+		SDL_WarpMouse(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT); 
+		modify_direction();
 		change_center();
-
-		if ( portals->orange->actif && portals->bleu->actif ) {
-			if ( abs(conf->eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(conf->eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
-				conf->eye->x = portals->orange->portail->x - (sin(portals->orange->rotation) * PUSH_DISTANCE);
-				conf->eye->y = portals->orange->portail->y + (cos(portals->orange->rotation) * PUSH_DISTANCE);
-				conf->theta += 180 + ( portals->orange->rotation - portals->bleu->rotation);
-				conf->phi = 0;
-				modify_direction();
-			}
-			else if ( abs(conf->eye->x - portals->orange->portail->x ) < TRIGGER_DISTANCE && abs(conf->eye->y - portals->orange->portail->y) < TRIGGER_DISTANCE) {
-				conf->eye->x = portals->bleu->portail->x - (sin(portals->bleu->rotation) * PUSH_DISTANCE);
-				conf->eye->y = portals->bleu->portail->y + (cos(portals->bleu->rotation) * PUSH_DISTANCE);
-				conf->theta += 180 + ( portals->bleu->rotation - portals->orange->rotation);
-				conf->phi = 0;
-				modify_direction();
-			}
-		}
 
 		/* Display with FPS care */
 		current_time = SDL_GetTicks();
