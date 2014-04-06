@@ -67,6 +67,7 @@ typedef struct Config {
 	char mousebutton[8];
 	char quit;
 	
+	char *music;
 	int volume;
 } Config;
 

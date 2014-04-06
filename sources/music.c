@@ -5,6 +5,7 @@
   */
   
 #include "music.h"
+#include "config.h"
 
 void load_song( char *filename ) {
 
@@ -29,7 +30,7 @@ void load_song( char *filename ) {
          
 void music_new(void) {
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
-	load_song("music/music.mp3");
+	load_song(conf->music);
 }
 
 void music_delete(void) {

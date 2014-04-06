@@ -124,6 +124,18 @@ int main( int argc, char* argv[] )
 		}
 
 		fprintf(stdout, "%s", CYEL);
+		fprintf(stdout, "What music do you want ? (1 | 2)\n");
+		fprintf(stderr, "%s\n", CRESET);
+
+		buffer[0] = '\0';
+		fgets (buffer, BUFFER_SIZE - 1, stdin);
+		buffer[strlen(buffer) - 1] = '\0';
+
+		if (!strcasecmp(buffer,"2")) {
+			conf->music = "music/music2.mp3";
+		}
+
+		fprintf(stdout, "%s", CYEL);
 		fprintf(stdout, "Full screen ? (yes | No)\n");
 		fprintf(stderr, "%s\n", CRESET);
 
