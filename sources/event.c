@@ -19,6 +19,7 @@
 #include "object.h"
 #include "display.h"
 #include "portals.h"
+#include "music.h"
 
 void main_loop(void)
 {
@@ -121,7 +122,26 @@ void main_loop(void)
 		{
 			save_eye->z += 1;
 		}
+		
+		if ( conf->key[SDLK_p] ) {
+			if(Mix_PausedMusic() == 1) {
+				Mix_ResumeMusic();
+			}
+			else {
+				Mix_PauseMusic();
+			}
+		}
+		
+		if ( conf->key[SDLK_PLUS] ) {
+			fprintf(stderr, "PLUS");
+			change_volume(CHANG_VOL);
+		}
 
+		if ( conf->key[SDLK_MINUS] ) {
+			fprintf(stderr, "MOINS");
+			change_volume(-CHANG_VOL);
+		}
+		
 		if (!conf->mousebutton[SDL_BUTTON_LEFT] && !conf->mousebutton[SDL_BUTTON_RIGHT])
 		{
 			conf->shoot = 0;
@@ -140,7 +160,7 @@ void main_loop(void)
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 2;
 		}
-
+		
 		if ( portals->orange->actif && portals->bleu->actif ) {
 			if ( abs(save_eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(save_eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
 				save_eye->x = portals->orange->portail->x - (sin(portals->orange->rotation) * PUSH_DISTANCE);

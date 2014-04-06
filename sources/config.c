@@ -43,6 +43,7 @@ Config *config_new(void)
 	conf->mousexrel      = 0;
 	conf->mouseyrel      = 0;
 	conf->quit           = 0;
+	conf->volume 	      = MIX_MAX_VOLUME;
 return conf;
 }
 
