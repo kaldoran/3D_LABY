@@ -28,7 +28,7 @@ void load_song( char *filename ) {
 }
          
 void music_new(void) {
-	Mix_Volume(-1, conf->volume);
+	Mix_VolumeMusic(MIX_MAX_VOLUME);
 	load_song("music/music.mp3");
 }
 
@@ -47,6 +47,6 @@ void change_volume(int value) {
 
 	if ( tmp_volume <= MIX_MAX_VOLUME && tmp_volume >= 0 ) {
 		conf->volume = tmp_volume;
-		Mix_Volume(-1, conf->volume);
+		Mix_VolumeMusic(conf->volume);
 	}
 }
