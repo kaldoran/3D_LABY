@@ -781,11 +781,12 @@ void font_print(char *string, int x, int y) {
 	glMatrixMode(GL_PROJECTION);	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glPushMatrix();
+
 	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+	/*
 	glScalef(1, -1, 1);
 	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
-
+	*/
 	text = TTF_RenderText_Solid(font, string, text_color);
 	position.x = x;
 	position.y = y;
