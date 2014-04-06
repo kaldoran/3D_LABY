@@ -749,6 +749,7 @@ GLuint load_texture(const char* file)
 
 	if(!surface)
 	{
+		fprintf(stderr, "Error during the image loading.\n");
 		return 0;
 	}
 

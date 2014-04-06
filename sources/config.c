@@ -62,9 +62,6 @@ Point *forward_move(Point *save_eye, float speed) {
 
 	save_eye->x += speed * conf->body_direction->x;
 	save_eye->y += speed * conf->body_direction->y;
-	/*
-	 * If we go on an other cell
-	  */
 return save_eye;
 }
 

@@ -13,31 +13,31 @@
 #ifndef __CONF
 #define __CONF
 
-#define TITLE "Teapot Science and Co. new NON-computer-aided enrichment center."
+#define TITLE               "Teapot Science and Co. new NON-computer-aided enrichment center."
 
-#define SCREEN_POSITION_X  300
-#define SCREEN_POSITION_Y  600
-#define SCREEN_HEIGHT      600
-#define SCREEN_MID_HEIGHT  (SCREEN_HEIGHT / 2)
-#define SCREEN_WIDTH       600
-#define SCREEN_MID_WIDTH   (SCREEN_WIDTH / 2)
+#define SCREEN_POSITION_X   300
+#define SCREEN_POSITION_Y   600
+#define SCREEN_HEIGHT       600
+#define SCREEN_MID_HEIGHT   (SCREEN_HEIGHT / 2)
+#define SCREEN_WIDTH        600
+#define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
-#define CELL_SIZE       25
-#define HORIZON         1
-#define CHARACTER_SIZE  10
-#define FOVY            70
-#define NEAR            1
-#define FAR             SIZE * 2 * CELL_SIZE
-#define SENSITIVITY     0.05
+#define CELL_SIZE           25
+#define HORIZON             1
+#define CHARACTER_SIZE      10
+#define FOVY                70
+#define NEAR                1
+#define FAR                 SIZE * 2 * CELL_SIZE
+#define SENSITIVITY         0.05
 
-#define DAY   1
-#define NIGHT 0
+#define DAY                 1
+#define NIGHT               0
 
-#define CRESET "\x1B[0m"
-#define CBLINK "\x1B[5m"
-#define CYEL   "\x1B[93m"
+#define CRESET              "\x1B[0m"
+#define CBLINK              "\x1B[5m"
+#define CYEL                "\x1B[93m"
 
-#define HEIGHT_CHAR 20
+#define HEIGHT_CHAR         20
 
 typedef struct Config {
 	Point *eye;
