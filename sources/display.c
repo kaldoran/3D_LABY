@@ -769,6 +769,7 @@ GLuint load_texture(const char* file)
 }
 
 void font_print(char *string, int x, int y) {
+/*
 	SDL_Surface *text = NULL;
 	SDL_Color text_color;
 	SDL_Rect position;
@@ -777,16 +778,17 @@ void font_print(char *string, int x, int y) {
 	text_color.g = 0;
 	text_color.b = 0;
 	
-	glDisable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);	
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
 	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
-	/*
 	glScalef(1, -1, 1);
 	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
-	*/
+	
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+	
+
 	text = TTF_RenderText_Solid(font, string, text_color);
 	position.x = x;
 	position.y = y;
@@ -796,9 +798,8 @@ void font_print(char *string, int x, int y) {
  
 	SDL_BlitSurface(text, NULL, conf->pScreen, &position);
 	SDL_FreeSurface (text);
-	   
+	
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
-	glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_MODELVIEW);
+*/
 }
