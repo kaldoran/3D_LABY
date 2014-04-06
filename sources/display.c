@@ -21,6 +21,7 @@
 #include "object.h"
 #include "display.h"
 #include "portals.h"
+#include "font.h"
 
 
 
@@ -34,6 +35,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	sky_box_print(200 * CELL_SIZE);
+
 
 	iterator = ol->last;
 	while (1)
@@ -80,7 +82,7 @@ void display(void)
 	}
 
 	portal_maker();
-
+	font_print("Tim to test it out", 50, 50);
 	glFlush();
     SDL_GL_SwapBuffers();
 }
@@ -539,47 +541,46 @@ void portal_maker (void)
 	int coord_previous_bloc = 0, coord_current_bloc = 0;
 	Point *tmp;
 
-  	if (conf->shoot) {
-  		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
-  		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
-  			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
-  			if ( laby->matrix[coord_current_bloc] == WALL) {
-  				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
-  								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
-  				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
-  				if ( coord_previous_bloc == 1) {
-  					coord_previous_bloc = -90;	   /* contient maintnant la rotation a faire */
-  				}
-  				else if ( coord_previous_bloc == -1) {
-  					coord_previous_bloc = 90;
-  				}
-  				else if ( coord_previous_bloc == -WIDTH ) {
-  					coord_previous_bloc = 180;
-  				}
-  				else {
-  					coord_previous_bloc = 0;
-  				}
-  				
-  				fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
-  				if ( conf->shoot == 2 ) {
-  					portals->orange->rotation = coord_previous_bloc;
-  					portals->orange->actif = 1;
-  					portals->orange->portail->x = tmp->x;
-  					portals->orange->portail->y = tmp->y;
-  				}
-  				if ( conf->shoot == 1 ) {
-  					portals->bleu->rotation = coord_previous_bloc;
-  					portals->bleu->actif = 1;
-  					portals->bleu->portail->x = tmp->x;
-  					portals->bleu->portail->y = tmp->y;
-  				}
-/*				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
-*/			break;
-  			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
-  				break;
-  			}
-  		}
-  	}
+	if (conf->shoot) {
+		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
+		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
+			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
+			if ( laby->matrix[coord_current_bloc] == WALL) {
+				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
+								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
+				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
+				if ( coord_previous_bloc == 1) {
+					coord_previous_bloc = -90;	   /* contient maintnant la rotation a faire */
+				}
+				else if ( coord_previous_bloc == -1) {
+					coord_previous_bloc = 90;
+				}
+				else if ( coord_previous_bloc == -WIDTH ) {
+					coord_previous_bloc = 180;
+				}
+				else {
+					coord_previous_bloc = 0;
+				}
+				
+				fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
+				if ( conf->shoot == 2 ) {
+					portals->orange->rotation = coord_previous_bloc;
+					portals->orange->actif = 1;
+					portals->orange->portail->x = tmp->x;
+					portals->orange->portail->y = tmp->y;
+				}
+				if ( conf->shoot == 1 ) {
+					portals->bleu->rotation = coord_previous_bloc;
+					portals->bleu->actif = 1;
+					portals->bleu->portail->x = tmp->x;
+					portals->bleu->portail->y = tmp->y;
+				}
+				break;
+			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
+				break;
+			}
+		}
+	}
 
 	if ( portals->bleu->actif) {
 		glColor4f(0, 1, 1, 0.7);
@@ -730,7 +731,6 @@ void sky_box_print(float size)
 	glDisable(GL_TEXTURE_2D);
 }
 
-
 GLuint load_texture(const char* file)
 {
 	SDL_PixelFormat *format;
@@ -756,4 +756,38 @@ GLuint load_texture(const char* file)
 	}
 	SDL_FreeSurface(surface);
 	return texture;
+}
+
+void font_print(char *string, int x, int y) {
+	SDL_Surface *text = NULL;
+	SDL_Color text_color;
+	SDL_Rect position;
+	
+	text_color.r = 255;
+	text_color.g = 0;
+	text_color.b = 0;
+	
+	glDisable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+	glScalef(1, -1, 1);
+	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
+
+	text = TTF_RenderText_Solid(font, string, text_color);
+	position.x = x;
+	position.y = y;
+	position.w = text->w;
+	position.h = text->h;
+ 
+ 
+	SDL_BlitSurface(text, NULL, conf->pScreen, &position);
+	SDL_FreeSurface (text);
+	   
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_MODELVIEW);
 }
