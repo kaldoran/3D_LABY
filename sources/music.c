@@ -19,7 +19,7 @@ void load_song( char *filename ) {
 	music = Mix_LoadMUS( filename );
 	if (music == NULL) {
 		fprintf(stderr, "Can't read the music \n");
-		exit(EXIT_FAILURE);
+		return;
 	}
 
 	/* On active la répétition de la musique à l'infini */
