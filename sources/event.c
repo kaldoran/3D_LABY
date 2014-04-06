@@ -124,6 +124,7 @@ void main_loop(void)
 		}
 		
 		if ( conf->key[SDLK_p] ) {
+			conf->key[SDLK_p] = 0;
 			if(Mix_PausedMusic() == 1) {
 				Mix_ResumeMusic();
 			}
@@ -132,12 +133,12 @@ void main_loop(void)
 			}
 		}
 		
-		if ( conf->key[SDLK_PLUS] ) {
+		if ( conf->key[SDLK_PLUS] || conf->key[SDLK_m]) {
 			fprintf(stderr, "PLUS");
 			change_volume(CHANG_VOL);
 		}
 
-		if ( conf->key[SDLK_MINUS] ) {
+		if ( conf->key[SDLK_MINUS] || conf->key[SDLK_l]) {
 			fprintf(stderr, "MOINS");
 			change_volume(-CHANG_VOL);
 		}
