@@ -24,12 +24,12 @@
 
 int main( int argc, char* argv[] )
 {
-  	const SDL_VideoInfo* info = NULL;
-  	int value_att = 0;
-  	char pc = '%', buffer[BUFFER_SIZE];
-/*	GLfloat fogColor[4]     = {0, 0, 0, 0.8};
-  	float light_position[]  = { 1.0f, 1.0f, 10.0f, 0.0f };
-  	float diffuseMaterial[] = { 0.5f, 0.5f, 0.5f, 1.0f };*/
+	const SDL_VideoInfo* info = NULL;
+	int value_att = 0;
+	char pc = '%', buffer[BUFFER_SIZE];
+	GLfloat fogColor[4]     = {0, 0, 0, 1};
+	/*float light_position[]  = { 1.0f, 1.0f, 10.0f, 0.0f };
+	float diffuseMaterial[] = { 0.5f, 0.5f, 0.5f, 1.0f };*/
 
 	Object *floor        = object_new(0, 0, 0, FLOOR);
 	Object *border       = object_new(0, 0, 0, BORDER);
@@ -231,13 +231,11 @@ int main( int argc, char* argv[] )
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
 
-	/*
 	glEnable(GL_FOG) ;
 	glFogi(GL_FOG_MODE,GL_LINEAR);
 	glFogfv(GL_FOG_COLOR,fogColor);
-	glFogf(GL_FOG_START,CELL_SIZE * 2);
-	glFogf(GL_FOG_END,CELL_SIZE * 12);
-	*/
+	glFogf(GL_FOG_START, 1);
+	glFogf(GL_FOG_END,CELL_SIZE * 15);
 
 	sky_box_new();
 	font_new();

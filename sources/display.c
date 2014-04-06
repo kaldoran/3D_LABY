@@ -425,33 +425,33 @@ void Object_entry_print(Object *entry)
 	float x1 = (entry->anchor)->x, y1 = (entry->anchor)->y;
 	
 	glBegin(GL_QUADS);
-		glColor3f(1, 0.5, 0);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1 + 1, y1 + 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
-		glColor3f(1, 0.5, 0);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
-		glColor3f(1, 0.5, 0);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
-		glColor3f(1, 0.5, 0);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 
 		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
-		glColor3f(1, 0.5, 0);
+		glColor3f(0, 1, 1);
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 	glEnd();
 }
@@ -634,6 +634,7 @@ void sky_box_delete(void)
 void sky_box_print(float size)
 {
 	glDisable(GL_LIGHTING);
+	glDisable(GL_FOG) ;
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
@@ -728,6 +729,7 @@ void sky_box_print(float size)
 
 	/*glEnable(GL_LIGHTING);*/
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FOG) ;
 	glDisable(GL_TEXTURE_2D);
 }
 
