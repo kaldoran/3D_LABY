@@ -19,6 +19,7 @@
 #include "portals.h"
 #include "event.h"
 #include "font.h" 
+#include "music.h"
 
 #define BUFFER_SIZE 16
 
@@ -210,6 +211,14 @@ int main( int argc, char* argv[] )
 		exit (EXIT_FAILURE);
 	}
 	
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)==-1) {
+		printf("Mix_OpenAudio: %s\n", Mix_GetError());
+		exit (EXIT_FAILURE);
+	}
+
+	/* Définit le nombre de channels à mixer */
+	Mix_AllocateChannels(32);
+
 	atexit(SDL_Quit);
 
 	glEnable(GL_DEPTH_TEST);
@@ -241,14 +250,19 @@ int main( int argc, char* argv[] )
 
 	sky_box_new();
 	font_new();
+	music_new();
+	
 	main_loop();
 
 	font_delete();
 	sky_box_delete();
+	music_delete();
+	
 	object_list_free(ol);
 	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
+	
 
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s\n", CRESET);
