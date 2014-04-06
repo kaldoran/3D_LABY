@@ -57,6 +57,7 @@ void display(void)
 			break;
 			case MOVING_WALL:
 				Object_moving_wall_print(iterator->object);
+				/*Object_wall_print(iterator->object);*/
 			break;
 			case ENTRY:
 				Object_entry_print(iterator->object);
@@ -533,8 +534,11 @@ void DrawEllipse(float radiusX, float radiusY)
 
 void portal_maker (void)
 {
-  	int coord_previous_bloc = 0, coord_current_bloc = 0;
-  	Point *tmp;
+	GLUquadric* params = gluNewQuadric();
+
+	int coord_previous_bloc = 0, coord_current_bloc = 0;
+	Point *tmp;
+
   	if (conf->shoot) {
   		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
   		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
@@ -555,7 +559,8 @@ void portal_maker (void)
   				else {
   					coord_previous_bloc = 0;
   				}
-  			fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
+  				
+  				fprintf(stderr,"Value : %d \n", coord_previous_bloc); 
   				if ( conf->shoot == 2 ) {
   					portals->orange->rotation = coord_previous_bloc;
   					portals->orange->actif = 1;
@@ -570,39 +575,44 @@ void portal_maker (void)
   				}
 /*				fprintf(stderr,"WALLLLLLLL !! %f %f %f - %d - angle %f \n",tmp->x, tmp->y, tmp->z, COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE)), conf->theta);
 */			break;
+  			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
+  				break;
   			}
   		}
   	}
 
 	if ( portals->bleu->actif) {
-		glColor3f(0, 1, 1);
+		glColor4f(0, 1, 1, 0.7);
 
 		glPushMatrix();
-		glLineWidth(5);
+
 		glTranslatef(portals->bleu->portail->x, portals->bleu->portail->y, portals->bleu->portail->z);
 		glRotatef(90, 1, 0, 0);
 		glRotatef(portals->bleu->rotation, 0, 1, 0);
-		DrawEllipse(5.0, 8.0);
-		glLineWidth(1);
+		glScalef(0.6,1,1);
+
+		gluQuadricDrawStyle(params,GLU_FILL);
+		gluDisk(params, 0, 8.0, 45, 1);
+
 		glPopMatrix();
- 
 	}
 
 	if ( portals->orange->actif) {
-		glColor3f(1, 1, 0);
+		glColor4f(1, 1, 0, 0.7);
 
 		glPushMatrix();
-		glLineWidth(5);
+
 		glTranslatef(portals->orange->portail->x, portals->orange->portail->y, portals->orange->portail->z);
-			
 		glRotatef(90, 1, 0, 0);
 		glRotatef(portals->orange->rotation, 0, 1, 0);
+		glScalef(0.6,1,1);
 
-		DrawEllipse(5.0, 8.0);
-		glLineWidth(1);
+		gluQuadricDrawStyle(params,GLU_FILL);
+		gluDisk(params, 0, 8.0, 45, 1);
+
 		glPopMatrix();
-
 	}
+	gluDeleteQuadric(params);
 }
 
 void sky_box_new(void)
