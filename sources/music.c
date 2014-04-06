@@ -28,6 +28,7 @@ void load_song( char *filename ) {
 }
          
 void music_new(void) {
+	Mix_Volume(-1, conf->volume);
 	load_song("music/music.mp3");
 }
 
@@ -38,4 +39,14 @@ void music_delete(void) {
      
 	Mix_CloseAudio();
 	Mix_Quit();
+}
+
+void change_volume(int value) {
+	int tmp_volume = conf->volume;
+	tmp_volume += value;
+
+	if ( tmp_volume <= MIX_MAX_VOLUME && tmp_volume >= 0 ) {
+		conf->volume = tmp_volume;
+		Mix_Volume(-1, conf->volume);
+	}
 }

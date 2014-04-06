@@ -5,6 +5,8 @@
   */
 #include <GL/gl.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
+
 #include "k-tree.h"
 #include "laby.h"
 
@@ -64,6 +66,8 @@ typedef struct Config {
 	int  mouseyrel;
 	char mousebutton[8];
 	char quit;
+	
+	int volume;
 } Config;
 
 /* Global config structure */
