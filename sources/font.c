@@ -13,7 +13,7 @@ TTF_Font *load_font(char *name, int size) {
 
     if (font == NULL) {
         printf("Failed to open Font %s: %s\n", name, TTF_GetError());
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     return font;
