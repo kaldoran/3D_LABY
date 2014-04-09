@@ -120,3 +120,12 @@ void modify_direction(void)
 	
 	change_center();
 }
+
+char *my_strcat(char *start, char *end) {
+	char* temp;
+	temp = malloc(strlen(start) +strlen(end) + 1);
+	strcpy(temp, start);
+	strcat(temp, end);
+
+	return temp;	
+}

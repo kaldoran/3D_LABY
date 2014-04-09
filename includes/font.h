@@ -5,6 +5,7 @@
  */
 
 #include <SDL/SDL_ttf.h>
+#include "config.h" 
 
 #ifndef __FONT
 #define __FONT

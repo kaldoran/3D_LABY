@@ -632,12 +632,12 @@ void portal_maker (void)
 
 void sky_box_new(void)
 {
-	skybox[SKY_BACK]   = load_texture("textures/back.png");
-	skybox[SKY_RIGHT]  = load_texture("textures/right.png");
-	skybox[SKY_FRONT]  = load_texture("textures/front.png");
-	skybox[SKY_LEFT]   = load_texture("textures/left.png");
-	skybox[SKY_TOP]    = load_texture("textures/top.png");
-	skybox[SKY_BOTTOM] = load_texture("textures/bottom.png");
+	skybox[SKY_BACK]   = load_texture(my_strcat(conf->path, "textures/back.png"));
+	skybox[SKY_RIGHT]  = load_texture(my_strcat(conf->path, "textures/right.png"));
+	skybox[SKY_FRONT]  = load_texture(my_strcat(conf->path, "textures/front.png"));
+	skybox[SKY_LEFT]   = load_texture(my_strcat(conf->path, "textures/left.png"));
+	skybox[SKY_TOP]    = load_texture(my_strcat(conf->path, "textures/top.png"));
+	skybox[SKY_BOTTOM] = load_texture(my_strcat(conf->path, "textures/bottom.png"));
 }
 
 void sky_box_print(float size)
@@ -779,10 +779,10 @@ void text_print()
 
 void cursors_new(void)
 {
-	cursors[CURSOR_BLUE]   = load_texture("textures/blue.png");
-	cursors[CURSOR_ORANGE] = load_texture("textures/orange.png");
-	cursors[CURSOR_BOTH]   = load_texture("textures/blueorange.png");
-	cursors[CURSOR_NONE]   = load_texture("textures/void.png");
+	cursors[CURSOR_BLUE]   = load_texture(my_strcat(conf->path, "textures/blue.png"));
+	cursors[CURSOR_ORANGE] = load_texture(my_strcat(conf->path, "textures/orange.png"));
+	cursors[CURSOR_BOTH]   = load_texture(my_strcat(conf->path, "textures/blueorange.png"));
+	cursors[CURSOR_NONE]   = load_texture(my_strcat(conf->path, "textures/void.png"));
 }
 
 void cursors_delete(void)

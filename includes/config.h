@@ -40,6 +40,7 @@
 #define HEIGHT_CHAR         20
 
 typedef struct Config {
+	char path[1024];
 	Point *eye;
 	Point *center;
 	Point *up;
@@ -88,4 +89,5 @@ Point *right_move(Point *save_eye, float speed);
 
 void change_center(void);
 void modify_direction(void);
+char *my_strcat(char *start, char *end);
 #endif

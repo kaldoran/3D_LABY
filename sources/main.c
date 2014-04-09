@@ -26,7 +26,17 @@
 #include "font.h" 
 #include "music.h"
 
+#include <errno.h>
+
 #define BUFFER_SIZE 16
+
+void call_realpath (char * argv0) {
+	char resolved_path[1024];
+	realpath (argv0, resolved_path);
+	
+	strncpy(conf->path, resolved_path, strlen(resolved_path) - 4);
+	fprintf(stderr, "%s", conf->path);
+}
 
 int main( int argc, char* argv[] )
 {
@@ -44,6 +54,8 @@ int main( int argc, char* argv[] )
 	conf    = config_new();
 	ol      = object_list_new();
 	portals = portals_new();
+	
+	call_realpath(argv[0]);
 
 	maze_generation();
 	maze_moving_walls_generation();

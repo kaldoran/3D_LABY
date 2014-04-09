@@ -20,7 +20,7 @@ TTF_Font *font_load(char *name, int size) {
 }
 
 void font_new(void) {
-	font = font_load("font/zelda.ttf", 32);
+	font = font_load(my_strcat(conf->path, "font/zelda.ttf"), 32);
 }
 
 void font_close(TTF_Font *font)

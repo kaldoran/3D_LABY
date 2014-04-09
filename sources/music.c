@@ -16,7 +16,7 @@ void load_song( char *filename ) {
 	}
 
 	/* On charge la nouvelle chanson */
-	music = Mix_LoadMUS( filename );
+	music = Mix_LoadMUS( my_strcat(conf->path,filename) );
 	if (music == NULL) {
 		fprintf(stderr, "Can't read the music \n");
 		return;
