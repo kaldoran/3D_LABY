@@ -113,7 +113,7 @@ void main_loop(void)
 			portals->orange->actif = 0;
 		}
 
-		if (conf->key[SDLK_KP2])
+		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
 			save_eye->z -= 1;
 		}
@@ -174,7 +174,7 @@ void main_loop(void)
 		}
 
 		if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
-				!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
+				!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)) && rand() % 2 == 1)
 		{
 			iterator = ol->last;
 			while (1)
@@ -220,7 +220,7 @@ void main_loop(void)
 
 							((iterator->object)->anchor)->x += (dx * CELL_SIZE);
 							((iterator->object)->anchor)->y += (dy * CELL_SIZE);
-							count = 7;
+							count = 4;
 						}
 					}
 				}
@@ -259,6 +259,47 @@ void main_loop(void)
 		modify_direction();
 		change_center();
 
+		if (IS_EXIT(COORD((int)(conf->eye->x / CELL_SIZE), (int)(conf->eye->y / CELL_SIZE))) && !conf->free_fly)
+		{
+			if (strcmp(conf->music, "music/music3.mp3")) {
+				fprintf(stderr, "\n                         #,\n");
+				fprintf(stderr, "                        ###\n");
+				fprintf(stderr, "                       ## ##\n");
+				fprintf(stderr, "                      ##  ##\n");
+				fprintf(stderr, "                       ####\n");
+				fprintf(stderr, "                         :\n");
+				fprintf(stderr, "                        #####\n");
+				fprintf(stderr, "                       ######\n");
+				fprintf(stderr, "                       ##  ##\n");
+				fprintf(stderr, "                       ##  ##\n");
+				fprintf(stderr, "                       ##  ##\n");
+				fprintf(stderr, "                       ##  ##########\n");
+				fprintf(stderr, "                       ##  #############\n");
+				fprintf(stderr, "                  #######  ###############\n");
+				fprintf(stderr, "              #############################\n");
+				fprintf(stderr, "        .###################################\n");
+				fprintf(stderr, "       #####################################;\n");
+				fprintf(stderr, "       ##                                 ##.\n");
+				fprintf(stderr, "       ##                                 ##\n");
+				fprintf(stderr, "       #####################################\n");
+				fprintf(stderr, "       ##                                 ##\n");
+				fprintf(stderr, "       ##                                 ##\n");
+				fprintf(stderr, "       ##                                 ###\n");
+				fprintf(stderr, "    #####                                 #####\n");
+				fprintf(stderr, "   ### ##################################### ###\n");
+				fprintf(stderr, "  ###  ##                                 ##  ###\n");
+				fprintf(stderr, "  ##   ## ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, ##   ##\n");
+				fprintf(stderr, "   ##  #####################################  ##\n");
+				fprintf(stderr, "    ##                                       ##\n");
+				fprintf(stderr, "     ####                                 ####\n");
+				fprintf(stderr, "       ######                         ######\n");
+				fprintf(stderr, "          ###############################\n");
+				fprintf(stderr, "The cake was not a lie !\n");
+				conf->music = "music/music3.mp3";
+				music_new();
+			}
+		}
+
 		/* Display with FPS care */
 		current_time = SDL_GetTicks();
 		ellapsed_time = current_time - last_time;
@@ -267,9 +308,10 @@ void main_loop(void)
 		display();
 
 		ellapsed_time = SDL_GetTicks() - start_time;
-		if (ellapsed_time < 10)
+		if (ellapsed_time < 9)
 		{
-			SDL_Delay(10 - ellapsed_time);
+			fprintf(stderr, ".");
+			SDL_Delay(9 - ellapsed_time);
 		}
 
 		point_free(save_eye);

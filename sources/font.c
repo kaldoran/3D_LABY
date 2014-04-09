@@ -7,7 +7,7 @@
 #include "font.h"
 
 
-TTF_Font *load_font(char *name, int size) {
+TTF_Font *font_load(char *name, int size) {
 
     TTF_Font *font = TTF_OpenFont(name, size);
 
@@ -20,10 +20,10 @@ TTF_Font *load_font(char *name, int size) {
 }
 
 void font_new(void) {
-	font = load_font("font/zelda.ttf", 32);
+	font = font_load("font/zelda.ttf", 32);
 }
 
-void close_font(TTF_Font *font)
+void font_close(TTF_Font *font)
 {
     if (font != NULL) {
         TTF_CloseFont(font);
@@ -31,6 +31,6 @@ void close_font(TTF_Font *font)
 }
 
 void font_delete(void) {
-    close_font(font);
+    font_close(font);
     TTF_Quit();
 }

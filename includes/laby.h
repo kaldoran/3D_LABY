@@ -33,7 +33,7 @@
 #define IS_PLAYABLE(X)      (IS_IN(X) && (laby->matrix[X] == PASS || laby->matrix[X] == ENTRY || laby->matrix[X] == EXIT))
 #define IS_WALL(X)          (IS_IN(X) && (laby->matrix[X] == WALL || laby->matrix[X] == MOVING_WALL))
 #define IS_WALL_OR_OUT(X)   (!IS_IN(X) || IS_WALL(X))
-
+#define IS_EXIT(X)          (IS_IN(X) && (laby->matrix[X] == EXIT))
 typedef struct Laby
 {
     char *matrix;

@@ -9,14 +9,20 @@
 #define __DISPLAY
 
 
-#define SKY_BACK   0
-#define SKY_FRONT  1
-#define SKY_LEFT   2
-#define SKY_RIGHT  3
-#define SKY_BOTTOM 4
-#define SKY_TOP    5
+#define SKY_BACK      0
+#define SKY_FRONT     1
+#define SKY_LEFT      2
+#define SKY_RIGHT     3
+#define SKY_BOTTOM    4
+#define SKY_TOP       5
+
+#define CURSOR_BLUE   0
+#define CURSOR_ORANGE 1
+#define CURSOR_BOTH   2
+#define CURSOR_NONE   3
 
 unsigned int skybox[6];
+unsigned int cursors[4];
 
 void display(void);
 
@@ -37,8 +43,9 @@ void portal_maker(void);
 void sky_box_print(float size);
 void sky_box_new(void);
 void sky_box_delete(void);
-GLuint load_texture(const char* file);
 
-void font_print(char *string, int x, int y);
+void cursors_new();
+void cursors_delete();
 
+void text_print();
 #endif

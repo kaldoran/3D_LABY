@@ -29,8 +29,8 @@ void load_song( char *filename ) {
 }
          
 void music_new(void) {
-	Mix_VolumeMusic(MIX_MAX_VOLUME);
 	load_song(conf->music);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 }
 
 void music_delete(void) {

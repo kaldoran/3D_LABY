@@ -22,26 +22,22 @@
 #include "display.h"
 #include "portals.h"
 #include "font.h"
-
-float LightDif[4] = {0.98f,0.98f,1.0f,1.0f};
-int LightPos[4] = {CELL_SIZE * WIDTH / 2, 200 * CELL_SIZE, 10 * CELL_SIZE, 1};
-int MatSpec [4] = {1,1,1,0.5};
-
+#include "texture.h"
+#include "vertices.h"
 
 void display(void)
 {
 	Doubly_linked_node *iterator = doubly_linked_node_new();
 
-	glMaterialiv(GL_FRONT,GL_SPECULAR,MatSpec);
-	glMateriali(GL_FRONT,GL_SHININESS,10);
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FOVY, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
-	
-	glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
-	glLightfv(GL_LIGHT0,GL_DIFFUSE,LightDif);
 
 	sky_box_print(200 * CELL_SIZE);
 
@@ -90,13 +86,17 @@ void display(void)
 	}
 
 	portal_maker();
-	font_print("Tim to test it out", 50, 50);
+	text_print();
+
 	glFlush();
     SDL_GL_SwapBuffers();
 }
 
 void Object_border_print(void)
 {
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1, 0, 0,0.1);
 	glBegin(GL_QUADS);
 		glVertex3f(0, 0, 5);
@@ -221,6 +221,7 @@ void Object_border_print(void)
 		glColor4f(1, 0, 0, 1);
 		glVertex3f(WIDTH * CELL_SIZE, 0, 10.5);
 	glEnd();
+	glDisable(GL_BLEND);
 }
 
 void Object_sun_print(Object *sun)
@@ -270,6 +271,7 @@ void Object_fir_tree_print(Object *fir_tree) {
 	glColor3f(0.95, 0.7, 0.05);
 	glPushMatrix();
 		glTranslatef((fir_tree->anchor)->x, (fir_tree->anchor)->y, 0);
+
 		glBegin(GL_LINE_LOOP);
 		glVertex3f(-((fir_tree->anchor)->z*ratio), 0, 0);
 		glVertex3f(((fir_tree->anchor)->z*ratio), 0, 0);
@@ -291,20 +293,20 @@ void Object_fir_tree_print(Object *fir_tree) {
 		glVertex3f(0, -((fir_tree->anchor)->z*ratio), (fir_tree->anchor)->z); 		
 		glEnd();
 
-  		/* Sapin les murs */
-  		glColor3f(0, 1, 0);
-  		glTranslatef(-CELL_SIZE / 2, -CELL_SIZE / 2, 0);
-  		for ( i = 0; i < CELL_SIZE; i += size) {
-  			for ( j = i % (2 * size); j < CELL_SIZE; j += 2 * size) { 
-  				glBegin(GL_LINE_LOOP);
-  					glVertex3f(i, j, 0);
-  					glVertex3f(i + size, j, 0);
-  					glVertex3f(i + size, j + size, 0); 
-  					glVertex3f(i, j + size, 0);
-  				glEnd();
-  			}
-  		}
-  		glTranslatef(CELL_SIZE / 2, CELL_SIZE / 2, (fir_tree->anchor)->z);
+		/* Sapin les murs */
+		glColor3f(0, 1, 0);
+		glTranslatef(-CELL_SIZE / 2, -CELL_SIZE / 2, 0);
+		for ( i = 0; i < CELL_SIZE; i += size) {
+			for ( j = i % (2 * size); j < CELL_SIZE; j += 2 * size) { 
+				glBegin(GL_LINE_LOOP);
+					glVertex3f(i, j, 0);
+					glVertex3f(i + size, j, 0);
+					glVertex3f(i + size, j + size, 0); 
+					glVertex3f(i, j + size, 0);
+				glEnd();
+			}
+		}
+		glTranslatef(CELL_SIZE / 2, CELL_SIZE / 2, (fir_tree->anchor)->z);
 
 		params = gluNewQuadric();
 		gluQuadricDrawStyle(params,GLU_LINE);
@@ -435,11 +437,11 @@ void Object_entry_print(Object *entry)
 	glBegin(GL_QUADS);
 		glColor3f(0, 1, 1);
 		glVertex3f(x1 + 1, y1 + 1, 0);
-		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 1, 1);
-		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
@@ -449,11 +451,11 @@ void Object_entry_print(Object *entry)
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
-		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 1, 1);
-		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
 
 		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
@@ -471,11 +473,11 @@ void Object_exit_print(Object *exit)
 	glBegin(GL_QUADS);
 		glColor3f(0, 0.8, 0);
 		glVertex3f(x1 + 1, y1 + 1, 0);
-		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
-		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
+		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + 1, 0);
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
@@ -485,11 +487,11 @@ void Object_exit_print(Object *exit)
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + 1, 0);
 
 		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE - 1, 0);
-		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
+		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
 		time_color();
 		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE / 2, 0);
 		glColor3f(0, 0.8, 0);
-		glVertex3f(x1 + CELL_SIZE / 2, y1 + CELL_SIZE - 1, 0);
+		glVertex3f(x1 + CELL_SIZE - 1, y1 + CELL_SIZE / 2, 0);
 
 		glVertex3f(x1 + 1, y1 + CELL_SIZE - 1, 0);
 		glVertex3f(x1 + 1, y1 + CELL_SIZE / 2, 0);
@@ -520,13 +522,12 @@ void Object_teapot_print(Object *teapot)
 	glPopMatrix();*/
 
 
-/* TEST
   glEnableClientState(GL_VERTEX_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, vertices);
 	
   glDrawArrays(GL_LINE_STRIP, 0, 306);
 
-  glDisableClientState(GL_VERTEX_ARRAY);*/
+  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 
@@ -600,14 +601,16 @@ void portal_maker (void)
 		glRotatef(portals->bleu->rotation, 0, 1, 0);
 		glScalef(0.6,1,1);
 
-		gluQuadricDrawStyle(params,GLU_FILL);
-		gluDisk(params, 0, 8.0, 45, 1);
-
+		gluQuadricDrawStyle(params,GLU_LINE);
+		if ( portals->orange->actif)
+			gluDisk(params, 2.66, 8.0, 40, 4);
+		else 
+			gluDisk(params, 0, 8.0, 40, 4);
 		glPopMatrix();
 	}
 
 	if ( portals->orange->actif) {
-		glColor4f(1, 1, 0, 0.7);
+		glColor4f(1, 0.7, 0, 0.7);
 
 		glPushMatrix();
 
@@ -616,8 +619,11 @@ void portal_maker (void)
 		glRotatef(portals->orange->rotation, 0, 1, 0);
 		glScalef(0.6,1,1);
 
-		gluQuadricDrawStyle(params,GLU_FILL);
-		gluDisk(params, 0, 8.0, 45, 1);
+		gluQuadricDrawStyle(params,GLU_LINE);
+		if ( portals->bleu->actif)
+			gluDisk(params, 2.66, 8.0, 40, 4);
+		else 
+			gluDisk(params, 0, 8.0, 40, 4);
 
 		glPopMatrix();
 	}
@@ -626,32 +632,22 @@ void portal_maker (void)
 
 void sky_box_new(void)
 {
-	skybox[SKY_BACK] = load_texture("textures/back.png");
-	skybox[SKY_RIGHT] = load_texture("textures/right.png");
-	skybox[SKY_FRONT] = load_texture("textures/front.png");
-	skybox[SKY_LEFT] = load_texture("textures/left.png");
-	skybox[SKY_TOP] = load_texture("textures/top.png");
+	skybox[SKY_BACK]   = load_texture("textures/back.png");
+	skybox[SKY_RIGHT]  = load_texture("textures/right.png");
+	skybox[SKY_FRONT]  = load_texture("textures/front.png");
+	skybox[SKY_LEFT]   = load_texture("textures/left.png");
+	skybox[SKY_TOP]    = load_texture("textures/top.png");
 	skybox[SKY_BOTTOM] = load_texture("textures/bottom.png");
-}
-
-void sky_box_delete(void)
-{
-	glDeleteTextures(6, &skybox[0]);
 }
 
 void sky_box_print(float size)
 {
-	glDisable(GL_LIGHTING);
-	glDisable(GL_FOG) ;
+	glDisable(GL_FOG);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 
-	if (skybox[SKY_BOTTOM])
-	{
-		glColor3f(1,1,1);
-	} else {
-		glColor3f(0,0,0);
-	}
+	glColor3f(1,1,1);
 
 	glPushMatrix();
 	glTranslatef(conf->eye->x, conf->eye->y, conf->eye->z);
@@ -735,72 +731,61 @@ void sky_box_print(float size)
 	glEnd();
 	glPopMatrix();
 
-	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FOG);
+	glEnable(GL_CULL_FACE);
+	glDisable(GL_TEXTURE_2D);
+}
+
+void sky_box_delete(void)
+{
+	glDeleteTextures(6, &skybox[0]);
+}
+
+void text_print()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0,SCREEN_WIDTH,0,SCREEN_HEIGHT);
+
+	glDisable(GL_FOG) ;
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glTranslated(SCREEN_WIDTH/2 - conf->width_text/2, SCREEN_HEIGHT/2 - conf->height_text/2, 0);
+	glColor4ub(255,255,255,0);
+	glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
+
+	glBegin(GL_QUADS);
+		glTexCoord2i(0,0);
+		glVertex2i(0,0);
+		glTexCoord2i(1,0);
+		glVertex2i(conf->width_text,0);
+		glTexCoord2i(1,1);
+		glVertex2i(conf->width_text,conf->height_text);
+		glTexCoord2i(0,1);
+		glVertex2i(0,conf->height_text);
+	glEnd();
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FOG) ;
 	glDisable(GL_TEXTURE_2D);
 }
 
-GLuint load_texture(const char* file)
+
+
+void cursors_new(void)
 {
-	SDL_PixelFormat *format;
-	SDL_Surface* surface = IMG_Load(file);
-	GLuint texture;
-
-	if(!surface)
-	{
-		fprintf(stderr, "Error during the image loading.\n");
-		return 0;
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	format = surface->format;
-	if (format->Amask)
-	{
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
-			surface->w, surface->h, GL_RGBA,GL_UNSIGNED_BYTE, surface->pixels);
-	} else {
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 3,
-			surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
-	}
-	SDL_FreeSurface(surface);
-	return texture;
+	cursors[CURSOR_BLUE]   = load_texture("textures/blue.png");
+	cursors[CURSOR_ORANGE] = load_texture("textures/orange.png");
+	cursors[CURSOR_BOTH]   = load_texture("textures/blueorange.png");
+	cursors[CURSOR_NONE]   = load_texture("textures/void.png");
 }
 
-void font_print(char *string, int x, int y) {
-/*
-	SDL_Surface *text = NULL;
-	SDL_Color text_color;
-	SDL_Rect position;
-	
-	text_color.r = 255;
-	text_color.g = 0;
-	text_color.b = 0;
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
-	glScalef(1, -1, 1);
-	glTranslatef(0, -SCREEN_HEIGHT + 15, 0);
-	
-	glMatrixMode(GL_MODELVIEW);
-
-	glPushMatrix();
-	
-
-	text = TTF_RenderText_Solid(font, string, text_color);
-	position.x = x;
-	position.y = y;
-	position.w = text->w;
-	position.h = text->h;
- 
- 
-	SDL_BlitSurface(text, NULL, conf->pScreen, &position);
-	SDL_FreeSurface (text);
-	
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-*/
+void cursors_delete(void)
+{
+	glDeleteTextures(4, &cursors[0]);
 }

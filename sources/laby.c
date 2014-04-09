@@ -107,10 +107,10 @@ void maze_generation(void)
 	/*
 	 * We generate some rooms at borders of the maze.
 	  */
-	for (i = 0; i < (SIZE / 300); ++i)
+	for (i = 0; i < 6; ++i)
 	{
-		rand_room_width  = (rand() % ((WIDTH / 6) - 2)) + 2;
-		rand_room_height = (rand() % ((HEIGHT / 6) - 2)) + 2;
+		rand_room_width  = (rand() % (3)) + 2;
+		rand_room_height = (rand() % (3)) + 2;
 		rand_room_width  = rand_room_width / 2;
 		rand_room_height = rand_room_height / 2;
 		

@@ -5,9 +5,13 @@
   */
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <SDL/SDL.h>
+#include <SDL/SDL_getenv.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
+
 #include <stdint.h>
 #include <unistd.h>
 
@@ -18,6 +22,7 @@
 #include "display.h"
 #include "portals.h"
 #include "event.h"
+#include "texture.h"
 #include "font.h" 
 #include "music.h"
 
@@ -149,7 +154,7 @@ int main( int argc, char* argv[] )
 	}
 
 	fprintf(stdout, "%s", CYEL);
-	fprintf(stdout, "\n\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n...\n");
+	fprintf(stdout, "\n\nPor favor bordón de fallar Muchos gracias de fallar gracias.\n...\n\n");
 	fprintf(stdout, "Here's a companion cube to help you in your test !\n");
 	fprintf(stdout,"+@##########M/             :@#########@/\n");
 	fprintf(stdout,"##############$;H#######@;+#############\n");
@@ -172,7 +177,7 @@ int main( int argc, char* argv[] )
 	fprintf(stdout,"##############X%c########M$M#############\n", pc);
 	fprintf(stdout,"+M##########H:            .$##########X=\n");
 	sleep(1);
-	fprintf(stdout, "You wil have a cake if you win...\n");
+	fprintf(stdout, "You will have a cake if you pass the test...\n");
 
 	/*
 	 * SDL initialisation. 
@@ -193,6 +198,8 @@ int main( int argc, char* argv[] )
 		exit(EXIT_FAILURE);
     }
 	
+
+	putenv("SDL_VIDEO_WINDOW_POS=600,100");
 	if (conf->full_screen)
 	{
 		conf->pScreen = SDL_SetVideoMode(SCREEN_HEIGHT, SCREEN_WIDTH, info->vfmt->BitsPerPixel, SDL_OPENGL | SDL_FULLSCREEN);
@@ -232,12 +239,6 @@ int main( int argc, char* argv[] )
 	atexit(SDL_Quit);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(FOVY, (double)SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR);
 	
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
@@ -248,25 +249,26 @@ int main( int argc, char* argv[] )
 	glFogf(GL_FOG_START, 1);
 	glFogf(GL_FOG_END,CELL_SIZE * 15);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
-
 	sky_box_new();
+	cursors_new();
 	font_new();
 	music_new();
 	
+	/*create_texture_from_text("Test", "font/zelda.ttf");
+*/
 	main_loop();
 
+
+	glDeleteTextures(1, &(conf->text));
 	font_delete();
 	sky_box_delete();
+	cursors_delete();
 	music_delete();
-	
+
 	object_list_free(ol);
 	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);
-	
 
 	fprintf(stdout, "Good bye !\n");
 	fprintf(stderr, "%s\n", CRESET);

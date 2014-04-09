@@ -69,6 +69,10 @@ typedef struct Config {
 	
 	char *music;
 	int volume;
+
+	GLuint text;
+	unsigned int width_text;
+	unsigned int height_text;
 } Config;
 
 /* Global config structure */

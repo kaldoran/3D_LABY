@@ -46,6 +46,8 @@ Config *config_new(void)
 
 	conf->music 		 = "music/music.mp3";
 	conf->volume	     = MIX_MAX_VOLUME;
+
+	conf->text = 0;
 return conf;
 }
 
@@ -89,7 +91,6 @@ void change_center(void)
 	conf->center->y = conf->eye->y + conf->eye_direction->y;
 	conf->center->z = conf->eye->z + conf->eye_direction->z;
 }
-
 
 void modify_direction(void)
 {
