@@ -558,6 +558,28 @@ void portal_maker (void)
 				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
 								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
 				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
+
+				/* Ne pas depasser les bords */
+				if ( coord_previous_bloc == 1 || coord_previous_bloc == -1) {
+					if ( COORD((int)(tmp->x/ CELL_SIZE), 
+							(int)((tmp->y - WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc ||		
+					     COORD((int)(tmp->x/ CELL_SIZE), 
+							(int)((tmp->y + WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || 
+					     tmp->y + WIDTH_PORTAL > SIZE || tmp->y - WIDTH_PORTAL < 0 ) {
+						break;
+					}
+				}
+
+				if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
+					if ( COORD((int)((tmp->x - WIDTH_PORTAL)/  CELL_SIZE), 
+							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc ||		
+					     COORD((int)((tmp->x + WIDTH_PORTAL)/ CELL_SIZE), 
+							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || 
+					     tmp->x + WIDTH_PORTAL > SIZE || tmp->x - WIDTH_PORTAL < 0 ) {
+						break;
+					}
+				}
+
 				if ( coord_previous_bloc == 1) {
 					coord_previous_bloc = -90;	   /* contient maintnant la rotation a faire */
 				}

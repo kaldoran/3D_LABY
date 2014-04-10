@@ -11,6 +11,7 @@
 
 #define TRIGGER_DISTANCE 5
 #define PUSH_DISTANCE    7
+#define WIDTH_PORTAL     6
 
 typedef struct Portal {
 	char actif;
