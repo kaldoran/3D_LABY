@@ -266,7 +266,8 @@ int main( int argc, char* argv[] )
 	font_new();
 	music_new();
 	
-	/*create_texture_from_text("Test", "font/zelda.ttf");
+/*
+	create_texture_from_text("Test", "font/zelda.ttf");
 */
 	main_loop();
 

@@ -51,9 +51,13 @@ GLuint load_texture(const char* file)
 void create_texture_from_text(char *string, char *font_name) {
 	int w, h;
 	TTF_Font *font = font_load(font_name, 32);
-	SDL_Color textColor = {0, 0, 0, 0};
-	SDL_Surface * temp, *temp2;
-
+	SDL_Color textColor;
+	SDL_Surface * temp, *temp2;	
+	
+	textColor.r = 255;
+	textColor.g = 255;
+	textColor.b = 255;
+	
 	temp = TTF_RenderText_Blended(font, string, textColor);
 
 	glGenTextures(1, &(conf->text));
@@ -74,12 +78,12 @@ void create_texture_from_text(char *string, char *font_name) {
 
 		if(temp2 == NULL) {
 			SDL_FreeSurface(temp);
-		return;
+			return;
 		}
 
 		conf->width_text = temp->w;
 		conf->height_text = temp->h;
-
+		
 		SDL_BlitSurface(temp, NULL, temp2, NULL);
 
 		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, temp2->w, temp2->h, 0,

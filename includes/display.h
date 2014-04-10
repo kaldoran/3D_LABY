@@ -21,6 +21,9 @@
 #define CURSOR_BOTH   2
 #define CURSOR_NONE   3
 
+#define HEIGHT_CURSOR 64
+#define WIDHT_CURSOR 64
+
 unsigned int skybox[6];
 unsigned int cursors[4];
 
@@ -44,8 +47,12 @@ void sky_box_print(float size);
 void sky_box_new(void);
 void sky_box_delete(void);
 
-void cursors_new();
-void cursors_delete();
+void cursor_print(void);
+void cursors_new(void);
+void cursors_delete(void);
+
+void change_to_2d(void);
+void change_to_3d(void);
 
 void text_print();
 #endif

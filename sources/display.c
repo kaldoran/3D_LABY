@@ -86,8 +86,10 @@ void display(void)
 	}
 
 	portal_maker();
-	text_print();
-
+	change_to_2d();
+	/*text_print();*/
+	cursor_print();
+	change_to_3d();
 	glFlush();
     SDL_GL_SwapBuffers();
 }
@@ -624,7 +626,9 @@ void portal_maker (void)
 
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->orange->actif) {
-			gluDisk(params, 2.66, 8.0, 40, 4);
+			glLineWidth(3.0);
+			gluDisk(params, 8.0, 8.0, 40, 1);
+			glLineWidth(1.0);
 		}
 		else {
 			gluDisk(params, 0, 8.0, 40, 4);
@@ -645,7 +649,9 @@ void portal_maker (void)
 
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->bleu->actif) {
-			gluDisk(params, 2.66, 8.0, 40, 4);
+			glLineWidth(3.0);
+			gluDisk(params, 8.0, 8.0, 40, 1);
+			glLineWidth(1.0);
 		}
 		else { 
 			gluDisk(params, 0, 8.0, 40, 4);
@@ -768,17 +774,9 @@ void sky_box_delete(void)
 	glDeleteTextures(6, &skybox[0]);
 }
 
+
 void text_print()
 {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0,SCREEN_WIDTH,0,SCREEN_HEIGHT);
-
-	glDisable(GL_FOG) ;
-	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-
-	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	glTranslated(SCREEN_WIDTH/2 - conf->width_text/2, SCREEN_HEIGHT/2 - conf->height_text/2, 0);
@@ -796,12 +794,40 @@ void text_print()
 		glVertex2i(0,conf->height_text);
 	glEnd();
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FOG) ;
-	glDisable(GL_TEXTURE_2D);
 }
 
+void cursor_print(void) {
+	glLoadIdentity();
 
+	glTranslated(SCREEN_WIDTH / 2 - WIDHT_CURSOR/2, SCREEN_HEIGHT / 2 - HEIGHT_CURSOR/2, 0);
+	glColor3ub(255,255,255);
+	if ( portals->bleu->actif && portals->orange->actif ) {
+		glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_NONE]);
+	}
+	else {
+		if ( portals->orange->actif ) {
+			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BLUE]);
+		}
+		else if ( portals->bleu->actif ) {
+			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_ORANGE]);
+		}
+		else {
+			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
+		}
+		
+	}
+	
+	glBegin(GL_QUADS);
+		glTexCoord2i(0,0);
+		glVertex2i(0,0);
+		glTexCoord2i(1,0);
+		glVertex2i(WIDHT_CURSOR,0);
+		glTexCoord2i(1,1);
+		glVertex2i(WIDHT_CURSOR, HEIGHT_CURSOR);
+		glTexCoord2i(0,1);
+		glVertex2i(0 ,HEIGHT_CURSOR);
+	glEnd();
+}
 
 void cursors_new(void)
 {
@@ -815,3 +841,27 @@ void cursors_delete(void)
 {
 	glDeleteTextures(4, &cursors[0]);
 }
+
+void change_to_2d(void) {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0,SCREEN_WIDTH,0,SCREEN_HEIGHT);
+
+	glDisable(GL_FOG) ;
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glEnable(GL_TEXTURE_2D);
+		
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void change_to_3d(void) {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FOG);
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+
+}
+
