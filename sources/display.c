@@ -812,13 +812,13 @@ void life_print(void) {
 		}
 		
 		glBegin(GL_QUADS);
-			glTexCoord2i(0,0);
-			glVertex2i(current_pos_x, current_pos_y);
-			glTexCoord2i(1,0);
-			glVertex2i(current_pos_x + WIDTH_HEART, current_pos_y);
-			glTexCoord2i(1,1);
-			glVertex2i(current_pos_x + WIDTH_HEART,  current_pos_y + HEIGHT_HEART);
 			glTexCoord2i(0,1);
+			glVertex2i(current_pos_x, current_pos_y);
+			glTexCoord2i(1,1);
+			glVertex2i(current_pos_x + WIDTH_HEART, current_pos_y);
+			glTexCoord2i(1,0);
+			glVertex2i(current_pos_x + WIDTH_HEART,  current_pos_y + HEIGHT_HEART);
+			glTexCoord2i(0,0);
 			glVertex2i(current_pos_x , current_pos_y + HEIGHT_HEART);
 		glEnd();
 	}
