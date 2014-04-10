@@ -34,6 +34,7 @@ GLuint load_texture(const char* file)
 	glPixelStorei(GL_UNPACK_ALIGNMENT,4);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	
 	format = surface->format;
 	if (format->Amask)
 	{
@@ -43,10 +44,11 @@ GLuint load_texture(const char* file)
 		gluBuild2DMipmaps(GL_TEXTURE_2D, 3,
 			surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 	}
+		
 	SDL_FreeSurface(surface);
 	return texture;
 }
-	
+
 
 void create_texture_from_text(char *string, char *font_name) {
 	int w, h;

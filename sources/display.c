@@ -829,6 +829,7 @@ void cursor_print(void) {
 
 	glTranslated(SCREEN_WIDTH / 2 - WIDHT_CURSOR/2, SCREEN_HEIGHT / 2 - HEIGHT_CURSOR/2, 0);
 	glColor3ub(255,255,255);
+
 	if ( portals->bleu->actif && portals->orange->actif ) {
 		glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_NONE]);
 	}
@@ -841,8 +842,7 @@ void cursor_print(void) {
 		}
 		else {
 			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
-		}
-		
+		}	
 	}
 	
 	glBegin(GL_QUADS);
