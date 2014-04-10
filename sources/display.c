@@ -806,7 +806,7 @@ void life_print(void) {
 	glBindTexture(GL_TEXTURE_2D, heart);
 	
 	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {
-		if ( i == (conf->life / 2) + wrap ) {
+		if ( i == (MAX_HEALTH/ 2) + wrap ) {
 			current_pos_x = 0;
 			current_pos_y = -HEIGHT_HEART - MARGING_HEART;
 		}
@@ -846,11 +846,11 @@ void cursor_print(void) {
 	}
 	
 	glBegin(GL_QUADS);
-		glTexCoord2i(1,0);
+		glTexCoord2i(0,1);
 		glVertex2i(0,0);
 		glTexCoord2i(1,1);
 		glVertex2i(WIDHT_CURSOR,0);
-		glTexCoord2i(0,1);
+		glTexCoord2i(1,0);
 		glVertex2i(WIDHT_CURSOR, HEIGHT_CURSOR);
 		glTexCoord2i(0,0);
 		glVertex2i(0 ,HEIGHT_CURSOR);
