@@ -841,18 +841,18 @@ void cursor_print(void) {
 			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_ORANGE]);
 		}
 		else {
-			glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
+		 	glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
 		}	
 	}
 	
 	glBegin(GL_QUADS);
-		glTexCoord2i(0,0);
-		glVertex2i(0,0);
 		glTexCoord2i(1,0);
-		glVertex2i(WIDHT_CURSOR,0);
+		glVertex2i(0,0);
 		glTexCoord2i(1,1);
-		glVertex2i(WIDHT_CURSOR, HEIGHT_CURSOR);
+		glVertex2i(WIDHT_CURSOR,0);
 		glTexCoord2i(0,1);
+		glVertex2i(WIDHT_CURSOR, HEIGHT_CURSOR);
+		glTexCoord2i(0,0);
 		glVertex2i(0 ,HEIGHT_CURSOR);
 	glEnd();
 }
