@@ -31,11 +31,11 @@
 #define BUFFER_SIZE 16
 
 void call_realpath (char * argv0) {
-	char resolved_path[1024];
+	char *resolved_path = calloc(1024, sizeof(char));
 	realpath (argv0, resolved_path);
-	
-	strncpy(conf->path, resolved_path, strlen(resolved_path) - 4);
-	fprintf(stderr, "%s", conf->path);
+
+	conf->path = strndup(resolved_path, strlen(resolved_path) - 4);
+	fprintf(stderr, "%s\n", conf->path);
 }
 
 int main( int argc, char* argv[] )

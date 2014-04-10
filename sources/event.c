@@ -308,9 +308,8 @@ void main_loop(void)
 		display();
 
 		ellapsed_time = SDL_GetTicks() - start_time;
-		if (ellapsed_time < 9)
+		if (ellapsed_time < 10)
 		{
-			fprintf(stderr, ".");
 			SDL_Delay(9 - ellapsed_time);
 		}
 

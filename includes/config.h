@@ -40,7 +40,7 @@
 #define HEIGHT_CHAR         20
 
 typedef struct Config {
-	char path[1024];
+	char *path;
 	Point *eye;
 	Point *center;
 	Point *up;
