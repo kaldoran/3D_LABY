@@ -29,7 +29,7 @@ Config *config_new(void)
 	conf->phi            = 0.;
 
 	conf->time           = NIGHT;
-	conf->life           = 15;
+	conf->life           = MAX_HEALTH;
 	conf->shoot          = 0;
 	
 	conf->print_config   = 0;

@@ -39,6 +39,8 @@
 
 #define HEIGHT_CHAR         20
 
+#define MAX_HEALTH          15
+
 typedef struct Config {
 	char *path;
 	Point *eye;

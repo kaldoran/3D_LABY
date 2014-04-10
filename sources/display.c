@@ -806,7 +806,7 @@ void life_print(void) {
 	glBindTexture(GL_TEXTURE_2D, heart);
 	
 	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {
-		if ( i == (conf->life / 2) + wrap ) {
+		if ( i == (MAX_HEALTH/ 2) + wrap ) {
 			current_pos_x = 0;
 			current_pos_y = -HEIGHT_HEART - MARGING_HEART;
 		}
