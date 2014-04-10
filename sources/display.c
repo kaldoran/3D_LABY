@@ -623,10 +623,13 @@ void portal_maker (void)
 		glScalef(0.6,1,1);
 
 		gluQuadricDrawStyle(params,GLU_LINE);
-		if ( portals->orange->actif)
+		if ( portals->orange->actif) {
 			gluDisk(params, 2.66, 8.0, 40, 4);
-		else 
+		}
+		else {
 			gluDisk(params, 0, 8.0, 40, 4);
+		}
+
 		glPopMatrix();
 	}
 
