@@ -87,8 +87,9 @@ void display(void)
 
 	portal_maker();
 	change_to_2d();
-	/*text_print();*/
+	text_print();
 	cursor_print();
+	life_print();
 	change_to_3d();
 	glFlush();
     SDL_GL_SwapBuffers();
@@ -796,6 +797,33 @@ void text_print()
 
 }
 
+void life_print(void) {
+	int current_pos_x = 0, current_pos_y = 0, i, wrap = conf->life % 2;
+	glLoadIdentity();
+	glTranslated( MARGING_HEART, SCREEN_HEIGHT - HEIGHT_HEART - MARGING_HEART, 0);
+	glColor3ub(255,255,255);
+	
+	glBindTexture(GL_TEXTURE_2D, heart);
+	
+	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {
+		if ( i == (conf->life / 2) + wrap ) {
+			current_pos_x = 0;
+			current_pos_y = -HEIGHT_HEART - MARGING_HEART;
+		}
+		
+		glBegin(GL_QUADS);
+			glTexCoord2i(0,0);
+			glVertex2i(current_pos_x, current_pos_y);
+			glTexCoord2i(1,0);
+			glVertex2i(current_pos_x + WIDTH_HEART, current_pos_y);
+			glTexCoord2i(1,1);
+			glVertex2i(current_pos_x + WIDTH_HEART,  current_pos_y + HEIGHT_HEART);
+			glTexCoord2i(0,1);
+			glVertex2i(current_pos_x , current_pos_y + HEIGHT_HEART);
+		glEnd();
+	}
+}
+
 void cursor_print(void) {
 	glLoadIdentity();
 
@@ -840,6 +868,14 @@ void cursors_new(void)
 void cursors_delete(void)
 {
 	glDeleteTextures(4, &cursors[0]);
+}
+
+void heart_new(void) {
+	heart = load_texture(my_strcat(conf->path, "textures/heart.png"));
+}
+
+void heart_delete(void) {
+	glDeleteTextures(1, &heart);
 }
 
 void change_to_2d(void) {

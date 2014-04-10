@@ -24,8 +24,13 @@
 #define HEIGHT_CURSOR 64
 #define WIDHT_CURSOR 64
 
+#define HEIGHT_HEART 17
+#define WIDTH_HEART  20
+#define MARGING_HEART 5
+
 unsigned int skybox[6];
 unsigned int cursors[4];
+unsigned int heart;
 
 void display(void);
 
@@ -53,6 +58,10 @@ void cursors_delete(void);
 
 void change_to_2d(void);
 void change_to_3d(void);
+
+void heart_new(void);
+void heart_delete(void);
+void life_print(void);
 
 void text_print();
 #endif

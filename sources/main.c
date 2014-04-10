@@ -263,6 +263,7 @@ int main( int argc, char* argv[] )
 
 	sky_box_new();
 	cursors_new();
+	heart_new();
 	font_new();
 	music_new();
 	
@@ -271,11 +272,13 @@ int main( int argc, char* argv[] )
 */
 	main_loop();
 
-
+/*
 	glDeleteTextures(1, &(conf->text));
+*/
 	font_delete();
 	sky_box_delete();
 	cursors_delete();
+	heart_delete();
 	music_delete();
 
 	object_list_free(ol);
