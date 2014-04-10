@@ -846,11 +846,11 @@ void cursor_print(void) {
 	}
 	
 	glBegin(GL_QUADS);
-		glTexCoord2i(1,0);
+		glTexCoord2i(0,1);
 		glVertex2i(0,0);
 		glTexCoord2i(1,1);
 		glVertex2i(WIDHT_CURSOR,0);
-		glTexCoord2i(0,1);
+		glTexCoord2i(1,0);
 		glVertex2i(WIDHT_CURSOR, HEIGHT_CURSOR);
 		glTexCoord2i(0,0);
 		glVertex2i(0 ,HEIGHT_CURSOR);
