@@ -28,6 +28,26 @@ void load_song( char *filename ) {
 	}
 }
          
+void load_chunk(char *filename, int id_chunck) {
+	sound[id_chunck] = Mix_LoadWAV(my_strcat(conf->path,filename));
+	if(sound[id_chunck] == NULL) {
+		printf("Unable to load Ogg file: %s\n", Mix_GetError());
+		return;
+	}
+}
+
+void chunk_new(void) {
+	load_chunk("music/hurtflesh1.wav", HURT_1);
+	load_chunk("music/hurtflesh2.wav", HURT_2);
+	load_chunk("music/hurtflesh3.wav", HURT_3);
+}
+
+void chunk_delete(void) {
+	int i;
+	for(i = 0; i < NUMBER_OF_CHUNCK; i++)
+		Mix_FreeChunk(sound[i]);
+}
+
 void music_new(void) {
 	load_song(conf->music);
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);

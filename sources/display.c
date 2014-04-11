@@ -24,7 +24,10 @@
 #include "font.h"
 #include "texture.h"
 #include "vertices.h"
+#include "music.h"
 
+int last_time_dmg = 0;
+	
 void display(void)
 {
 	Doubly_linked_node *iterator = doubly_linked_node_new();
@@ -71,6 +74,9 @@ void display(void)
 			case EXIT:
 				Object_exit_print(iterator->object);
 			break;
+			case SPIKES:
+				Object_spikes_print(iterator->object);
+			break;
 			case TEAPOT:
 				Object_teapot_print(iterator->object);
 			break;
@@ -84,7 +90,7 @@ void display(void)
 			break;
 		}
 	}
-
+	last_time_dmg = check_dommage(last_time_dmg);
 	portal_maker();
 	change_to_2d();
 	text_print();
@@ -505,6 +511,33 @@ void Object_exit_print(Object *exit)
 	glEnd();
 }
 
+void Object_spikes_print(Object *spikes) {
+	float i, j;
+	float delta = 0.7;
+	float x1 = (spikes->anchor)->x, y1 = (spikes->anchor)->y, z1 = (spikes->anchor)->z;
+
+	glColor3f(0.8, 0.8, 0.8);
+	for ( i = 1; i <= CELL_SIZE; i += 2.8) {
+		for ( j = 1; j <= CELL_SIZE; j += 2.8 ) {
+			glBegin(GL_LINE_LOOP);
+				glVertex3f(x1 + i - delta, y1 + j, 0);
+				glVertex3f(x1 + i + delta, y1 + j, 0);
+				glVertex3f(x1 + i, y1 + j, z1);
+			glEnd();
+			glBegin(GL_LINE_LOOP);
+				glVertex3f(x1 + i, y1 + j - delta, 0);
+				glVertex3f(x1 + i, y1 + j + delta, 0);
+				glVertex3f(x1 + i, y1 + j, z1);
+			glEnd();
+			glBegin(GL_LINE_STRIP);
+				glVertex3f(x1 + i, y1 + j, 0);
+				glVertex3f(x1 + i, y1 + j, z1);
+			glEnd();
+
+		}
+	}
+}
+
 void Object_teapot_print(Object *teapot)
 {
 	/*GLUquadric* params;
@@ -799,6 +832,7 @@ void text_print()
 
 void life_print(void) {
 	int current_pos_x = 0, current_pos_y = 0, i, wrap = conf->life % 2;
+	if ( conf->life != MAX_HEALTH ) wrap = (MAX_HEALTH % 2 == 0) ? 0 : 1;
 	glLoadIdentity();
 	glTranslated( MARGING_HEART, SCREEN_HEIGHT - HEIGHT_HEART - MARGING_HEART, 0);
 	glColor3ub(255,255,255);
@@ -899,5 +933,19 @@ void change_to_3d(void) {
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 
+}
+
+int check_dommage(int last_time_dmg) {
+	if ( last_time_dmg != 0 ) {
+		return --last_time_dmg;
+	}
+	
+	if ( laby->matrix[COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))] == SPIKES && last_time_dmg == 0) {
+		--conf->life;
+		last_time_dmg = 15;
+		Mix_PlayChannel(1, sound[rand() % NUMBER_OF_CHUNCK], -1);
+	}
+	
+	return last_time_dmg;
 }
 

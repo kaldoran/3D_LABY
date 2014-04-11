@@ -65,6 +65,7 @@ int main( int argc, char* argv[] )
 	/*ol = object_list_push(ol, sun);*/
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
+	ol = object_list_generate_spikes(ol);
 	ol = object_list_push(ol, giant_teapot);
 
 	fprintf(stdout, "%s%s", CYEL, CBLINK);
@@ -266,6 +267,7 @@ int main( int argc, char* argv[] )
 	heart_new();
 	font_new();
 	music_new();
+	chunk_new();
 	
 /*
 	create_texture_from_text("Test", "font/zelda.ttf");
@@ -280,6 +282,7 @@ int main( int argc, char* argv[] )
 	cursors_delete();
 	heart_delete();
 	music_delete();
+	chunk_delete();
 
 	object_list_free(ol);
 	portals_free(portals);

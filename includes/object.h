@@ -53,6 +53,7 @@ Object_list *object_list_shift(Object_list *ol);
 
 Object_list *object_list_push_maze_walls(Object_list *ol);
 Object_list *object_list_generate_fir_trees(Object_list *ol);
+Object_list *object_list_generate_spikes(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
 

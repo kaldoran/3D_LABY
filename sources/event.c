@@ -105,6 +105,7 @@ void main_loop(void)
 		if (conf->key[SDLK_r])
 		{
 			conf->key[SDLK_r] = 0;
+			conf->life = MAX_HEALTH;
 			save_eye->x = CELL_SIZE / 2;
 			save_eye->y = CELL_SIZE / 2;
 			save_eye->z = CHARACTER_SIZE;

@@ -158,9 +158,12 @@ void laby_print(void)
 				fprintf(stdout, "?");
 			} else if (laby->matrix[COORD(x,y)] == PASS) {
 				fprintf(stdout, "░");
-			}  else if (laby->matrix[COORD(x,y)] == ENTRY || laby->matrix[COORD(x,y)] == EXIT) {
+			} else if (laby->matrix[COORD(x,y)] == ENTRY || laby->matrix[COORD(x,y)] == EXIT) {
 				fprintf(stdout, "X");
+			} else if (laby->matrix[COORD(x,y)] == SPIKES) {
+				fprintf(stdout, "^");
 			}
+			
 		}
 		fprintf(stdout, "\n");
 	}

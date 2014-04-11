@@ -239,6 +239,21 @@ Object_list *object_list_push_maze_walls(Object_list *ol)
 return ol;
 }
 
+Object_list *object_list_generate_spikes(Object_list *ol) {
+	int x, y;
+
+	for (x = 0; x < WIDTH; ++x) {
+		for (y = 0; y < HEIGHT; ++y) {
+			if (laby->matrix[COORD(x,y)] == PASS && rand() % 27 == 0) {
+				laby->matrix[COORD(x,y)] = SPIKES;
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 3, SPIKES);
+			}
+		}
+	}
+	
+	return ol;
+}
+
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type)
 {
 	Doubly_linked_node *node;

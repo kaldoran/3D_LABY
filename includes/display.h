@@ -43,6 +43,7 @@ void Object_wall_print(Object *wall);
 void Object_moving_wall_print(Object *wall);
 void Object_entry_print(Object *object);
 void Object_exit_print(Object *object);
+void Object_spikes_print(Object *spikes);
 void Object_teapot_print(Object *teapot);
 
 void DrawEllipse(float radiusX, float radiusY);
@@ -64,4 +65,5 @@ void heart_delete(void);
 void life_print(void);
 
 void text_print();
+int check_dommage(int last_time_dmg);
 #endif
