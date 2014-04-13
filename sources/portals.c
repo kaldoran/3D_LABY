@@ -5,6 +5,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "portals.h"
 
 Portal *portal_new(void) {

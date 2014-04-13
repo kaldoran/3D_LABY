@@ -7,7 +7,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
-#include "k-tree.h"
+#include "object.h"
 #include "laby.h"
 
 #ifndef __CONF
@@ -43,6 +43,7 @@
 
 typedef struct Config {
 	char *path;
+	
 	Point *eye;
 	Point *center;
 	Point *up;
@@ -92,4 +93,6 @@ Point *right_move(Point *save_eye, float speed);
 void change_center(void);
 void modify_direction(void);
 char *my_strcat(char *start, char *end);
+
+int pow2sup(int i);
 #endif

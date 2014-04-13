@@ -3,8 +3,7 @@
  * File : portals.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
  */
-
-#include "k-tree.h"
+#include "object.h"
 
 #ifndef __PORTALS
 #define __PORTALS

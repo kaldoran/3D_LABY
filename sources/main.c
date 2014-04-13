@@ -31,11 +31,15 @@
 #define BUFFER_SIZE 16
 
 void call_realpath (char * argv0) {
-	char *resolved_path = calloc(1024, sizeof(char));
-	realpath (argv0, resolved_path);
-
-	conf->path = strndup(resolved_path, strlen(resolved_path) - 4);
-	fprintf(stderr, "%s\n", conf->path);
+	char *resolved_path = realpath (argv0, NULL);
+	if (resolved_path != NULL)
+	{
+		conf->path = strndup(resolved_path, strlen(resolved_path) - 4);
+		fprintf(stderr, "%s\n", conf->path);
+		free(resolved_path);
+	} else {
+		exit(EXIT_FAILURE);
+	}
 }
 
 int main( int argc, char* argv[] )
@@ -43,12 +47,12 @@ int main( int argc, char* argv[] )
 	const SDL_VideoInfo* info = NULL;
 	int value_att = 0;
 	char pc = '%', buffer[BUFFER_SIZE];
-	GLfloat fogColor[4]     = {0, 0, 0, 1};
+	GLfloat fogColor[4] = {0, 0, 0, 1};
 
 	Object *floor        = object_new(0, 0, 0, FLOOR);
 	Object *border       = object_new(0, 0, 0, BORDER);
-	/*Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);*/
 	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
+	/*Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);*/
 
 	laby    = laby_new();
 	conf    = config_new();
@@ -62,11 +66,14 @@ int main( int argc, char* argv[] )
 
 	ol = object_list_push(ol, floor);
 	ol = object_list_push(ol, border);
-	/*ol = object_list_push(ol, sun);*/
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_spikes(ol);
 	ol = object_list_push(ol, giant_teapot);
+	/*ol = object_list_push(ol, sun);*/
+
+	quad_tree = object_list_to_ktree(ol);
+ktree_print(quad_tree, 0);
 
 	fprintf(stdout, "%s%s", CYEL, CBLINK);
 	fprintf(stdout, "                             .,-:;//;:=\n");
@@ -91,7 +98,7 @@ int main( int argc, char* argv[] )
 	fprintf(stdout, "                             =++%c%c%c%c+/:-.\n\n\n", pc, pc, pc, pc);
 	fprintf(stdout, "%s%s", CRESET, CYEL);
 
-	if(laby == NULL || conf == NULL || ol == NULL)
+	if(laby == NULL || conf == NULL || ol == NULL || quad_tree == NULL)
 	{
 		fprintf(stderr, "We are sorry an error as occurred.\n");
 		fprintf(stderr, "%s\n", CRESET);
@@ -104,14 +111,14 @@ int main( int argc, char* argv[] )
 		{
 			fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided DEBUG MODE.\n\n");
 			laby_print();
-			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
-			fprintf(stderr, "%s\n", CRESET);
+			/* fprintf(stdout, "%d Elements in the environment.\n", ol->size); */
 			
-			object_list_free(ol);
+			ktree_free(quad_tree);
 			config_free(conf);
 			laby_free(laby);
 			portals_free(portals);
 			fprintf(stdout, "Good bye !\n");
+			fprintf(stderr, "%s\n", CRESET);
 			return 0;
 		}
 	}
@@ -284,7 +291,7 @@ int main( int argc, char* argv[] )
 	music_delete();
 	chunk_delete();
 
-	object_list_free(ol);
+	ktree_free(quad_tree);
 	portals_free(portals);
 	config_free(conf);
 	laby_free(laby);

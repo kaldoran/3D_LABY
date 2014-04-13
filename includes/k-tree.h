@@ -3,23 +3,21 @@
  * File : k-tree.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
+#include "object.h"
+
 #ifndef __KTREE
 #define __KTREE
 
-#define K 4
+#define K         4
 
-typedef struct Point
-{
-    float x;
-    float y;
-    float z;    
-} Point;
+#define MAX(X,Y)  (((X) > (Y) ? (X) : (Y)))
+#define MIN(X,Y)  (((X) < (Y) ? (X) : (Y)))
 
 typedef struct Element
 {
     Point *s1;
     Point *s2;
-    char p;
+    Object_list *ol;
 } Element;
 
 typedef struct Ktree
@@ -28,10 +26,9 @@ typedef struct Ktree
     struct Ktree *son[K];
 } Ktree;
 
-Point *point_new(float x, float y, float z);
-void point_free(Point *point);
+Ktree * quad_tree;
 
-Element *element_new(Point *s1, Point *s2, char p);
+Element *element_new(Point *s1, Point *s2, Object_list *ol);
 void element_free(Element *e);
 
 Ktree *ktree_new(void);
@@ -40,7 +37,13 @@ void ktree_free(Ktree *k);
 Ktree *ktree_add(Ktree *k, Element *e, ...);
 Ktree *ktree_son(int ieme, Ktree *A);
 Element *ktree_root(Ktree *A);
-Ktree *intersection(Ktree *k1, Ktree *k2);
-void ktree_print(Ktree *A, int depth);
 
+/*Ktree *intersection(Ktree *k1, Ktree *k2);
+void ktree_print(Ktree *A, int depth);*/
+
+Ktree *object_list_to_ktree(Object_list *ol);
+Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol);
+
+void ktree_display(Ktree *k);
+int need_to_cut(float minx, float miny, float maxx, float maxy, Ktree *k);
 #endif

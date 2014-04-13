@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
+
 #include "config.h"
-#include "laby.h"
 
 Config *config_new(void)
 {
@@ -17,14 +17,15 @@ Config *config_new(void)
 	{
 		return NULL;
 	}
-	
+
 	conf->eye_direction  = point_new(0, HORIZON, 0);
 	conf->body_direction = point_new(0, 1, 0);
-	conf->eye            = point_new(CELL_SIZE / 2, CELL_SIZE / 2, CHARACTER_SIZE);
+	conf->eye            = point_new(CELL_SIZE / 2, CELL_SIZE / 2, 50);
 	conf->center         = point_new(conf->eye->x + conf->eye_direction->x,
 									conf->eye->y + conf->eye_direction->y,
 									conf->eye->z + conf->eye_direction->z);
-	
+	conf->up             = point_new(0, 0, 1);
+
 	conf->theta          = 90.;
 	conf->phi            = 0.;
 
@@ -57,6 +58,9 @@ void config_free(Config *conf)
 	point_free(conf->body_direction);
 	point_free(conf->eye);
 	point_free(conf->center);
+	point_free(conf->up);
+	
+	free(conf->path);
 free(conf);
 }
 
@@ -129,4 +133,10 @@ char *my_strcat(char *start, char *end) {
 	strcat(temp, end);
 	
 	return temp;	
+}
+
+int pow2sup(int i)
+{
+    double logbase2 = log(i) / log(2);
+    return (int) floor(pow(2.0, ceil(logbase2)));
 }

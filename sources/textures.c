@@ -95,9 +95,3 @@ void create_texture_from_text(char *string, char *font_name) {
 		SDL_FreeSurface(temp2);
 	}
 }
-
-int pow2sup(int i)
-{
-    double logbase2 = log(i) / log(2);
-    return (int) floor(pow(2.0, ceil(logbase2)));
-}

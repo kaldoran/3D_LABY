@@ -8,7 +8,6 @@
 #ifndef __DISPLAY
 #define __DISPLAY
 
-
 #define SKY_BACK      0
 #define SKY_FRONT     1
 #define SKY_LEFT      2

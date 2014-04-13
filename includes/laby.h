@@ -7,26 +7,26 @@
 #define __LABY
 
 /* WIDTH and HEIGHT must be odd numbers. */
-#define WIDTH    51
-#define HEIGHT   51
-#define SIZE     (WIDTH * HEIGHT)
+#define WIDTH               51
+#define HEIGHT              51
+#define SIZE                (WIDTH * HEIGHT)
 
-#define COORD(I,J)           (((J) * WIDTH) + (I))
-#define LINE(X)              (X / WIDTH)
-#define COLUMN(X)            (X % WIDTH)
+#define COORD(I,J)          (((J) * WIDTH) + (I))
+#define LINE(X)             (X / WIDTH)
+#define COLUMN(X)           (X % WIDTH)
 
 #define END_RIGHT(X)        (X % WIDTH == WIDTH - 1)
 #define END_LEFT(X)         (X % WIDTH == 0)
 #define END_TOP(X)          (X / WIDTH == HEIGHT - 1)
 #define END_BOTTOM(X)       (X / WIDTH == 0)
 
-#define BORDER      100
-#define PASS        101
-#define ENTRY       102
-#define EXIT        103
-#define WALL        104
-#define MOVING_WALL 105
-#define SPIKES      106
+#define BORDER              100
+#define PASS                101
+#define ENTRY               102
+#define EXIT                103
+#define WALL                104
+#define MOVING_WALL         105
+#define SPIKES              106
 
 #define IS_IN(X)            (X >= 0  && X < SIZE)
 #define IS_BORDER(X)        (END_TOP(X) || END_BOTTOM(X) || END_RIGHT(X) || END_LEFT(X))
@@ -34,6 +34,7 @@
 #define IS_WALL(X)          (IS_IN(X) && (laby->matrix[X] == WALL || laby->matrix[X] == MOVING_WALL))
 #define IS_WALL_OR_OUT(X)   (!IS_IN(X) || IS_WALL(X))
 #define IS_EXIT(X)          (IS_IN(X) && (laby->matrix[X] == EXIT))
+
 typedef struct Laby
 {
     char *matrix;

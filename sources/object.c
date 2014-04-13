@@ -7,9 +7,36 @@
 #include <stdio.h>
 #include <GL/gl.h>
 #include <time.h>
+ 
 #include "laby.h"
 #include "config.h"
 #include "object.h"
+#include "display.h"
+/*
+ * New Point allocation.
+  */
+Point *point_new(float x, float y, float z)
+{
+	Point *p;
+	if ((p = malloc(sizeof *p)) == NULL)
+	{
+		return NULL;
+	}
+	
+	p->x = x;
+	p->y = y;
+	p->z = z;
+return p;
+}
+
+void point_free(Point *p)
+{
+	if(p != NULL)
+	{
+		free(p);
+	}
+}
+
 
 Object *object_new(float x, float y, float z, unsigned int type)
 {
@@ -250,7 +277,6 @@ Object_list *object_list_generate_spikes(Object_list *ol) {
 			}
 		}
 	}
-	
 	return ol;
 }
 
@@ -298,3 +324,59 @@ Object_list *object_list_push_object(Object_list *ol, float x, float y, float z,
 return ol;
 }
 
+void object_list_display(Object_list *ol)
+{
+	Doubly_linked_node *iterator = doubly_linked_node_new();
+
+	if (ol == NULL || ol->size == 0)
+	{
+		return;
+	}
+
+	iterator = ol->last;
+	while (1)
+	{
+		switch ((iterator->object)->type)
+		{
+			case FLOOR:
+				Object_floor_print();
+			break;
+			case BORDER:
+				Object_border_print();
+			break;
+			case SUN:
+				Object_sun_print(iterator->object);
+			break;
+			case FIR_TREE:
+				Object_fir_tree_print(iterator->object);
+			break;
+			case WALL:
+				Object_wall_print(iterator->object);
+			break;
+			case MOVING_WALL:
+				Object_moving_wall_print(iterator->object);
+				/*Object_wall_print(iterator->object);*/
+			break;
+			case ENTRY:
+				Object_entry_print(iterator->object);
+			break;
+			case EXIT:
+				Object_exit_print(iterator->object);
+			break;
+			case SPIKES:
+				Object_spikes_print(iterator->object);
+			break;
+			case TEAPOT:
+				Object_teapot_print(iterator->object);
+			break;
+			default:
+			break;
+		}
+		if (iterator->next != NULL)
+		{
+			iterator = iterator->next;
+		} else {
+			break;
+		}
+	}
+}

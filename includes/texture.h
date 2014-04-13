@@ -11,6 +11,5 @@
 
 GLuint load_texture(const char* file);
 void create_texture_from_text(char *string, char *font_name);
-int pow2sup(int i);
 
 #endif
