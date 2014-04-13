@@ -5,7 +5,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "config.h"
 #include "portals.h"
 
 Portal *portal_new(void) {
@@ -14,7 +14,7 @@ Portal *portal_new(void) {
 		fprintf(stderr,"Probleme de création de portal\n");
 		exit(EXIT_FAILURE);
 	}
-	portal->portail = point_new(0, 0, 10);
+	portal->portail = point_new(0, 0, CELL_SIZE / 2);
 	portal->actif = 0;
 	return portal;
 }

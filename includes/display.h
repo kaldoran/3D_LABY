@@ -45,7 +45,6 @@ void Object_exit_print(Object *object);
 void Object_spikes_print(Object *spikes);
 void Object_teapot_print(Object *teapot);
 
-void DrawEllipse(float radiusX, float radiusY);
 void portal_maker(void);
 
 void sky_box_print(float size);

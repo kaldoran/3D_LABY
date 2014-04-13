@@ -1,4 +1,4 @@
-/*
+	/*
  * SAI project - 3D Laby
  * File : object.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
@@ -473,12 +473,12 @@ void Object_exit_print(Object *exit)
 
 void Object_spikes_print(Object *spikes) {
 	float i, j;
-	float delta = 0.7;
+	float delta = 0.3;
 	float x1 = (spikes->anchor)->x, y1 = (spikes->anchor)->y, z1 = (spikes->anchor)->z;
 
-	glColor3f(0.8, 0.8, 0.8);
-	for ( i = 1; i <= CELL_SIZE; i += 2.8) {
-		for ( j = 1; j <= CELL_SIZE; j += 2.8 ) {
+	glColor3f(0.1, 0.1, 0.1);
+	for ( i = 1; i <= CELL_SIZE; i += 1.2) {
+		for ( j = 1; j <= CELL_SIZE; j += 1.2 ) {
 			glBegin(GL_LINE_LOOP);
 				glVertex3f(x1 + i - delta, y1 + j, 0);
 				glVertex3f(x1 + i + delta, y1 + j, 0);
@@ -524,19 +524,6 @@ void Object_teapot_print(Object *teapot)
   glDrawArrays(GL_LINE_STRIP, 0, 306);
 
   glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-
-void DrawEllipse(float radiusX, float radiusY)
-{
-	int i;
-	float rad;
-	glBegin(GL_LINE_LOOP);
-	for(i=0;i<360;i++) {
-		rad = i*(M_PI / 180.0);
-		glVertex2f(cos(rad)*radiusX, sin(rad)*radiusY);
-	}
-	glEnd();
 }
 
 void portal_maker (void)
@@ -621,11 +608,11 @@ void portal_maker (void)
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->orange->actif) {
 			glLineWidth(3.0);
-			gluDisk(params, 8.0, 8.0, 40, 1);
+			gluDisk(params, CELL_SIZE / 2.7, CELL_SIZE / 2.7, 40, 1);
 			glLineWidth(1.0);
 		}
 		else {
-			gluDisk(params, 0, 8.0, 40, 4);
+			gluDisk(params, 0, CELL_SIZE / 2.7, 40, 4);
 		}
 
 		glPopMatrix();
@@ -644,11 +631,11 @@ void portal_maker (void)
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->bleu->actif) {
 			glLineWidth(3.0);
-			gluDisk(params, 8.0, 8.0, 40, 1);
+			gluDisk(params, CELL_SIZE / 2.7, CELL_SIZE / 2.7, 40, 1);
 			glLineWidth(1.0);
 		}
 		else { 
-			gluDisk(params, 0, 8.0, 40, 4);
+			gluDisk(params, 0, CELL_SIZE / 2.7, 40, 4);
 		}
 
 		glPopMatrix();
@@ -899,7 +886,7 @@ int check_dommage(int last_time_dmg) {
 	
 	if ( laby->matrix[COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))] == SPIKES && last_time_dmg == 0) {
 		--conf->life;
-		last_time_dmg = 7;
+		last_time_dmg = TIME_BETWEEN_DMG;
 		Mix_PlayChannel(1, sound[rand() % NUMBER_OF_CHUNCK], 0);
 	}
 	

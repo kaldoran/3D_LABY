@@ -23,6 +23,7 @@
 #define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
 #define CELL_SIZE           16
+#define SPIKE_HEIGHT	   0.5
 #define HORIZON             1
 #define CHARACTER_SIZE      7
 #define FOVY                70
@@ -40,6 +41,7 @@
 #define HEIGHT_CHAR         20
 
 #define MAX_HEALTH          15
+#define TIME_BETWEEN_DMG    7 /* Temps en Milliseconde */
 
 typedef struct Config {
 	char *path;

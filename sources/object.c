@@ -273,7 +273,7 @@ Object_list *object_list_generate_spikes(Object_list *ol) {
 		for (y = 0; y < HEIGHT; ++y) {
 			if (laby->matrix[COORD(x,y)] == PASS && rand() % 27 == 0) {
 				laby->matrix[COORD(x,y)] = SPIKES;
-				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 3, SPIKES);
+				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, SPIKE_HEIGHT, SPIKES);
 			}
 		}
 	}
