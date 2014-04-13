@@ -137,43 +137,6 @@ void ktree_print(Ktree *k, int depth)
 	}
 }
 
-/*
- * Intersection of two Ktree 
-  */
-/*Ktree *intersection(Ktree *k1, Ktree *k2)
-{
-	Ktree *k = ktree_new();
-	Element *e;
-	int i;
-
-	if (k1 == NULL || k2 == NULL)
-	{
-		return NULL;
-	}
-
-	if (k1->e->p == '1')
-	{
-		return k2;
-	} else if (k1->e->p == '0') {
-		return k1;
-	}
-
-	if (k2->e->p == '1')
-	{
-		return k1;
-	} else if (k2->e->p == '0') {
-		return k2;
-	}
-
-	e = element_new(k1->e->s1, k1->e->s2, k1->e->p);
-	k->e = e;
-	for (i = 0; i < K; ++i)
-	{
-		k->son[i] = intersection(k1->son[i], k2->son[i]);
-	}
-return k;
-}*/
-
 Ktree *object_list_to_ktree(Object_list *ol)
 {
 	int n     = pow2sup((MAX(WIDTH, HEIGHT) + 10) * CELL_SIZE);

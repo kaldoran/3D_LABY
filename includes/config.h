@@ -101,4 +101,5 @@ void modify_direction(void);
 char *my_strcat(char *start, char *end);
 
 int pow2sup(int i);
+
 #endif

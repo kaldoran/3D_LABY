@@ -1,4 +1,4 @@
-	/*
+/*
  * SAI project - 3D Laby
  * File : object.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
@@ -45,9 +45,9 @@ void display(void)
 	sky_box_print(200 * CELL_SIZE);
 
 	Object_floor_print();
-	Object_border_print();
 	moving_wall_list_display();
 	ktree_display(quad_tree);
+	Object_border_print();
 	
 	last_time_dmg = check_dommage(last_time_dmg);
 	portal_maker();

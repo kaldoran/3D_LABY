@@ -21,10 +21,10 @@
 #define CURSOR_NONE   3
 
 #define HEIGHT_CURSOR 64
-#define WIDHT_CURSOR 64
+#define WIDHT_CURSOR  64
 
-#define HEIGHT_HEART 17
-#define WIDTH_HEART  20
+#define HEIGHT_HEART  17
+#define WIDTH_HEART   20
 #define MARGING_HEART 5
 
 unsigned int skybox[6];
@@ -66,4 +66,5 @@ void text_print();
 int check_dommage(int last_time_dmg);
 
 void moving_wall_list_display();
+
 #endif
