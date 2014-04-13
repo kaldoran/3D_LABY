@@ -50,7 +50,6 @@ int main( int argc, char* argv[] )
 	GLfloat fogColor[4] = {0, 0, 0, 1};
 
 	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
-	/*Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);*/
 
 	laby    = laby_new();
 	conf    = config_new();
@@ -68,9 +67,6 @@ int main( int argc, char* argv[] )
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_spikes(ol);
 	ol = object_list_push(ol, giant_teapot);
-	/*ol = object_list_push(ol, sun);
-	ol = object_list_push(ol, floor);
-	ol = object_list_push(ol, border);*/
 
 	quad_tree = object_list_to_ktree(ol);
 
@@ -110,7 +106,7 @@ int main( int argc, char* argv[] )
 		{
 			fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided DEBUG MODE.\n\n");
 			laby_print();
-			/* fprintf(stdout, "%d Elements in the environment.\n", ol->size); */
+			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			
 			object_list_free(mwl);
 			ktree_free(quad_tree);

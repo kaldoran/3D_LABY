@@ -6,10 +6,10 @@
 #ifndef __OBJECT
 #define __OBJECT
 
-#define FLOOR        0
-#define FIR_TREE     1
-#define SUN          2
-#define TEAPOT       418
+#define FLOOR    0
+#define FIR_TREE 1
+#define SUN      2
+#define TEAPOT   418
 
 typedef struct Point
 {
@@ -67,4 +67,5 @@ Object_list *object_list_push_object(Object_list *ol, float x, float y, float z,
 
 
 void object_list_display(Object_list *ol);
+
 #endif

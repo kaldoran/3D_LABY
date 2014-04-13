@@ -1,4 +1,4 @@
-	/*
+/*
  * SAI project - 3D Laby
  * File : object.h
  * Authors : Hivert Kevin - Reynaud Nicolas.

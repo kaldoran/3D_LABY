@@ -68,4 +68,5 @@ void maze_moving_walls_generation(void);
  * Print the maze in the standard output.
   */
 void laby_print(void);
+
 #endif

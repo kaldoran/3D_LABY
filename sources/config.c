@@ -61,7 +61,6 @@ void config_free(Config *conf)
 	point_free(conf->eye);
 	point_free(conf->center);
 	point_free(conf->up);
-	
 	free(conf->path);
 free(conf);
 }
