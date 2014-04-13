@@ -269,7 +269,7 @@ void main_loop(void)
 				fprintf(stderr, "                       ## ##\n");
 				fprintf(stderr, "                      ##  ##\n");
 				fprintf(stderr, "                       ####\n");
-				fprintf(stderr, "                         :\n");
+				fprintf(stderr, "                         |\n");
 				fprintf(stderr, "                        #####\n");
 				fprintf(stderr, "                       ######\n");
 				fprintf(stderr, "                       ##  ##\n");

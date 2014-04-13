@@ -292,13 +292,29 @@ float dist (float x1, float y1, float x2, float y2)
 
 void ktree_display(Ktree *k)
 {
-	float view = 15 * CELL_SIZE;
+	float view = sqrt(pow(2, CELL_SIZE) + pow(2, 0.5 * CELL_SIZE));
 
-	float minx = conf->eye->x - view;
-	float miny = conf->eye->y - view;
+	float x1 = conf->eye->x + view * cos(M_PI * (conf->theta + FOVY / 2) / 180);
+	float y1 = conf->eye->y + view * sin(M_PI * (conf->theta + FOVY / 2) / 180);
 
-	float maxx = conf->eye->x + view;
-	float maxy = conf->eye->y + view;
+	float x2 = conf->eye->x + view * cos(M_PI * (conf->theta - FOVY / 2) / 180);
+	float y2 = conf->eye->y + view * sin(M_PI * (conf->theta - FOVY / 2) / 180);
+
+
+	float minx = MIN(conf->eye->x, MIN(x1, x2));
+	float miny = MIN(conf->eye->y, MIN(y1, y2));
+
+	float maxx = MAX(conf->eye->x, MAX(x1, x2));
+	float maxy = MAX(conf->eye->y, MAX(y1, y2));
+
+	glDisable(GL_FOG);
+	glBegin(GL_LINE_LOOP);
+		glColor3ub(255,255,255);
+		glVertex3f(conf->eye->x, conf->eye->y, 30);
+		glVertex3f(x1, y1, 30);
+		glVertex3f(x2, y2, 30);
+	glEnd();
+	glEnable(GL_FOG);
 
 	glDisable(GL_FOG);
 	glBegin(GL_LINE_LOOP);
