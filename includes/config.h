@@ -59,6 +59,7 @@ typedef struct Config {
 	char life;
 	char shoot;
 	char print_config;
+	char quadTreeView;
 
 	char full_screen;
 	SDL_Surface* pScreen;

@@ -36,6 +36,8 @@ Config *config_new(void)
 	conf->print_config   = 0;
 	conf->free_fly       = 0;
 	conf->full_screen    = 0;
+
+	conf->quadTreeView   = 0;
 	
 	memset(conf->key,0,sizeof(conf->key));
 	memset(conf->mousebutton,0,sizeof(conf->mousebutton));
