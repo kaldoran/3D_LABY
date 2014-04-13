@@ -234,19 +234,19 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 			ol4 = object_list_push(ol4, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		else if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
+		if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
 			&& ((iterator->object)->anchor)->y >= miny && ((iterator->object)->anchor)->y <= midy)
 		{
 			ol3 = object_list_push(ol3, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		else if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
+		if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
 			&& ((iterator->object)->anchor)->y >= midy && ((iterator->object)->anchor)->y <= maxy)
 		{
 			ol2 = object_list_push(ol2, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		else if (((iterator->object)->anchor)->x >= minx && ((iterator->object)->anchor)->x <= midx
+		if (((iterator->object)->anchor)->x >= minx && ((iterator->object)->anchor)->x <= midx
 			&& ((iterator->object)->anchor)->y >= midy && ((iterator->object)->anchor)->y <= maxy)
 		{
 			ol1 = object_list_push(ol1, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
