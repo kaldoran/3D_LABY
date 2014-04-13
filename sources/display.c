@@ -57,9 +57,7 @@ void display(void)
 		if ( conf->display ) {
 			text_print();
 		}
-		else {
-			life_print();
-		}
+		life_print();
 	change_to_3d();
 
 	glFlush();
