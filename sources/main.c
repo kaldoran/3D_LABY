@@ -49,8 +49,6 @@ int main( int argc, char* argv[] )
 	char pc = '%', buffer[BUFFER_SIZE];
 	GLfloat fogColor[4] = {0, 0, 0, 1};
 
-	Object *floor        = object_new(0, 0, 0, FLOOR);
-	Object *border       = object_new(0, 0, 0, BORDER);
 	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
 	/*Object *sun          = object_new(WIDTH * CELL_SIZE + (CELL_SIZE * WIDTH) / 2, CELL_SIZE * HEIGHT + 4 * CELL_SIZE * HEIGHT / 5, 500, SUN);*/
 
@@ -64,8 +62,8 @@ int main( int argc, char* argv[] )
 	maze_generation();
 	maze_moving_walls_generation();
 
-	ol = object_list_push(ol, floor);
-	ol = object_list_push(ol, border);
+	/*ol = object_list_push(ol, floor);
+	ol = object_list_push(ol, border);*/
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_spikes(ol);
@@ -73,7 +71,6 @@ int main( int argc, char* argv[] )
 	/*ol = object_list_push(ol, sun);*/
 
 	quad_tree = object_list_to_ktree(ol);
-ktree_print(quad_tree, 0);
 
 	fprintf(stdout, "%s%s", CYEL, CBLINK);
 	fprintf(stdout, "                             .,-:;//;:=\n");
@@ -263,7 +260,7 @@ ktree_print(quad_tree, 0);
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
 
-	glEnable(GL_FOG) ;
+	glEnable(GL_FOG);
 	glFogi(GL_FOG_MODE,GL_LINEAR);
 	glFogfv(GL_FOG_COLOR,fogColor);
 	glFogf(GL_FOG_START, 1);

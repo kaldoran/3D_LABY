@@ -20,7 +20,7 @@ Config *config_new(void)
 
 	conf->eye_direction  = point_new(0, HORIZON, 0);
 	conf->body_direction = point_new(0, 1, 0);
-	conf->eye            = point_new(CELL_SIZE / 2, CELL_SIZE / 2, 50);
+	conf->eye            = point_new(CELL_SIZE / 2, CELL_SIZE / 2, CHARACTER_SIZE);
 	conf->center         = point_new(conf->eye->x + conf->eye_direction->x,
 									conf->eye->y + conf->eye_direction->y,
 									conf->eye->z + conf->eye_direction->z);

@@ -8,6 +8,10 @@
 #include <stdarg.h>
 #include <math.h>
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+
 #include "k-tree.h"
 #include "config.h"
 #include "laby.h"
@@ -184,10 +188,10 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 	Doubly_linked_node *iterator;
 	int maxx = MAX(s1->x, s2->x);
 	int maxy = MAX(s1->y, s2->y);
-	int midx = MIN(s1->x, s2->x) + abs(s2->x - s1->x) / 2;
-	int midy = MIN(s1->x, s2->x) + abs(s2->x - s1->x) / 2;
 	int minx = MIN(s1->x, s2->x);
 	int miny = MIN(s1->y, s2->y);
+	int midx = MIN(s1->x, s2->x) + (abs(maxx - minx) / 2);
+	int midy = MIN(s1->y, s2->y) + (abs(maxy - miny) / 2);
 
 	Element *e;
 
@@ -210,9 +214,8 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 	Ktree *ka4;
 
 	/* If ol.size > 10 then cut. */
-	if (maxx - minx <= CELL_SIZE || ol->size < 10)
+	if (maxx - minx <= 2 || ol->size < 10)
 	{
-		fprintf(stderr, "%d\n", ol->size);
 		ka->e = element_new(s1, s2, ol);
 		return ka;
 	}
@@ -231,19 +234,19 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 			ol4 = object_list_push(ol4, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
+		else if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
 			&& ((iterator->object)->anchor)->y >= miny && ((iterator->object)->anchor)->y <= midy)
 		{
 			ol3 = object_list_push(ol3, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
+		else if (((iterator->object)->anchor)->x >= midx && ((iterator->object)->anchor)->x <= maxx
 			&& ((iterator->object)->anchor)->y >= midy && ((iterator->object)->anchor)->y <= maxy)
 		{
 			ol2 = object_list_push(ol2, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
 		}
 
-		if (((iterator->object)->anchor)->x >= minx && ((iterator->object)->anchor)->x <= midx
+		else if (((iterator->object)->anchor)->x >= minx && ((iterator->object)->anchor)->x <= midx
 			&& ((iterator->object)->anchor)->y >= midy && ((iterator->object)->anchor)->y <= maxy)
 		{
 			ol1 = object_list_push(ol1, object_new(((iterator->object)->anchor)->x, ((iterator->object)->anchor)->y, ((iterator->object)->anchor)->z, (iterator->object)->type));
@@ -289,7 +292,7 @@ float dist (float x1, float y1, float x2, float y2)
 
 void ktree_display(Ktree *k)
 {
-	float view = 20 * CELL_SIZE;
+	float view = 15 * CELL_SIZE;
 
 	float minx = conf->eye->x - view;
 	float miny = conf->eye->y - view;
@@ -297,18 +300,32 @@ void ktree_display(Ktree *k)
 	float maxx = conf->eye->x + view;
 	float maxy = conf->eye->y + view;
 
+	glDisable(GL_FOG);
+	glBegin(GL_LINE_LOOP);
+		glColor3ub(255,255,0);
+		glVertex3f(minx, miny, 30);
+		glVertex3f(minx, maxy, 30);
+		glVertex3f(maxx, maxy, 30);
+		glVertex3f(maxx, miny, 30);
+	glEnd();
+	glEnable(GL_FOG);
 
-	if (k == NULL)
+	if (need_to_cut(minx, miny, maxx, maxy, k) && ktree_son(1, k) == NULL)
 	{
-		return;
-	}
+		glDisable(GL_FOG);
+		glColor3ub(255,0,0);
+		glBegin(GL_LINE_LOOP);
+			glVertex3f(k->e->s1->x, k->e->s1->y, 30);
+			glVertex3f(k->e->s1->x, k->e->s2->y, 30);
+			glVertex3f(k->e->s2->x, k->e->s2->y, 30);
+			glVertex3f(k->e->s2->x, k->e->s1->y, 30);
+		glEnd();
+		glEnable(GL_FOG);
 
-	if (/*need_to_cut(minx, miny, maxx, maxy, k) && */ktree_son(1, k) == NULL)
-	{
 		object_list_display(k->e->ol);
 	}
 
-	if (/*need_to_cut(minx, miny, maxx, maxy, k) && */ktree_son(1, k) != NULL)
+	if (ktree_son(1, k) != NULL)
 	{
 		ktree_display(k->son[0]);
 		ktree_display(k->son[1]);
@@ -325,7 +342,28 @@ int need_to_cut(float minx, float miny, float maxx, float maxy, Ktree *k)
 	int k_minx = MIN(k->e->s1->x, k->e->s2->x);
 	int k_miny = MIN(k->e->s1->y, k->e->s2->y);
 
-	if (dist(conf->eye->x, conf->eye->y, k_minx + ((k_maxx - k_minx) / 2),  k_miny + ((k_maxy - k_miny) / 2)) <= 20 * CELL_SIZE)
+	if (minx <= k_minx && k_minx <= maxx
+		&& miny <= k_miny && k_miny <= maxy)
+	{
 		return 1;
+	}
+
+	if (minx <= k_minx && k_minx <= maxx
+		&& miny <= k_maxy && k_maxy <= maxy)
+	{
+		return 1;
+	}
+
+	if (minx <= k_maxx && k_maxx <= maxx
+		&& miny <= k_maxy && k_maxy <= maxy)
+	{
+		return 1;
+	}
+
+	if (minx <= k_maxx && k_maxx <= maxx
+		&& miny <= k_miny && k_miny <= maxy)
+	{
+		return 1;
+	}
 return 0;
 }

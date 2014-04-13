@@ -22,9 +22,9 @@
 #define SCREEN_WIDTH        600
 #define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
-#define CELL_SIZE           25
+#define CELL_SIZE           16
 #define HORIZON             1
-#define CHARACTER_SIZE      10
+#define CHARACTER_SIZE      7
 #define FOVY                70
 #define NEAR                1
 #define FAR                 SIZE * 2 * CELL_SIZE

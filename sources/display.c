@@ -44,6 +44,8 @@ void display(void)
 
 	sky_box_print(200 * CELL_SIZE);
 
+	Object_floor_print();
+	Object_border_print();
 	ktree_display(quad_tree);
 	
 	last_time_dmg = check_dommage(last_time_dmg);

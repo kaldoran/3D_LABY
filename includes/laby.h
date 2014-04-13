@@ -30,10 +30,11 @@
 
 #define IS_IN(X)            (X >= 0  && X < SIZE)
 #define IS_BORDER(X)        (END_TOP(X) || END_BOTTOM(X) || END_RIGHT(X) || END_LEFT(X))
-#define IS_PLAYABLE(X)      (IS_IN(X) && (laby->matrix[X] == PASS || laby->matrix[X] == ENTRY || laby->matrix[X] == EXIT || laby->matrix[X] == SPIKES ))
+#define IS_PLAYABLE(X)      (IS_IN(X) && (laby->matrix[X] == PASS || laby->matrix[X] == ENTRY || laby->matrix[X] == EXIT || laby->matrix[X] == SPIKES))
 #define IS_WALL(X)          (IS_IN(X) && (laby->matrix[X] == WALL || laby->matrix[X] == MOVING_WALL))
 #define IS_WALL_OR_OUT(X)   (!IS_IN(X) || IS_WALL(X))
 #define IS_EXIT(X)          (IS_IN(X) && (laby->matrix[X] == EXIT))
+#define IS_SPIKES(X)        (IS_IN(X) && (laby->matrix[X] == SPIKES))
 
 typedef struct Laby
 {

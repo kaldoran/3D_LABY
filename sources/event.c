@@ -208,7 +208,7 @@ void main_loop(void)
 					 	}
 					 	if(COORD((x+dx),(y+dy)) == COORD(((int)save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
 					 		|| !IS_PLAYABLE(COORD((x+dx),(y+dy)))
-					 		|| laby->matrix[COORD((x+dx),(y+dy))] == SPIKES
+					 		|| (IS_SPIKES(COORD((x+dx),(y+dy))))
 					 		|| (dx == 1 && END_RIGHT(COORD(x,y)))
 					 		|| (dy == 1 && END_TOP(COORD(x,y)))
 					 		|| (dx == -1 && END_LEFT(COORD(x,y)))
@@ -241,7 +241,7 @@ void main_loop(void)
 			&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
 			&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
 			&& save_eye->z <= CHARACTER_SIZE 
-			&& save_eye->z > 5 
+			&& save_eye->z > CHARACTER_SIZE - 3
 			&& IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE))) 
 			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
 			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE))) 
