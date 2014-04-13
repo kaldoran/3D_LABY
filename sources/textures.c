@@ -51,10 +51,9 @@ GLuint load_texture(const char* file)
 
 
 void create_texture_from_text(char *string, char *font_name) {
-	int w, h;
-	TTF_Font *font = font_load(font_name, 32);
+	TTF_Font *font = font_load(font_name, 20);
 	SDL_Color textColor;
-	SDL_Surface * temp, *temp2;	
+	SDL_Surface * temp;	
 	
 	textColor.r = 255;
 	textColor.g = 255;
@@ -66,32 +65,16 @@ void create_texture_from_text(char *string, char *font_name) {
 	glBindTexture(GL_TEXTURE_2D,conf->text);
 
 	if(temp != NULL) {
-		w = pow2sup(temp->w);
-		h = pow2sup(temp->h);
-
-		temp2 = SDL_CreateRGBSurface(SDL_HWSURFACE,
-									w,
-									h,
-									32,
-									temp->format->Rmask,
-									temp->format->Gmask,
-									temp->format->Bmask,
-									temp->format->Amask);
-
-		if(temp2 == NULL) {
-			SDL_FreeSurface(temp);
-			return;
-		}
-
 		conf->width_text = temp->w;
 		conf->height_text = temp->h;
 		
-		SDL_BlitSurface(temp, NULL, temp2, NULL);
-
-		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, temp2->w, temp2->h, 0,
-						GL_RGBA, GL_UNSIGNED_BYTE, temp2->pixels);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0,
+						GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
 
 		SDL_FreeSurface(temp);
-		SDL_FreeSurface(temp2);
+
 	}
 }
