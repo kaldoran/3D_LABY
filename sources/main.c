@@ -118,6 +118,11 @@ int main( int argc, char* argv[] )
 			fprintf(stderr, "%s\n", CRESET);
 			return 0;
 		}
+
+		if (!strcasecmp(argv[1], "Tree"))
+		{
+			conf->quadTreeView = 1;
+		}
 	}
 
 	fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided enrichment center.\n\n");

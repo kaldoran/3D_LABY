@@ -307,36 +307,42 @@ void ktree_display(Ktree *k)
 	float maxx = MAX(conf->eye->x, MAX(x1, x2));
 	float maxy = MAX(conf->eye->y, MAX(y1, y2));
 
-	glDisable(GL_FOG);
-	glBegin(GL_LINE_LOOP);
-		glColor3ub(255,255,255);
-		glVertex3f(conf->eye->x, conf->eye->y, 30);
-		glVertex3f(x1, y1, 30);
-		glVertex3f(x2, y2, 30);
-	glEnd();
-	glEnable(GL_FOG);
+	if (conf->quadTreeView)
+	{
+		glDisable(GL_FOG);
+		glBegin(GL_LINE_LOOP);
+			glColor3ub(255,255,255);
+			glVertex3f(conf->eye->x, conf->eye->y, 30);
+			glVertex3f(x1, y1, 30);
+			glVertex3f(x2, y2, 30);
+		glEnd();
+		glEnable(GL_FOG);
 
-	glDisable(GL_FOG);
-	glBegin(GL_LINE_LOOP);
-		glColor3ub(255,255,0);
-		glVertex3f(minx, miny, 30);
-		glVertex3f(minx, maxy, 30);
-		glVertex3f(maxx, maxy, 30);
-		glVertex3f(maxx, miny, 30);
-	glEnd();
-	glEnable(GL_FOG);
+		glDisable(GL_FOG);
+		glBegin(GL_LINE_LOOP);
+			glColor3ub(255,255,0);
+			glVertex3f(minx, miny, 30);
+			glVertex3f(minx, maxy, 30);
+			glVertex3f(maxx, maxy, 30);
+			glVertex3f(maxx, miny, 30);
+		glEnd();
+		glEnable(GL_FOG);
+	}
 
 	if (need_to_cut(minx, miny, maxx, maxy, k) && ktree_son(1, k) == NULL)
 	{
-		glDisable(GL_FOG);
-		glColor3ub(255,0,0);
-		glBegin(GL_LINE_LOOP);
-			glVertex3f(k->e->s1->x, k->e->s1->y, 30);
-			glVertex3f(k->e->s1->x, k->e->s2->y, 30);
-			glVertex3f(k->e->s2->x, k->e->s2->y, 30);
-			glVertex3f(k->e->s2->x, k->e->s1->y, 30);
-		glEnd();
-		glEnable(GL_FOG);
+		if (conf->quadTreeView)
+		{
+			glDisable(GL_FOG);
+			glColor3ub(255,0,0);
+			glBegin(GL_LINE_LOOP);
+				glVertex3f(k->e->s1->x, k->e->s1->y, 30);
+				glVertex3f(k->e->s1->x, k->e->s2->y, 30);
+				glVertex3f(k->e->s2->x, k->e->s2->y, 30);
+				glVertex3f(k->e->s2->x, k->e->s1->y, 30);
+			glEnd();
+			glEnable(GL_FOG);
+		}
 
 		object_list_display(k->e->ol);
 	}
