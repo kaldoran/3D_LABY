@@ -899,8 +899,8 @@ int check_dommage(int last_time_dmg) {
 	
 	if ( laby->matrix[COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))] == SPIKES && last_time_dmg == 0) {
 		--conf->life;
-		last_time_dmg = 15;
-		Mix_PlayChannel(1, sound[rand() % NUMBER_OF_CHUNCK], -1);
+		last_time_dmg = 7;
+		Mix_PlayChannel(1, sound[rand() % NUMBER_OF_CHUNCK], 0);
 	}
 	
 	return last_time_dmg;
