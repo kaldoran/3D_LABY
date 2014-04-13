@@ -3,9 +3,7 @@
  * File : font.c
  * Authors : Hivert Kevin - Reynaud Nicolas.
  */
-
 #include "font.h"
-
 
 TTF_Font *font_load(char *name, int size) {
 

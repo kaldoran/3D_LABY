@@ -10,11 +10,11 @@
 #ifndef __MUSIC
 #define __MUSIC
 
-#define CHANG_VOL 5
+#define CHANG_VOL        3
 
-#define HURT_1 0
-#define HURT_2 1
-#define HURT_3 2
+#define HURT_1           0
+#define HURT_2           1
+#define HURT_3           2
 
 #define NUMBER_OF_CHUNCK 3
 

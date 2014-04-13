@@ -3,8 +3,6 @@
  * File : object.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
-#include "k-tree.h"
- 
 #ifndef __OBJECT
 #define __OBJECT
 
@@ -12,6 +10,13 @@
 #define FIR_TREE     1
 #define SUN          2
 #define TEAPOT       418
+
+typedef struct Point
+{
+    float x;
+    float y;
+    float z;    
+} Point;
 
 typedef struct Object
 {
@@ -36,6 +41,9 @@ typedef struct Object_list
 /* Global list */
 Object_list *ol;
 
+Point *point_new(float x, float y, float z);
+void point_free(Point *point);
+
 Object *object_new(float x, float y, float z, unsigned int type);
 void object_free(Object *object);
 
@@ -57,5 +65,5 @@ Object_list *object_list_generate_spikes(Object_list *ol);
 Object_list *object_list_push_object(Object_list *ol, float x, float y, float z, unsigned int type);
 
 
-
+void object_list_display(Object_list *ol);
 #endif

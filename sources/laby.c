@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+
 #include "laby.h"
  
 /*
@@ -37,8 +38,14 @@ return laby;
 
 void laby_free(Laby *laby)
 {
-	free(laby->matrix);
-	free(laby);
+	if(laby->matrix != NULL)
+	{
+		free(laby->matrix);
+	}
+	if (laby != NULL)
+	{
+		free(laby);
+	}
 }
 
 void maze_carving (int x, int y)
@@ -185,7 +192,7 @@ void maze_moving_walls_generation(void)
 	{
 		for (y = 1; y < HEIGHT; ++y)
 		{
-			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 20)
+			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 10)
 			{
 				laby->matrix[COORD(x,y)] = MOVING_WALL;
 			}

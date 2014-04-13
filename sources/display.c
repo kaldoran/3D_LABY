@@ -25,12 +25,12 @@
 #include "texture.h"
 #include "vertices.h"
 #include "music.h"
+#include "k-tree.h"
 
 int last_time_dmg = 0;
 	
 void display(void)
 {
-	Doubly_linked_node *iterator = doubly_linked_node_new();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -40,63 +40,21 @@ void display(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, 0, 0, 1);
+	gluLookAt(conf->eye->x, conf->eye->y, conf->eye->z, conf->center->x, conf->center->y, conf->center->z, conf->up->x, conf->up->y, conf->up->z);
 
 	sky_box_print(200 * CELL_SIZE);
 
-	iterator = ol->last;
-	while (1)
-	{
-		switch ((iterator->object)->type)
-		{
-			case FLOOR:
-				Object_floor_print();
-			break;
-			case BORDER:
-				Object_border_print();
-			break;
-			case SUN:
-				Object_sun_print(iterator->object);
-			break;
-			case FIR_TREE:
-				Object_fir_tree_print(iterator->object);
-			break;
-			case WALL:
-				Object_wall_print(iterator->object);
-			break;
-			case MOVING_WALL:
-				Object_moving_wall_print(iterator->object);
-				/*Object_wall_print(iterator->object);*/
-			break;
-			case ENTRY:
-				Object_entry_print(iterator->object);
-			break;
-			case EXIT:
-				Object_exit_print(iterator->object);
-			break;
-			case SPIKES:
-				Object_spikes_print(iterator->object);
-			break;
-			case TEAPOT:
-				Object_teapot_print(iterator->object);
-			break;
-			default:
-			break;
-		}
-		if (iterator->next != NULL)
-		{
-			iterator = iterator->next;
-		} else {
-			break;
-		}
-	}
+	ktree_display(quad_tree);
+	
 	last_time_dmg = check_dommage(last_time_dmg);
 	portal_maker();
+
 	change_to_2d();
-	text_print();
-	cursor_print();
-	life_print();
+		text_print();
+		cursor_print();
+		life_print();
 	change_to_3d();
+
 	glFlush();
     SDL_GL_SwapBuffers();
 }
@@ -274,7 +232,7 @@ void Object_floor_print(void)
 void Object_fir_tree_print(Object *fir_tree) {
 	float ratio = 0.2;
 	int i,j, size = CELL_SIZE / 5;
-	GLUquadric* params;
+	GLUquadric *params;
 	
 	/* TRONC Arbre */
 	glColor3f(0.95, 0.7, 0.05);
@@ -399,7 +357,7 @@ void Object_moving_wall_print(Object *wall)
 {
 	float x1 = (wall->anchor)->x, y1 = (wall->anchor)->y, z1 = (wall->anchor)->z;
 	float x2 = (wall->anchor)->x + CELL_SIZE, y2 = (wall->anchor)->y + CELL_SIZE, z2 = (wall->anchor)->z + CELL_SIZE; 
-	time_color();
+	glColor3f(0.1, 0.1, 0.1);
 	glBegin(GL_QUADS);
 		glVertex3f(x1 + 1, y1 + 1, z1 + 1);
 		glVertex3f(x2 - 1, y1 + 1, z1 + 1);
@@ -710,10 +668,9 @@ void sky_box_print(float size)
 {
 	glDisable(GL_FOG);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 
-	glColor3f(1,1,1);
+	glColor3ub(200,200,255);
 
 	glPushMatrix();
 	glTranslatef(conf->eye->x, conf->eye->y, conf->eye->z);
@@ -799,7 +756,6 @@ void sky_box_print(float size)
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FOG);
-	glEnable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -814,7 +770,7 @@ void text_print()
 	glLoadIdentity();
 
 	glTranslated(SCREEN_WIDTH/2 - conf->width_text/2, SCREEN_HEIGHT/2 - conf->height_text/2, 0);
-	glColor4ub(255,255,255,0);
+	glColor3ub(255,255,255);
 	glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
 
 	glBegin(GL_QUADS);
@@ -932,7 +888,6 @@ void change_to_3d(void) {
 	glEnable(GL_FOG);
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
-
 }
 
 int check_dommage(int last_time_dmg) {

@@ -3,7 +3,6 @@
  * File : music.c
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
-  
 #include "music.h"
 #include "config.h"
 
