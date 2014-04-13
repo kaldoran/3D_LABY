@@ -50,14 +50,14 @@ GLuint load_texture(const char* file)
 }
 
 
-void create_texture_from_text(char *string, char *font_name) {
+void create_texture_from_text(char *string, char *font_name, int r, int g, int b) {
 	TTF_Font *font = font_load(font_name, 20);
 	SDL_Color textColor;
 	SDL_Surface * temp;	
 	
-	textColor.r = 255;
-	textColor.g = 255;
-	textColor.b = 255;
+	textColor.r = r;
+	textColor.g = g;
+	textColor.b = b;
 	
 	temp = TTF_RenderText_Blended(font, string, textColor);
 

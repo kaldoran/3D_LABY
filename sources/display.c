@@ -53,9 +53,13 @@ void display(void)
 	portal_maker();
 
 	change_to_2d();
-		text_print();
 		cursor_print();
-		life_print();
+		if ( conf->display ) {
+			text_print();
+		}
+		else {
+			life_print();
+		}
 	change_to_3d();
 
 	glFlush();
@@ -758,7 +762,7 @@ void text_print()
 {
 	glLoadIdentity();
 
-	glTranslated(SCREEN_WIDTH/2 - conf->width_text/2, SCREEN_HEIGHT/2 - conf->height_text/2, 0);
+	glTranslated(0, SCREEN_HEIGHT - 20, 0);
 	glColor3ub(255,255,255);
 	glBindTexture(GL_TEXTURE_2D, conf->text);
 

@@ -82,6 +82,7 @@ typedef struct Config {
 	GLuint text;
 	unsigned int width_text;
 	unsigned int height_text;
+	int display;
 } Config;
 
 /* Global config structure */

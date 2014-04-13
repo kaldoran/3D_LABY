@@ -73,7 +73,8 @@ void main_loop(void)
 
 		if (conf->key[SDLK_F3])
 		{
-			/* Print Config. */
+			conf->key[SDLK_F3] = 0;
+			conf->display = !conf->display;
 		}
 
 		if (conf->key[SDLK_F4])
@@ -94,7 +95,7 @@ void main_loop(void)
 				music_new();
 			}
 		}
-
+		
 		if (conf->key[SDLK_UP] || conf->key[SDLK_z])
 		{
 			forward_move(save_eye, speed);

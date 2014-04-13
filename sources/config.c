@@ -51,6 +51,7 @@ Config *config_new(void)
 	conf->volume	     = MIX_MAX_VOLUME;
 
 	conf->text = 0;
+	conf->display = 0;
 return conf;
 }
 

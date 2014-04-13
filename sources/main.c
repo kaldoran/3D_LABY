@@ -282,7 +282,7 @@ int main( int argc, char* argv[] )
 	chunk_new();
 	
 
-	create_texture_from_text("Text BITCHES !", my_strcat(conf->path,"font/zelda.ttf"));
+	create_texture_from_text("Text BITCHES !", my_strcat(conf->path,"font/zelda.ttf"), 255, 255, 0);
 
 	main_loop();
 
