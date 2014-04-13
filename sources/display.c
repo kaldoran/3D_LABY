@@ -31,7 +31,7 @@ int last_time_dmg = 0;
 	
 void display(void)
 {
-
+	char buffer[256];
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
@@ -55,7 +55,9 @@ void display(void)
 	change_to_2d();
 		cursor_print();
 		if ( conf->display ) {
-			text_print();
+			sprintf(buffer,"X: %.2f - Y: %.2f - Angle X: %.2f", conf->eye->x, conf->eye->y, conf->theta);
+			create_texture_from_text(buffer, 255, 255, 255);
+			text_print(100, 100);
 		}
 		life_print();
 	change_to_3d();
@@ -756,7 +758,7 @@ void sky_box_delete(void)
 }
 
 
-void text_print()
+void text_print(int x, int y)
 {
 	glLoadIdentity();
 
@@ -766,13 +768,13 @@ void text_print()
 
 	glBegin(GL_QUADS);
 		glTexCoord2i(0,1);
-		glVertex2i(0,0);
+		glVertex2i(x, -y);
 		glTexCoord2i(1,1);
-		glVertex2i(conf->width_text,0);
+		glVertex2i(conf->width_text + x, -y);
 		glTexCoord2i(1,0);
-		glVertex2i(conf->width_text,conf->height_text);
+		glVertex2i(conf->width_text + x,conf->height_text - y);
 		glTexCoord2i(0,0);
-		glVertex2i(0,conf->height_text);
+		glVertex2i(x,conf->height_text - y);
 	glEnd();
 
 }
