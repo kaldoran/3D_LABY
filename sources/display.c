@@ -776,7 +776,11 @@ void text_print()
 
 void life_print(void) {
 	int current_pos_x = 0, current_pos_y = 0, i, wrap = conf->life % 2;
-	if ( conf->life != MAX_HEALTH ) wrap = (MAX_HEALTH % 2 == 0) ? 0 : 1;
+	
+	if ( conf->life != MAX_HEALTH ) {
+		wrap = (MAX_HEALTH % 2 == 0) ? 0 : 1;
+	}
+	
 	glLoadIdentity();
 	glTranslated( MARGING_HEART, SCREEN_HEIGHT - HEIGHT_HEART - MARGING_HEART, 0);
 	glColor3ub(255,255,255);
@@ -835,16 +839,14 @@ void cursor_print(void) {
 	glEnd();
 }
 
-void cursors_new(void)
-{
+void cursors_new(void) {
 	cursors[CURSOR_BLUE]   = load_texture(my_strcat(conf->path, "textures/blue.png"));
 	cursors[CURSOR_ORANGE] = load_texture(my_strcat(conf->path, "textures/orange.png"));
 	cursors[CURSOR_BOTH]   = load_texture(my_strcat(conf->path, "textures/blueorange.png"));
 	cursors[CURSOR_NONE]   = load_texture(my_strcat(conf->path, "textures/void.png"));
 }
 
-void cursors_delete(void)
-{
+void cursors_delete(void) {
 	glDeleteTextures(4, &cursors[0]);
 }
 
