@@ -76,6 +76,25 @@ void main_loop(void)
 			/* Print Config. */
 		}
 
+		if (conf->key[SDLK_F4])
+		{
+			conf->key[SDLK_F4] = 0;
+			conf->quadTreeView = !conf->quadTreeView;
+		}
+
+		if (conf->key[SDLK_F5])
+		{
+			conf->key[SDLK_F5] = 0;
+			if (!strcmp(conf->music, "music/music2.mp3"))
+			{
+				conf->music = "music/music.mp3";
+				music_new();
+			} else if (!strcmp(conf->music, "music/music.mp3")) {
+				conf->music = "music/music2.mp3";
+				music_new();
+			}
+		}
+
 		if (conf->key[SDLK_UP] || conf->key[SDLK_z])
 		{
 			forward_move(save_eye, speed);
