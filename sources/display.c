@@ -760,16 +760,16 @@ void text_print()
 
 	glTranslated(SCREEN_WIDTH/2 - conf->width_text/2, SCREEN_HEIGHT/2 - conf->height_text/2, 0);
 	glColor3ub(255,255,255);
-	glBindTexture(GL_TEXTURE_2D, cursors[CURSOR_BOTH]);
+	glBindTexture(GL_TEXTURE_2D, conf->text);
 
 	glBegin(GL_QUADS);
-		glTexCoord2i(0,0);
-		glVertex2i(0,0);
-		glTexCoord2i(1,0);
-		glVertex2i(conf->width_text,0);
-		glTexCoord2i(1,1);
-		glVertex2i(conf->width_text,conf->height_text);
 		glTexCoord2i(0,1);
+		glVertex2i(0,0);
+		glTexCoord2i(1,1);
+		glVertex2i(conf->width_text,0);
+		glTexCoord2i(1,0);
+		glVertex2i(conf->width_text,conf->height_text);
+		glTexCoord2i(0,0);
 		glVertex2i(0,conf->height_text);
 	glEnd();
 

@@ -277,9 +277,9 @@ int main( int argc, char* argv[] )
 	music_new();
 	chunk_new();
 	
-/*
-	create_texture_from_text("Test", "font/zelda.ttf");
-*/
+
+	create_texture_from_text("Text BITCHES !", my_strcat(conf->path,"font/zelda.ttf"));
+
 	main_loop();
 
 /*
