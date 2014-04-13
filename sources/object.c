@@ -258,8 +258,6 @@ Object_list *object_list_push_maze_walls(Object_list *ol)
 				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, ENTRY);
 			} else if (laby->matrix[COORD(x,y)] == EXIT) {
 				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, EXIT);
-			} else if (laby->matrix[COORD(x,y)] == MOVING_WALL) {
-				ol = object_list_push_object(ol, x * CELL_SIZE, y * CELL_SIZE, 0, MOVING_WALL);
 			}
 		}
 	}

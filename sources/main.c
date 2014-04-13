@@ -55,20 +55,22 @@ int main( int argc, char* argv[] )
 	laby    = laby_new();
 	conf    = config_new();
 	ol      = object_list_new();
+	mwl     = object_list_new();
 	portals = portals_new();
+
 	
 	call_realpath(argv[0]);
 
 	maze_generation();
 	maze_moving_walls_generation();
 
-	/*ol = object_list_push(ol, floor);
-	ol = object_list_push(ol, border);*/
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_spikes(ol);
 	ol = object_list_push(ol, giant_teapot);
-	/*ol = object_list_push(ol, sun);*/
+	/*ol = object_list_push(ol, sun);
+	ol = object_list_push(ol, floor);
+	ol = object_list_push(ol, border);*/
 
 	quad_tree = object_list_to_ktree(ol);
 
@@ -110,6 +112,7 @@ int main( int argc, char* argv[] )
 			laby_print();
 			/* fprintf(stdout, "%d Elements in the environment.\n", ol->size); */
 			
+			object_list_free(mwl);
 			ktree_free(quad_tree);
 			config_free(conf);
 			laby_free(laby);
@@ -293,6 +296,7 @@ int main( int argc, char* argv[] )
 	music_delete();
 	chunk_delete();
 
+	object_list_free(mwl);
 	ktree_free(quad_tree);
 	portals_free(portals);
 	config_free(conf);

@@ -40,6 +40,7 @@ typedef struct Object_list
 
 /* Global list */
 Object_list *ol;
+Object_list *mwl;
 
 Point *point_new(float x, float y, float z);
 void point_free(Point *point);

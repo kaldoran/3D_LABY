@@ -64,4 +64,6 @@ void life_print(void);
 
 void text_print();
 int check_dommage(int last_time_dmg);
+
+void moving_wall_list_display();
 #endif

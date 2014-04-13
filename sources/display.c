@@ -46,6 +46,7 @@ void display(void)
 
 	Object_floor_print();
 	Object_border_print();
+	moving_wall_list_display();
 	ktree_display(quad_tree);
 	
 	last_time_dmg = check_dommage(last_time_dmg);
@@ -893,3 +894,25 @@ int check_dommage(int last_time_dmg) {
 	return last_time_dmg;
 }
 
+void moving_wall_list_display()
+{
+	Doubly_linked_node *iterator = doubly_linked_node_new();
+
+	if (mwl == NULL || mwl->size == 0)
+	{
+		return;
+	}
+
+	iterator = mwl->last;
+	while (1)
+	{
+		Object_moving_wall_print(iterator->object);
+
+		if (iterator->next != NULL)
+		{
+			iterator = iterator->next;
+		} else {
+			break;
+		}
+	}
+}

@@ -177,7 +177,7 @@ void main_loop(void)
 		if (COORD((int)(save_eye->x / CELL_SIZE), (int)(save_eye->y / CELL_SIZE))
 				!= COORD((int)((conf->eye)->x / CELL_SIZE), (int)((conf->eye)->y / CELL_SIZE)))
 		{
-			iterator = ol->last;
+			iterator = mwl->last;
 			while (1)
 			{
 				if ((iterator->object)->type == MOVING_WALL)
@@ -208,7 +208,6 @@ void main_loop(void)
 					 	}
 					 	if(COORD((x+dx),(y+dy)) == COORD(((int)save_eye->x / CELL_SIZE), ((int)save_eye->y / CELL_SIZE))
 					 		|| !IS_PLAYABLE(COORD((x+dx),(y+dy)))
-					 		|| (IS_SPIKES(COORD((x+dx),(y+dy))))
 					 		|| (dx == 1 && END_RIGHT(COORD(x,y)))
 					 		|| (dy == 1 && END_TOP(COORD(x,y)))
 					 		|| (dx == -1 && END_LEFT(COORD(x,y)))
