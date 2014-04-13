@@ -236,8 +236,18 @@ void main_loop(void)
 					 		direction = (direction + 1) % 4;
 					 		++count;
 					 	} else {
-					 		laby->matrix[COORD(x,y)] = PASS;
-					 		laby->matrix[COORD((x+dx),(y+dy))] = MOVING_WALL;
+					 		if(laby->matrix[COORD(x,y)] == SPIKES_MW) {
+					 			laby->matrix[COORD(x,y)] = SPIKES;
+					 		} else if (laby->matrix[COORD(x,y)] == MOVING_WALL) {
+					 			laby->matrix[COORD(x,y)] = PASS;
+					 		}
+
+							if(laby->matrix[COORD((x+dx),(y+dy))] == PASS)
+							{
+								laby->matrix[COORD((x+dx),(y+dy))] = MOVING_WALL;
+							} else if (laby->matrix[COORD((x+dx),(y+dy))] == SPIKES) {
+								laby->matrix[COORD((x+dx),(y+dy))] = SPIKES_MW;
+							}
 
 							((iterator->object)->anchor)->x += (dx * CELL_SIZE);
 							((iterator->object)->anchor)->y += (dy * CELL_SIZE);

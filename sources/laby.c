@@ -194,7 +194,7 @@ void maze_moving_walls_generation(void)
 	{
 		for (y = 1; y < HEIGHT; ++y)
 		{
-			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 10)
+			if (laby->matrix[COORD(x,y)] == PASS && rand() % SIZE <= 30)
 			{
 				laby->matrix[COORD(x,y)] = MOVING_WALL;
 				mwl = object_list_push_object(mwl, x * CELL_SIZE, y * CELL_SIZE, SPIKE_HEIGHT, MOVING_WALL);
