@@ -280,6 +280,32 @@ void main_loop(void)
 		modify_direction();
 		change_center();
 
+		if (conf->life <= 0)
+		{
+			fprintf(stderr,"                          .,---.\n");
+			fprintf(stderr,"                        ,/XM#MMMX;,\n");
+			fprintf(stderr,"                      -%%##########M%%,\n");
+			fprintf(stderr,"                     -@######%%  $###@=\n");
+			fprintf(stderr,"      .,--,         -H#######$   $###M:\n");
+			fprintf(stderr,"   ,;$M###MMX;     .;##########$;HM###X=\n");
+			fprintf(stderr," ,/@##########H=      ;################+\n");
+			fprintf(stderr,"-+#############M/,      %%##############+\n");
+			fprintf(stderr,"%%M###############=      /##############:\n");
+			fprintf(stderr,"H################      .M#############;.\n");
+			fprintf(stderr,"@###############M      ,@###########M:.\n");
+			fprintf(stderr,"X################,      -$=X#######@:\n");
+			fprintf(stderr,"/@##################%%-     +######$-\n");
+			fprintf(stderr,".;##################X     .X#####+,\n");
+			fprintf(stderr," .;H################/     -X####+.\n");
+			fprintf(stderr,"   ,;X##############,       .MM/\n");
+			fprintf(stderr,"      ,:+$H@M#######M#$-    .$$=\n");
+			fprintf(stderr,"           .,-=;+$@###X:    ;/=.\n");
+			fprintf(stderr,"                  .,/X$;   .::,\n");
+			fprintf(stderr,"                      .,    ..\n");
+			fprintf(stderr,"You lose !\n");
+			conf->quit = 1;
+		}
+
 		if (IS_EXIT(COORD((int)(conf->eye->x / CELL_SIZE), (int)(conf->eye->y / CELL_SIZE))) && !conf->free_fly)
 		{
 			if (strcmp(conf->music, "music/music3.mp3")) {

@@ -23,7 +23,7 @@
 #define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
 #define CELL_SIZE           16
-#define SPIKE_HEIGHT	   0.5
+#define SPIKE_HEIGHT	    0.5
 #define HEIGHT_MIN_BORDER   3
 #define HEIGHT_MAX_BORDER   7
 #define HORIZON             1
