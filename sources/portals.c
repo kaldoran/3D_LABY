@@ -14,7 +14,7 @@ Portal *portal_new(void) {
 		fprintf(stderr,"Probleme de création de portal\n");
 		exit(EXIT_FAILURE);
 	}
-	portal->portail = point_new(0, 0, CELL_SIZE / 2);
+	portal->portail = point_new(0, 0, CELL_SIZE / 2.3);
 	portal->actif = 0;
 	return portal;
 }

@@ -612,11 +612,11 @@ void portal_maker (void)
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->orange->actif) {
 			glLineWidth(3.0);
-			gluDisk(params, CELL_SIZE / 2.7, CELL_SIZE / 2.7, 40, 1);
+			gluDisk(params, WIDTH_PORTAL, WIDTH_PORTAL, 40, 1);
 			glLineWidth(1.0);
 		}
 		else {
-			gluDisk(params, 0, CELL_SIZE / 2.7, 40, 4);
+			gluDisk(params, 0, WIDTH_PORTAL, 40, 4);
 		}
 
 		glPopMatrix();
@@ -635,11 +635,11 @@ void portal_maker (void)
 		gluQuadricDrawStyle(params,GLU_LINE);
 		if ( portals->bleu->actif) {
 			glLineWidth(3.0);
-			gluDisk(params, CELL_SIZE / 2.7, CELL_SIZE / 2.7, 40, 1);
+			gluDisk(params, WIDTH_PORTAL, WIDTH_PORTAL, 40, 1);
 			glLineWidth(1.0);
 		}
 		else { 
-			gluDisk(params, 0, CELL_SIZE / 2.7, 40, 4);
+			gluDisk(params, 0, WIDTH_PORTAL, 40, 4);
 		}
 
 		glPopMatrix();
@@ -787,7 +787,7 @@ void life_print(void) {
 	}
 	
 	glLoadIdentity();
-	glTranslated( MARGING_HEART, SCREEN_HEIGHT - HEIGHT_HEART - MARGING_HEART, 0);
+	glTranslated( SCREEN_WIDTH /2 + (MARGING_HEART * MAX_HEALTH ) / 2 - (WIDTH_HEART * MAX_HEALTH) / 4,  HEIGHT_HEART * ( 2 * wrap ), 0);
 	glColor3ub(255,255,255);
 	
 	glBindTexture(GL_TEXTURE_2D, heart);
