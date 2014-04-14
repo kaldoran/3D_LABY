@@ -324,7 +324,7 @@ return ol;
 
 void object_list_display(Object_list *ol)
 {
-	Doubly_linked_node *iterator = doubly_linked_node_new();
+	Doubly_linked_node *iterator;
 
 	if (ol == NULL || ol->size == 0)
 	{
@@ -336,15 +336,6 @@ void object_list_display(Object_list *ol)
 	{
 		switch ((iterator->object)->type)
 		{
-			case FLOOR:
-				Object_floor_print();
-			break;
-			case BORDER:
-				Object_border_print();
-			break;
-			case SUN:
-				Object_sun_print(iterator->object);
-			break;
 			case FIR_TREE:
 				Object_fir_tree_print(iterator->object);
 			break;
@@ -353,7 +344,6 @@ void object_list_display(Object_list *ol)
 			break;
 			case MOVING_WALL:
 				Object_moving_wall_print(iterator->object);
-				/*Object_wall_print(iterator->object);*/
 			break;
 			case ENTRY:
 				Object_entry_print(iterator->object);
@@ -363,9 +353,6 @@ void object_list_display(Object_list *ol)
 			break;
 			case SPIKES:
 				Object_spikes_print(iterator->object);
-			break;
-			case TEAPOT:
-				Object_teapot_print(iterator->object);
 			break;
 			default:
 			break;

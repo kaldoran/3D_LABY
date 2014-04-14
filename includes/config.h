@@ -43,7 +43,7 @@
 #define HEIGHT_CHAR         20
 
 #define MAX_HEALTH          15
-#define TIME_BETWEEN_DMG    7 /* Temps en Milliseconde */
+#define TIME_BETWEEN_DMG    10 /* Temps en Milliseconde */
 
 typedef struct Config {
 	char *path;

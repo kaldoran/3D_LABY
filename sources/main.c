@@ -108,8 +108,9 @@ int main( int argc, char* argv[] )
 			laby_print();
 			fprintf(stdout, "%d Elements in the environment.\n", ol->size);
 			
-			object_list_free(mwl);
+			
 			ktree_free(quad_tree);
+			object_list_free(mwl);
 			config_free(conf);
 			laby_free(laby);
 			portals_free(portals);
@@ -278,7 +279,6 @@ int main( int argc, char* argv[] )
 	chunk_new();
 	
 	main_loop();
-
 
 	glDeleteTextures(1, &(conf->text));
 

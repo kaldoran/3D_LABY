@@ -39,6 +39,7 @@ void element_free(Element *e)
 	{
 		point_free(e->s1);
 		point_free(e->s2);
+
 		object_list_free(e->ol);
 		free(e);
 	}

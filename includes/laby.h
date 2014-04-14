@@ -70,4 +70,5 @@ void maze_moving_walls_generation(void);
   */
 void laby_print(void);
 
+int laby_is_playable(void);
 #endif

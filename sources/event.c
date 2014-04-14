@@ -365,9 +365,9 @@ void main_loop(void)
 		display();
 
 		ellapsed_time = SDL_GetTicks() - start_time;
-		if (ellapsed_time < 17)
+		if (ellapsed_time < 25)
 		{
-			SDL_Delay(17 - ellapsed_time);
+			SDL_Delay(25 - ellapsed_time);
 		}
 
 		point_free(save_eye);

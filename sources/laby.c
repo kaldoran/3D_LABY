@@ -102,49 +102,52 @@ void maze_generation(void)
 	int cell_x, cell_y;
 
 	srand(time(0));
-	laby->matrix[WIDTH + 1] = PASS;
-	laby->matrix[WIDTH] = PASS;
-
-	for (x = 1; x < WIDTH; x += 2)
+	do
 	{
-		for (y = 1; y < HEIGHT; y += 2)
+		laby->matrix[WIDTH + 1] = PASS;
+		laby->matrix[WIDTH] = PASS;
+
+		for (x = 1; x < WIDTH; x += 2)
 		{
-			maze_carving(x, y);
-		}
-	}
-
-	/*
-	 * We generate some rooms at borders of the maze.
-	  */
-	for (i = 0; i < 6; ++i)
-	{
-		rand_room_width  = (rand() % (3)) + 2;
-		rand_room_height = (rand() % (3)) + 2;
-		rand_room_width  = rand_room_width / 2;
-		rand_room_height = rand_room_height / 2;
-		
-		rand_room_width  = (rand_room_width == 0) ? 1 : rand_room_width;
-		rand_room_height = (rand_room_height == 0) ? 1 : rand_room_height;
-
-		do {
-			cell_x = rand() % WIDTH;
-			cell_y = rand() % HEIGHT;
-		} while (!IS_BORDER(COORD(cell_x,cell_y)));
-
-		for (x = cell_x - rand_room_width ; x <=  cell_x + rand_room_width; ++x)
-		{
-			for (y = cell_y - rand_room_height; y <= cell_y + rand_room_height; ++y)
+			for (y = 1; y < HEIGHT; y += 2)
 			{
-				if (IS_IN(COORD(x,y)))
+				maze_carving(x, y);
+			}
+		}
+
+		/*
+		 * We generate some rooms at borders of the maze.
+		  */
+		for (i = 0; i < 6; ++i)
+		{
+			rand_room_width  = (rand() % (3)) + 2;
+			rand_room_height = (rand() % (3)) + 2;
+			rand_room_width  = rand_room_width / 2;
+			rand_room_height = rand_room_height / 2;
+			
+			rand_room_width  = (rand_room_width == 0) ? 1 : rand_room_width;
+			rand_room_height = (rand_room_height == 0) ? 1 : rand_room_height;
+
+			do {
+				cell_x = rand() % WIDTH;
+				cell_y = rand() % HEIGHT;
+			} while (!IS_BORDER(COORD(cell_x,cell_y)));
+
+			for (x = cell_x - rand_room_width ; x <=  cell_x + rand_room_width; ++x)
+			{
+				for (y = cell_y - rand_room_height; y <= cell_y + rand_room_height; ++y)
 				{
-					laby->matrix[COORD(x,y)] = PASS;
+					if (IS_IN(COORD(x,y)))
+					{
+						laby->matrix[COORD(x,y)] = PASS;
+					}
 				}
 			}
 		}
-	}
 
-	laby->matrix[0] = ENTRY;
-	laby->matrix[COORD((WIDTH - 2), (HEIGHT - 1))] = EXIT;
+		laby->matrix[0] = ENTRY;
+		laby->matrix[COORD((WIDTH - 2), (HEIGHT - 1))] = EXIT;
+	} while (!laby_is_playable());
 }
 
 void laby_print(void)
@@ -202,4 +205,45 @@ void maze_moving_walls_generation(void)
 		}
 	}
 	fprintf(stderr, "\n");
+}
+
+int laby_is_playable(void)
+{
+	int visited[SIZE] = {0};
+	int r = 0;
+	Object_list *l = object_list_new();
+	Doubly_linked_node *iterator;
+	l = object_list_push_object(l, 0, 0, 0, PASS);
+	
+	
+	while(l->size != 0)
+	{
+		iterator = l->first;
+		if (IS_EXIT(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)))
+		{
+			fprintf(stderr, "EXIT\n");
+			r = 1;
+			break;
+		}
+
+		if (!visited[COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)])
+		{
+			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x + 1, (int)iterator->object->anchor->y)))
+				l = object_list_push_object(l, iterator->object->anchor->x + 1, iterator->object->anchor->y, 0, PASS);
+
+			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x - 1, (int)iterator->object->anchor->y)))
+				l = object_list_push_object(l, iterator->object->anchor->x - 1, iterator->object->anchor->y, 0, PASS);
+
+			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y + 1)))
+				l = object_list_push_object(l, iterator->object->anchor->x, iterator->object->anchor->y + 1, 0, PASS);
+
+			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y - 1)))
+				l = object_list_push_object(l, iterator->object->anchor->x, iterator->object->anchor->y - 1, 0, PASS);
+		}
+
+		visited[COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)] = 1;
+		object_list_shift(l);
+	}
+object_list_free(l);
+return r;
 }
