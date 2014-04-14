@@ -178,7 +178,7 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 	Ktree *ka4;
 
 	/* If ol.size > 10 then cut. */
-	if (maxx - minx <= 2 || ol->size < 10)
+	if (maxx - minx <= 2 || ol->size <= 16)
 	{
 		ka->e = element_new(s1, s2, ol);
 		return ka;
