@@ -307,7 +307,6 @@ void ktree_display(Ktree *k)
 			glEnd();
 			glEnable(GL_FOG);
 		}
-
 		object_list_display(k->e->ol);
 	} else if (!need_to_cut(minx, miny, maxx, maxy, k) && ktree_son(1, k) == NULL) {
 		if (conf->quadTreeView)

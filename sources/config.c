@@ -38,6 +38,7 @@ Config *config_new(void)
 	conf->full_screen    = 0;
 
 	conf->quadTreeView   = 0;
+	conf->viewMode       = 0;
 	
 	memset(conf->key,0,sizeof(conf->key));
 	memset(conf->mousebutton,0,sizeof(conf->mousebutton));

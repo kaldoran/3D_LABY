@@ -12,6 +12,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include <math.h>
 #include <stdint.h>
 #include <unistd.h>
 
@@ -122,6 +123,20 @@ int main( int argc, char* argv[] )
 		if (!strcasecmp(argv[1], "Tree"))
 		{
 			conf->quadTreeView = 1;
+		}
+
+		if (!strcasecmp(argv[1], "View"))
+		{
+			conf->viewMode = 1;
+			conf->display = 1;
+
+			conf->center->x = CELL_SIZE * WIDTH / 2;
+			conf->center->y = CELL_SIZE * HEIGHT / 2;
+			conf->center->z = 0;
+
+			conf->eye->x = conf->center->x + CELL_SIZE * WIDTH * cos(conf->theta * M_PI / 180);
+			conf->eye->y = conf->center->y + CELL_SIZE * HEIGHT * sin(conf->theta * M_PI / 180);
+			conf->eye->z = 300;
 		}
 	}
 
@@ -265,11 +280,14 @@ int main( int argc, char* argv[] )
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(SDL_DISABLE);
 
-	glEnable(GL_FOG);
-	glFogi(GL_FOG_MODE,GL_LINEAR);
-	glFogfv(GL_FOG_COLOR,fogColor);
-	glFogf(GL_FOG_START, 1);
-	glFogf(GL_FOG_END,CELL_SIZE * 15);
+	if(!conf->viewMode)
+	{
+		glEnable(GL_FOG);
+		glFogi(GL_FOG_MODE,GL_LINEAR);
+		glFogfv(GL_FOG_COLOR,fogColor);
+		glFogf(GL_FOG_START, 1);
+		glFogf(GL_FOG_END,CELL_SIZE * 15);
+	}
 
 	sky_box_new();
 	cursors_new();

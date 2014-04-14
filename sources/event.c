@@ -41,9 +41,10 @@ void main_loop(void)
 		start_time = SDL_GetTicks(); 
 		save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
 		speed  = (conf->free_fly) ? 5 : 0.5;
+
 		update_event();
 
-		if (conf->key[SDLK_F1])
+		if (!conf->viewMode && conf->key[SDLK_F1])
 		{
 			conf->key[SDLK_F1] = 0;
 			conf->free_fly = !conf->free_fly;
@@ -55,12 +56,12 @@ void main_loop(void)
 			}
 		}
 
-		if (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT])
+		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]))
 		{
 			speed = (conf->free_fly) ? 7.51337 : 0.91337;
 		}
 
-		if (conf->key[SDLK_LCTRL])
+		if (!conf->viewMode &&  conf->key[SDLK_LCTRL])
 		{
 			speed = (conf->free_fly) ? 0.1 : 0.3;
 		}
@@ -77,7 +78,7 @@ void main_loop(void)
 			conf->display = !conf->display;
 		}
 
-		if (conf->key[SDLK_F4])
+		if (!conf->viewMode &&  conf->key[SDLK_F4])
 		{
 			conf->key[SDLK_F4] = 0;
 			conf->quadTreeView = !conf->quadTreeView;
@@ -96,33 +97,33 @@ void main_loop(void)
 			}
 		}
 		
-		if (conf->key[SDLK_UP] || conf->key[SDLK_z])
+		if (!conf->viewMode && (conf->key[SDLK_UP] || conf->key[SDLK_z]))
 		{
 			forward_move(save_eye, speed);
 		}
 
-		if (conf->key[SDLK_DOWN] || conf->key[SDLK_s])
+		if (!conf->viewMode && (conf->key[SDLK_DOWN] || conf->key[SDLK_s]))
 		{
 			backward_move(save_eye, speed);
 		}
 
-		if (conf->key[SDLK_RIGHT] || conf->key[SDLK_d])
+		if (!conf->viewMode && (conf->key[SDLK_RIGHT] || conf->key[SDLK_d]))
 		{
 			right_move(save_eye, speed);
 		}
 
-		if (conf->key[SDLK_LEFT] || conf->key[SDLK_q])
+		if (!conf->viewMode && (conf->key[SDLK_LEFT] || conf->key[SDLK_q]))
 		{
 			left_move(save_eye, speed);
 		}
 
-		if (conf->key[SDLK_a])
+		if (!conf->viewMode && conf->key[SDLK_a])
 		{
 			conf->key[SDLK_a] = 0;
 			conf->theta += 180;
 		}
 
-		if (conf->key[SDLK_r])
+		if (!conf->viewMode && conf->key[SDLK_r])
 		{
 			conf->key[SDLK_r] = 0;
 			conf->life = MAX_HEALTH;
@@ -136,12 +137,22 @@ void main_loop(void)
 
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
-			save_eye->z -= 1;
+			if (!conf->viewMode)
+			{
+				save_eye->z -= 1;
+			} else {
+				conf->eye->z -= 5;
+			}
 		}
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
-			save_eye->z += 1;
+			if (!conf->viewMode)
+			{
+				save_eye->z += 1;
+			} else {
+				conf->eye->z += 5;
+			}
 		}
 		
 		if ( conf->key[SDLK_p] ) {
@@ -167,21 +178,21 @@ void main_loop(void)
 			conf->shoot = 0;
 		}
 
-		if (conf->mousebutton[SDL_BUTTON_LEFT])
+		if (!conf->viewMode && conf->mousebutton[SDL_BUTTON_LEFT])
 		{
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 1;
 		}
 
-		if (conf->mousebutton[SDL_BUTTON_RIGHT])
+		if (!conf->viewMode && conf->mousebutton[SDL_BUTTON_RIGHT])
 		{
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 2;
 		}
 		
-		if ( portals->orange->actif && portals->bleu->actif ) {
+		if (!conf->viewMode && portals->orange->actif && portals->bleu->actif ) {
 			if ( abs(save_eye->x - portals->bleu->portail->x ) < TRIGGER_DISTANCE && abs(save_eye->y - portals->bleu->portail->y) < TRIGGER_DISTANCE) {
 				save_eye->x = portals->orange->portail->x - (sin(portals->orange->rotation) * PUSH_DISTANCE);
 				save_eye->y = portals->orange->portail->y + (cos(portals->orange->rotation) * PUSH_DISTANCE);
@@ -266,7 +277,7 @@ void main_loop(void)
 		}
 
 		/*fprintf(stderr, "%d %d\n", conf->mousex - SCREEN_MID_WIDTH, conf->mousey - SCREEN_MID_HEIGHT);*/
-		if ((( save_eye->x > 2 && save_eye->y > 2 
+		if (!conf->viewMode && (( save_eye->x > 2 && save_eye->y > 2 
 			&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
 			&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
 			&& save_eye->z <= CHARACTER_SIZE 
@@ -284,11 +295,22 @@ void main_loop(void)
 		}
 
 		/* Mouse motion */
-		conf->theta -= (conf->mousex - SCREEN_MID_WIDTH) * SENSITIVITY;
-		conf->phi -= (conf->mousey - SCREEN_MID_HEIGHT) * SENSITIVITY;
-		SDL_WarpMouse(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT); 
-		modify_direction();
-		change_center();
+		if(!conf->viewMode)
+		{
+			conf->theta -= (conf->mousex - SCREEN_MID_WIDTH) * SENSITIVITY;
+			conf->phi -= (conf->mousey - SCREEN_MID_HEIGHT) * SENSITIVITY;
+			SDL_WarpMouse(SCREEN_MID_WIDTH, SCREEN_MID_HEIGHT); 
+			modify_direction();
+			change_center();
+		} else {
+			conf->eye->x = conf->center->x + CELL_SIZE * WIDTH * cos(conf->theta * M_PI / 180);
+			conf->eye->y = conf->center->y + CELL_SIZE * HEIGHT * sin(conf->theta * M_PI / 180);
+			conf->theta += 0.5;
+			if (conf->theta >= 360)
+			{
+				conf->theta = 0;
+			}
+		}
 
 		if (conf->life <= 0)
 		{
@@ -312,7 +334,7 @@ void main_loop(void)
 			fprintf(stderr,"           .,-=;+$@###X:    ;/=.\n");
 			fprintf(stderr,"                  .,/X$;   .::,\n");
 			fprintf(stderr,"                      .,    ..\n");
-			fprintf(stderr,"You lose !\n");
+			fprintf(stderr,"Haw Haw ! You lose !\n");
 			conf->quit = 1;
 		}
 

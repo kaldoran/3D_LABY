@@ -46,20 +46,38 @@ void display(void)
 
 	Object_floor_print();
 	moving_wall_list_display();
-	ktree_display(quad_tree);
+	if (!conf->viewMode)
+	{
+		ktree_display(quad_tree);
+	} else {
+		object_list_display(ol);
+	}
+
 	Object_border_print();
 	
-	last_time_dmg = check_dommage(last_time_dmg);
+	if (!conf->viewMode)
+	{
+		last_time_dmg = check_dommage(last_time_dmg);
+	}
+
 	portal_maker();
 
 	change_to_2d();
-		cursor_print();
+		if (!conf->viewMode)
+		{
+			cursor_print();
+		}
+		
 		if ( conf->display ) {
 			sprintf(buffer,"X: %.2f - Y: %.2f - Angle X: %.2f", conf->eye->x, conf->eye->y, conf->theta);
 			create_texture_from_text(buffer, 255, 255, 255);
 			text_print(10, 10);
 		}
-		life_print();
+		
+		if (!conf->viewMode)
+		{
+			life_print();
+		}
 	change_to_3d();
 
 	glFlush();
@@ -502,34 +520,6 @@ void Object_spikes_print(Object *spikes) {
 	}
 }
 
-void Object_teapot_print(Object *teapot)
-{
-	/*GLUquadric* params;
-
-	glPushMatrix();
-		glTranslatef((teapot->anchor)->x, (teapot->anchor)->y, (teapot->anchor)->z * 2 / 3);
-		glRotatef(90,1,0,0);
-		glRotatef(90,0,1,0);
-		glColor3f((float)((int)(teapot->anchor)->x % 10)/10,
-					(float)((int)(teapot->anchor)->z % 10)/10,
-					(float)((int)(teapot->anchor)->y % 10)/10);
-		params = gluNewQuadric();
-		gluQuadricDrawStyle(params,GLU_LINE);
-		
-		glutSolidTeapot((teapot->anchor)->z);
-
-		gluDeleteQuadric(params);
-	glPopMatrix();*/
-
-
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glVertexPointer(3, GL_FLOAT, 0, vertices);
-	
-  glDrawArrays(GL_LINE_STRIP, 0, 306);
-
-  glDisableClientState(GL_VERTEX_ARRAY);
-}
-
 void portal_maker (void)
 {
 	GLUquadric* params = gluNewQuadric();
@@ -748,7 +738,10 @@ void sky_box_print(float size)
 	glPopMatrix();
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FOG);
+	if(!conf->viewMode)
+	{
+		glEnable(GL_FOG);
+	}
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -880,7 +873,10 @@ void change_to_2d(void) {
 
 void change_to_3d(void) {
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FOG);
+	if(!conf->viewMode)
+	{
+		glEnable(GL_FOG);
+	}
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 }
