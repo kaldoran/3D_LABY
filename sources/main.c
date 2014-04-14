@@ -134,9 +134,6 @@ int main( int argc, char* argv[] )
 			conf->eye->y = conf->center->y + CELL_SIZE * HEIGHT * sin(conf->theta * M_PI / 180);
 			conf->eye->z = 300;
 		}
-		else {
-			fprintf(stderr, "Bad argument\n");
-		}
 	}
 
 	fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided enrichment center.\n\n");
