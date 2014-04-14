@@ -18,7 +18,6 @@
   */
 Laby *laby_new(void)
 {
-	int x = 0;
 	Laby *laby;
 
 	if ((laby = malloc(sizeof *laby)) == NULL)
@@ -29,11 +28,6 @@ Laby *laby_new(void)
 	if ((laby->matrix = calloc(SIZE, sizeof(char))) == NULL)
 	{
 		return NULL;
-	}
-
-	while (IS_IN(x))
-	{
-		laby->matrix[x++] = WALL;
 	}
 return laby;
 }
@@ -97,13 +91,18 @@ void maze_carving (int x, int y)
 
 void maze_generation(void)
 {
-	int i, x, y;
+	int i, j = 0, x, y;
 	int rand_room_width, rand_room_height;
 	int cell_x, cell_y;
 
 	srand(time(0));
 	do
 	{
+		while (IS_IN(j))
+		{
+			laby->matrix[j++] = WALL;
+		}
+
 		laby->matrix[WIDTH + 1] = PASS;
 		laby->matrix[WIDTH] = PASS;
 
@@ -215,10 +214,10 @@ int laby_is_playable(void)
 	Doubly_linked_node *iterator;
 	l = object_list_push_object(l, 0, 0, 0, PASS);
 	
-	
 	while(l->size != 0)
 	{
 		iterator = l->first;
+
 		if (IS_EXIT(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)))
 		{
 			r = 1;
