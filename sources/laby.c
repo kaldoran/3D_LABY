@@ -227,16 +227,24 @@ int laby_is_playable(void)
 		if (!visited[COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)])
 		{
 			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x + 1, (int)iterator->object->anchor->y)))
+			{
 				l = object_list_push_object(l, iterator->object->anchor->x + 1, iterator->object->anchor->y, 0, PASS);
+			}
 
 			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x - 1, (int)iterator->object->anchor->y)))
+			{
 				l = object_list_push_object(l, iterator->object->anchor->x - 1, iterator->object->anchor->y, 0, PASS);
+			}
 
 			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y + 1)))
+			{
 				l = object_list_push_object(l, iterator->object->anchor->x, iterator->object->anchor->y + 1, 0, PASS);
+			}
 
 			if(IS_PLAYABLE(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y - 1)))
+			{
 				l = object_list_push_object(l, iterator->object->anchor->x, iterator->object->anchor->y - 1, 0, PASS);
+			}
 		}
 
 		visited[COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)] = 1;
