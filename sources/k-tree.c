@@ -247,8 +247,6 @@ Ktree *object_list_to_ktree_bis(Point *s1, Point *s2, Object_list *ol)
 return ka;
 }
 
-
-
 float dist (float x1, float y1, float x2, float y2)
 {
 	return sqrt(pow(2, x1 - x2) + pow(2, y1 - y2));

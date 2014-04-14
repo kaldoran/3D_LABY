@@ -221,7 +221,6 @@ int laby_is_playable(void)
 		iterator = l->first;
 		if (IS_EXIT(COORD((int)iterator->object->anchor->x, (int)iterator->object->anchor->y)))
 		{
-			fprintf(stderr, "EXIT\n");
 			r = 1;
 			break;
 		}

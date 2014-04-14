@@ -50,15 +50,12 @@ int main( int argc, char* argv[] )
 	char pc = '%', buffer[BUFFER_SIZE];
 	GLfloat fogColor[4] = {0, 0, 0, 1};
 
-	Object *giant_teapot = object_new(-10 * CELL_SIZE, HEIGHT * CELL_SIZE / 2, 6 * CELL_SIZE, TEAPOT);
-
 	laby    = laby_new();
 	conf    = config_new();
 	ol      = object_list_new();
 	mwl     = object_list_new();
 	portals = portals_new();
 
-	
 	call_realpath(argv[0]);
 
 	maze_generation();
@@ -67,7 +64,6 @@ int main( int argc, char* argv[] )
 	ol = object_list_generate_fir_trees(ol);
 	ol = object_list_push_maze_walls(ol);
 	ol = object_list_generate_spikes(ol);
-	ol = object_list_push(ol, giant_teapot);
 
 	quad_tree = object_list_to_ktree(ol);
 
