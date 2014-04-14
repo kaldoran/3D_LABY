@@ -116,12 +116,12 @@ int main( int argc, char* argv[] )
 			return 0;
 		}
 
-		if (!strcasecmp(argv[1], "Tree"))
+		else if (!strcasecmp(argv[1], "Tree"))
 		{
 			conf->quadTreeView = 1;
 		}
 
-		if (!strcasecmp(argv[1], "View"))
+		else if (!strcasecmp(argv[1], "View"))
 		{
 			conf->viewMode = 1;
 			conf->display = 1;
@@ -133,6 +133,9 @@ int main( int argc, char* argv[] )
 			conf->eye->x = conf->center->x + CELL_SIZE * WIDTH * cos(conf->theta * M_PI / 180);
 			conf->eye->y = conf->center->y + CELL_SIZE * HEIGHT * sin(conf->theta * M_PI / 180);
 			conf->eye->z = 300;
+		}
+		else {
+			fprintf(stderr, "Bad argument\n");
 		}
 	}
 
