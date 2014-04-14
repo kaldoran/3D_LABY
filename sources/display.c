@@ -57,7 +57,7 @@ void display(void)
 		if ( conf->display ) {
 			sprintf(buffer,"X: %.2f - Y: %.2f - Angle X: %.2f", conf->eye->x, conf->eye->y, conf->theta);
 			create_texture_from_text(buffer, 255, 255, 255);
-			text_print(100, 100);
+			text_print(10, 10);
 		}
 		life_print();
 	change_to_3d();

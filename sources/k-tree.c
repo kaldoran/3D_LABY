@@ -275,19 +275,19 @@ void ktree_display(Ktree *k)
 		glDisable(GL_FOG);
 		glBegin(GL_LINE_LOOP);
 			glColor3ub(255,255,255);
-			glVertex3f(conf->eye->x, conf->eye->y, 30);
-			glVertex3f(x1, y1, 30);
-			glVertex3f(x2, y2, 30);
+			glVertex3f(conf->eye->x, conf->eye->y, 32);
+			glVertex3f(x1, y1, 32);
+			glVertex3f(x2, y2, 32);
 		glEnd();
 		glEnable(GL_FOG);
 
 		glDisable(GL_FOG);
 		glBegin(GL_LINE_LOOP);
 			glColor3ub(255,255,0);
-			glVertex3f(minx, miny, 30);
-			glVertex3f(minx, maxy, 30);
-			glVertex3f(maxx, maxy, 30);
-			glVertex3f(maxx, miny, 30);
+			glVertex3f(minx, miny, 32);
+			glVertex3f(minx, maxy, 32);
+			glVertex3f(maxx, maxy, 32);
+			glVertex3f(maxx, miny, 32);
 		glEnd();
 		glEnable(GL_FOG);
 	}
@@ -299,15 +299,30 @@ void ktree_display(Ktree *k)
 			glDisable(GL_FOG);
 			glColor3ub(255,0,0);
 			glBegin(GL_LINE_LOOP);
+				glVertex3f(k->e->s1->x, k->e->s1->y, 31);
+				glVertex3f(k->e->s1->x, k->e->s2->y, 31);
+				glVertex3f(k->e->s2->x, k->e->s2->y, 31);
+				glVertex3f(k->e->s2->x, k->e->s1->y, 31);
+			glEnd();
+			glEnable(GL_FOG);
+		}
+
+		object_list_display(k->e->ol);
+	} else if (!need_to_cut(minx, miny, maxx, maxy, k) && ktree_son(1, k) == NULL) {
+		if (conf->quadTreeView)
+		{
+			glEnable(GL_BLEND);
+			glDisable(GL_FOG);
+			glColor4ub(255,255,255,100);
+			glBegin(GL_LINE_LOOP);
 				glVertex3f(k->e->s1->x, k->e->s1->y, 30);
 				glVertex3f(k->e->s1->x, k->e->s2->y, 30);
 				glVertex3f(k->e->s2->x, k->e->s2->y, 30);
 				glVertex3f(k->e->s2->x, k->e->s1->y, 30);
 			glEnd();
 			glEnable(GL_FOG);
+			glDisable(GL_BLEND);
 		}
-
-		object_list_display(k->e->ol);
 	}
 
 	if (ktree_son(1, k) != NULL)
@@ -347,6 +362,30 @@ int need_to_cut(float minx, float miny, float maxx, float maxy, Ktree *k)
 
 	if (minx <= k_maxx && k_maxx <= maxx
 		&& miny <= k_miny && k_miny <= maxy)
+	{
+		return 1;
+	}
+
+	if (k_minx <= minx && minx <= k_maxx
+		&& k_miny <= miny && miny <= k_maxy)
+	{
+		return 1;
+	}
+
+	if (k_minx <= minx && minx <= k_maxx
+		&& k_miny <= maxy && maxy <= k_maxy)
+	{
+		return 1;
+	}
+
+	if (k_minx <= maxx && maxx <= k_maxx
+		&& k_miny <= maxy && maxy <= k_maxy)
+	{
+		return 1;
+	}
+
+	if (k_minx <= maxx && maxx <= k_maxx
+		&& k_miny <= miny && miny <= k_maxy)
 	{
 		return 1;
 	}
