@@ -23,7 +23,6 @@
 #include "portals.h"
 #include "font.h"
 #include "texture.h"
-#include "vertices.h"
 #include "music.h"
 #include "k-tree.h"
 

@@ -137,7 +137,7 @@ void main_loop(void)
 
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
-			if (!conf->viewMode && !conf->free_fly)
+			if (!conf->viewMode || !conf->free_fly)
 			{
 				save_eye->z -= 1;
 			} else {
@@ -147,7 +147,7 @@ void main_loop(void)
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
-			if (!conf->viewMode && !conf->free_fly)
+			if (!conf->viewMode || !conf->free_fly)
 			{
 				save_eye->z += 1;
 			} else {
