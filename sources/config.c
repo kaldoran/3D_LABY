@@ -54,6 +54,8 @@ Config *config_new(void)
 	conf->text = 0;
 	conf->display = 0;
 	conf->timer = 0;
+	conf->last_time_dmg = 0;
+	conf->jump_duration = 0;
 return conf;
 }
 

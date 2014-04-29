@@ -25,8 +25,6 @@
 #include "texture.h"
 #include "music.h"
 #include "k-tree.h"
-
-int last_time_dmg = 0;
 	
 void display(void)
 {
@@ -54,9 +52,8 @@ void display(void)
 
 	Object_border_print();
 	
-	if (!conf->viewMode)
-	{
-		last_time_dmg = check_dommage(last_time_dmg);
+	if (!conf->viewMode) {
+		check_dommage();
 	}
 
 	portal_maker();
@@ -874,18 +871,17 @@ void change_to_3d(void) {
 	glDisable(GL_TEXTURE_2D);
 }
 
-int check_dommage(int last_time_dmg) {
-	if ( last_time_dmg != 0 ) {
-		return --last_time_dmg;
+void check_dommage() {
+	if ( conf->last_time_dmg != 0 ) {
+		--conf->last_time_dmg;
 	}
 	
-	if ( IS_SPIKES(COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))) && last_time_dmg == 0 && !conf->free_fly) {
+	if ( IS_SPIKES(COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))) && conf->last_time_dmg == 0 && !conf->free_fly && conf->eye->z - CHARACTER_SIZE <= SPIKE_HEIGHT) {
 		--conf->life;
-		last_time_dmg = TIME_BETWEEN_DMG;
+		conf->last_time_dmg = TIME_BETWEEN_DMG;
 		Mix_PlayChannel(1, sound[rand() % 3], 0);
 	}
-	
-	return last_time_dmg;
+
 }
 
 void moving_wall_list_display()
@@ -923,4 +919,14 @@ void timer_convert(Uint32 timer, char buffer[]) {
 	uptime %= 60;
 	sprintf(buffer + 3, "%02d", uptime);
 	return;
+}
+
+void jump(Point *save_eye) {
+	if ( conf->jump_duration >= 0 ) {
+		save_eye->z -= sin(conf->jump_duration) * JUMP_SPEED; 
+		conf->jump_duration -= 0.1;
+		return;
+	}
+	
+	conf->jump_duration = 0;
 }

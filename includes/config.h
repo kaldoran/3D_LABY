@@ -23,7 +23,7 @@
 #define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
 #define CELL_SIZE           16
-#define SPIKE_HEIGHT	    0.5
+#define SPIKE_HEIGHT	   0.5
 #define HEIGHT_MIN_BORDER   3
 #define HEIGHT_MAX_BORDER   7
 #define HORIZON             1
@@ -44,6 +44,8 @@
 
 #define MAX_HEALTH          10
 #define TIME_BETWEEN_DMG    10 /* Temps en Milliseconde */
+
+#define JUMP_SPEED          0.3
 
 typedef struct Config {
 	char *path;
@@ -85,6 +87,8 @@ typedef struct Config {
 	unsigned int height_text;
 	int display;
 	Uint32 timer;
+	int last_time_dmg;
+	float jump_duration;
 } Config;
 
 /* Global config structure */

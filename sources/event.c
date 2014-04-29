@@ -54,6 +54,9 @@ void main_loop(void)
 				save_eye->y = CELL_SIZE / 2;
 				save_eye->z = CHARACTER_SIZE;
 			}
+			else {
+				conf->jump_duration = 0;
+			}
 		}
 
 		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]))
@@ -147,13 +150,19 @@ void main_loop(void)
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
+
 			if (!conf->viewMode || !conf->free_fly)
 			{
-				save_eye->z += 1;
+				if ( conf->jump_duration == 0 ) {
+					conf->jump_duration = 6;
+				}
+				/*save_eye->z += 1;*/
 			} else {
 				conf->eye->z += 5;
 			}
 		}
+		
+		jump(save_eye);
 		
 		if ( conf->key[SDLK_p] ) {
 			conf->key[SDLK_p] = 0;
@@ -282,8 +291,8 @@ void main_loop(void)
 		if (!conf->viewMode && (( save_eye->x > 2 && save_eye->y > 2 
 			&& save_eye->x < (CELL_SIZE * WIDTH) - 2 
 			&& save_eye->y < (CELL_SIZE * HEIGHT) - 2 
-			&& save_eye->z <= CHARACTER_SIZE 
-			&& save_eye->z > CHARACTER_SIZE - 3
+			/*&& save_eye->z <= CHARACTER_SIZE 
+			&& save_eye->z > CHARACTER_SIZE - 3*/
 			&& IS_PLAYABLE(COORD((int)(save_eye->x / CELL_SIZE),(int)(save_eye->y / CELL_SIZE))) 
 			&& IS_PLAYABLE(COORD((int)((save_eye->x + 2) / CELL_SIZE),(int)((save_eye->y) / CELL_SIZE))) 
 			&& IS_PLAYABLE(COORD((int)((save_eye->x) / CELL_SIZE),(int)((save_eye->y + 2) / CELL_SIZE))) 

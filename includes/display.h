@@ -62,10 +62,11 @@ void heart_delete(void);
 void life_print(void);
 
 void text_print(int x, int y);
-int check_dommage(int last_time_dmg);
+void check_dommage();
 
 void moving_wall_list_display();
 
 void timer_convert(Uint32 timer, char buffer[]);
 
+void jump(Point *save_eye);
 #endif
