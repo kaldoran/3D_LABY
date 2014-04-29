@@ -543,40 +543,57 @@ void portal_maker (void)
 		
 		/* parcours petit a petit la distance oeil, endroit regardé */
 		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
-		
+			
 			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
+			
+			/* Si on trouve une collision alors on cherche comment placer le portail */
 			if ( laby->matrix[coord_current_bloc] == WALL) {
+				
+				/* Pour se faire on regarde quel était le bloque précedent */
 				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
 								(int)((tmp->y - conf->eye_direction->y) / CELL_SIZE));
 				coord_previous_bloc -= coord_current_bloc; /* contient la différence entre les bloc trouvé */
 
 				/* Ne pas depasser les bords */
+				
 				if ( coord_previous_bloc == 1 || coord_previous_bloc == -1) {
+					/* Ici on gere uniquement sur Y 
+					 * On verifi si il depasse a droite ou a gauche sur Y
+					 */
 					if ( COORD((int)(tmp->x/ CELL_SIZE), 
 							(int)((tmp->y - WIDTH_PORTAL_DIV - 1) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
-					     	
-						tmp->y += ( WIDTH_PORTAL_DIV + 1);
+ 
+						tmp->y = CELL_SIZE * ( coord_current_bloc / HEIGHT ) + WIDTH_PORTAL_DIV + 1; 
+						/* Si il depasse a Gauche, on le colle sur le bord gauche - Sur Y*/
 					}
 					else if ( COORD((int)(tmp->x/ CELL_SIZE), 
 							(int)((tmp->y + WIDTH_PORTAL_DIV + 1 ) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
 						
-						tmp->y -= ( WIDTH_PORTAL_DIV + 1);
+						tmp->y = CELL_SIZE * ( coord_current_bloc / HEIGHT ) - WIDTH_PORTAL_DIV - 1 + CELL_SIZE; 
+						/* Si il depasse a Droite, on le colle sur le bord droit - Sur Y */
 					}
 				}
 				else if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
+					/* Ici sur X 
+					 * On verifi si il depasse a droite ou a gauche sur X
+					 */
 					if ( COORD((int)((tmp->x - WIDTH_PORTAL_DIV - 1)/  CELL_SIZE), 
 							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x - WIDTH_PORTAL < 0 ) {
-						tmp->x += ( WIDTH_PORTAL_DIV + 1);
+						
+						tmp->x = CELL_SIZE * ( coord_current_bloc % WIDTH ) + WIDTH_PORTAL_DIV + 1; 
+						/* Si il depasse a Gauche, on le colle sur le bord gauche - Sur X*/
 					}
 					else if ( COORD((int)((tmp->x + WIDTH_PORTAL_DIV + 1 )/ CELL_SIZE), 
 							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x + WIDTH_PORTAL > SIZE ) {
-						tmp->x -= ( WIDTH_PORTAL_DIV + 1);
+						tmp->x = CELL_SIZE * ( coord_current_bloc % WIDTH ) - WIDTH_PORTAL_DIV - 1 + CELL_SIZE; 
+						/* Si il depasse a Droite, on le colle sur le bord droit - Sur X */
 					}
 				}
 				else {
 					break;
 				}
 
+				/* Permet de savoir sur quel face placer le portail */
 				if ( coord_previous_bloc == 1) {
 					coord_previous_bloc = -90;	   /* contient maintnant la rotation a faire */
 				}
@@ -603,7 +620,7 @@ void portal_maker (void)
 					portals->bleu->portail->y = tmp->y;
 				}
 				Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
-
+				break;
 			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
 				break;
 			}
