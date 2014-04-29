@@ -3,7 +3,9 @@
  * File : object.h
  * Authors : Hivert Kevin - Reynaud Nicolas.
   */
+#include <SDL/SDL_ttf.h>
 #include "object.h"
+
  
 #ifndef __DISPLAY
 #define __DISPLAY
@@ -26,6 +28,8 @@
 #define HEIGHT_HEART  17
 #define WIDTH_HEART   20
 #define MARGING_HEART 5
+
+#define MARGING_FONT  20
 
 unsigned int skybox[6];
 unsigned int cursors[4];
@@ -61,7 +65,9 @@ void heart_new(void);
 void heart_delete(void);
 void life_print(void);
 
-void text_print(int x, int y);
+void text_print_coord(int x, int y);
+void text_print(TTF_Font *font, char *buffer, int r, int g, int b, int x, int y);
+
 void check_dommage();
 
 void moving_wall_list_display();

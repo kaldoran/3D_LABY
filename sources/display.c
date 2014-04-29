@@ -28,6 +28,7 @@
 	
 void display(void)
 {
+	int hauteur = 10;
 	char buffer[256];
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -66,15 +67,27 @@ void display(void)
 		
 		if ( conf->display ) {
 			sprintf(buffer,"X: %.2f - Y: %.2f - Angle X: %.2f", conf->eye->x, conf->eye->y, conf->theta);
-			create_texture_from_text(font[DEBUG_FONT], buffer, 255, 255, 255);
-			text_print(10, 10);
+			text_print(font[DEBUG_FONT], buffer, 255, 255, 255, 10, hauteur);
+			
+			if ( portals->bleu->actif ) {
+				sprintf(buffer,"X: %.2f - Y: %.2f - Rotation: %.2d", 
+					portals->bleu->portail->x, portals->bleu->portail->y, portals->bleu->rotation);
+				text_print(font[DEBUG_FONT], buffer, 230, 107, 16, 10, hauteur += MARGING_FONT);
+			}
+			
+			if ( portals->orange->actif ) {
+				sprintf(buffer,"X: %.2f - Y: %.2f - Rotation: %.2d", 
+					portals->orange->portail->x, portals->orange->portail->y, portals->orange->rotation);
+				text_print(font[DEBUG_FONT], buffer, 59, 200, 243, 10, hauteur += MARGING_FONT);
+				
+			}
+			sprintf(buffer,"Life : %d", conf->life);
+			text_print(font[DEBUG_FONT], buffer, 255, 255, 255, 10, hauteur += MARGING_FONT);
 		}
 		if (!conf->viewMode) {
 			life_print();
-
 			timer_convert(SDL_GetTicks() - conf->timer, buffer);
-			create_texture_from_text(font[TIMER_FONT], buffer, 255, 255, 255);
-			text_print(SCREEN_WIDTH /2 - 15, 100);
+			text_print(font[TIMER_FONT], buffer, 255, 255, 255, SCREEN_WIDTH /2 - 15, 100);
 		}
 	change_to_3d();
 	
@@ -527,7 +540,10 @@ void portal_maker (void)
 
 	if (conf->shoot) {
 		tmp = point_new((conf->eye)->x, (conf->eye)->y, (conf->eye)->z);
+		
+		/* parcours petit a petit la distance oeil, endroit regardé */
 		for ( ; tmp->x < SIZE && tmp->x > 0 && tmp->y < SIZE && tmp->y > 0 && tmp->z > 0 && tmp->z < CELL_SIZE; tmp->x += conf->eye_direction->x, tmp->y += conf->eye_direction->y, tmp->z += conf->eye_direction->z) {
+		
 			coord_current_bloc = COORD((int)(tmp->x / CELL_SIZE), (int)(tmp->y / CELL_SIZE));
 			if ( laby->matrix[coord_current_bloc] == WALL) {
 				coord_previous_bloc = COORD((int)((tmp->x - conf->eye_direction->x) / CELL_SIZE), 
@@ -537,20 +553,30 @@ void portal_maker (void)
 				/* Ne pas depasser les bords */
 				if ( coord_previous_bloc == 1 || coord_previous_bloc == -1) {
 					if ( COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y - WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc ||		
-					     COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y + WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || 
-					     tmp->y + WIDTH_PORTAL > SIZE || tmp->y - WIDTH_PORTAL < 0 ) {
+							(int)((tmp->y - WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
+					     	
+						tmp->y += WIDTH_PORTAL_DIV;
+					}
+					else if ( COORD((int)(tmp->x/ CELL_SIZE), 
+							(int)((tmp->y + WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
+						
+						tmp->y -= WIDTH_PORTAL_DIV;
+					}
+					else {
 						break;
 					}
 				}
 
 				if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
 					if ( COORD((int)((tmp->x - WIDTH_PORTAL)/  CELL_SIZE), 
-							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc ||		
-					     COORD((int)((tmp->x + WIDTH_PORTAL)/ CELL_SIZE), 
-							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || 
-					     tmp->x + WIDTH_PORTAL > SIZE || tmp->x - WIDTH_PORTAL < 0 ) {
+							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x - WIDTH_PORTAL < 0 ) {
+						tmp->x += WIDTH_PORTAL_DIV;
+					}
+					else if ( COORD((int)((tmp->x + WIDTH_PORTAL)/ CELL_SIZE), 
+							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x + WIDTH_PORTAL > SIZE ) {
+						tmp->x -= WIDTH_PORTAL_DIV;
+					}
+					else {
 						break;
 					}
 				}
@@ -750,7 +776,7 @@ void sky_box_delete(void)
 }
 
 
-void text_print(int x, int y)
+void text_print_coord(int x, int y)
 {
 	glLoadIdentity();
 
@@ -768,7 +794,11 @@ void text_print(int x, int y)
 		glTexCoord2i(0,0);
 		glVertex2i(x,conf->height_text - y);
 	glEnd();
+}
 
+void text_print(TTF_Font *font, char *buffer, int r, int g, int b, int x, int y) {
+	create_texture_from_text(font, buffer, r, g, b);
+	text_print_coord(x, y);
 }
 
 void life_print(void) {
