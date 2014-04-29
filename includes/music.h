@@ -15,8 +15,9 @@
 #define HURT_1           0
 #define HURT_2           1
 #define HURT_3           2
+#define SOUND_PORTAL	3
 
-#define NUMBER_OF_CHUNCK 3
+#define NUMBER_OF_CHUNCK 4
 
 Mix_Chunk  *sound[NUMBER_OF_CHUNCK];
 Mix_Music  *music;

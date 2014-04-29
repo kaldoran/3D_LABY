@@ -42,7 +42,7 @@
 
 #define HEIGHT_CHAR         20
 
-#define MAX_HEALTH          15
+#define MAX_HEALTH          10
 #define TIME_BETWEEN_DMG    10 /* Temps en Milliseconde */
 
 typedef struct Config {
@@ -84,6 +84,7 @@ typedef struct Config {
 	unsigned int width_text;
 	unsigned int height_text;
 	int display;
+	Uint32 timer;
 } Config;
 
 /* Global config structure */

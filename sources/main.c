@@ -291,6 +291,7 @@ int main( int argc, char* argv[] )
 	font_new();
 	music_new();
 	chunk_new();
+	conf->timer = SDL_GetTicks();
 	
 	main_loop();
 

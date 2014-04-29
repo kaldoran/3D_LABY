@@ -69,16 +69,19 @@ void display(void)
 		
 		if ( conf->display ) {
 			sprintf(buffer,"X: %.2f - Y: %.2f - Angle X: %.2f", conf->eye->x, conf->eye->y, conf->theta);
-			create_texture_from_text(buffer, 255, 255, 255);
+			create_texture_from_text(font[DEBUG_FONT], buffer, 255, 255, 255);
 			text_print(10, 10);
 		}
-		
 		if (!conf->viewMode)
 		{
 			life_print();
 		}
+		timer_convert(SDL_GetTicks() - conf->timer, buffer);
+		
+		create_texture_from_text(font[TIMER_FONT], buffer, 255, 255, 255);
+		text_print(SCREEN_WIDTH /2 - 15, 100);
 	change_to_3d();
-
+	
 	glFlush();
     SDL_GL_SwapBuffers();
 }
@@ -772,24 +775,15 @@ void text_print(int x, int y)
 }
 
 void life_print(void) {
-	int current_pos_x = 0, current_pos_y = 0, i, wrap = conf->life % 2;
-	
-	if ( conf->life != MAX_HEALTH ) {
-		wrap = (MAX_HEALTH % 2 == 0) ? 0 : 1;
-	}
+	int current_pos_x = 0, current_pos_y = 0, i;
 	
 	glLoadIdentity();
-	glTranslated( SCREEN_WIDTH /2 + (MARGING_HEART * MAX_HEALTH ) / 2 - (WIDTH_HEART * MAX_HEALTH) / 4,  HEIGHT_HEART * ( 2 * wrap ), 0);
+	glTranslated( SCREEN_WIDTH /2 - (MARGING_HEART * MAX_HEALTH ) / 2 - (WIDTH_HEART * MAX_HEALTH) / 4,  HEIGHT_HEART, 0);
 	glColor3ub(255,255,255);
 	
 	glBindTexture(GL_TEXTURE_2D, heart);
 	
-	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {
-		if ( i == (MAX_HEALTH/ 2) + wrap ) {
-			current_pos_x = 0;
-			current_pos_y = -HEIGHT_HEART - MARGING_HEART;
-		}
-		
+	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {		
 		glBegin(GL_QUADS);
 			glTexCoord2i(0,1);
 			glVertex2i(current_pos_x, current_pos_y);
@@ -888,7 +882,7 @@ int check_dommage(int last_time_dmg) {
 	if ( IS_SPIKES(COORD((int)( conf->eye->x / CELL_SIZE), (int)( conf->eye->y / CELL_SIZE))) && last_time_dmg == 0 && !conf->free_fly) {
 		--conf->life;
 		last_time_dmg = TIME_BETWEEN_DMG;
-		Mix_PlayChannel(1, sound[rand() % NUMBER_OF_CHUNCK], 0);
+		Mix_PlayChannel(1, sound[rand() % 3], 0);
 	}
 	
 	return last_time_dmg;
@@ -915,4 +909,18 @@ void moving_wall_list_display()
 			break;
 		}
 	}
+}
+
+void timer_convert(Uint32 timer, char buffer[]) {
+
+	Uint32 uptime = timer / 1000;
+
+	uptime %= 3600;
+	sprintf(buffer, "%02d", uptime / 60);
+	
+	buffer[2] = ':';
+	
+	uptime %= 60;
+	sprintf(buffer + 3, "%02d", uptime);
+	return;
 }

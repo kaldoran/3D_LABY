@@ -183,6 +183,7 @@ void main_loop(void)
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 1;
+			Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
 		}
 
 		if (!conf->viewMode && conf->mousebutton[SDL_BUTTON_RIGHT])
@@ -190,6 +191,7 @@ void main_loop(void)
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 2;
+			Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
 		}
 		
 		if (!conf->viewMode && portals->orange->actif && portals->bleu->actif ) {

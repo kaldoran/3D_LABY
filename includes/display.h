@@ -66,4 +66,6 @@ int check_dommage(int last_time_dmg);
 
 void moving_wall_list_display();
 
+void timer_convert(Uint32 timer, char buffer[]);
+
 #endif

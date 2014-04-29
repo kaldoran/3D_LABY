@@ -50,7 +50,7 @@ GLuint load_texture(const char* file)
 }
 
 
-void create_texture_from_text(char *string, int r, int g, int b) {
+void create_texture_from_text(TTF_Font *font, char *string, int r, int g, int b) {
 	SDL_Color textColor;
 	SDL_Surface * temp;	
 	

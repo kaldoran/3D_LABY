@@ -39,6 +39,7 @@ void chunk_new(void) {
 	load_chunk("music/hurtflesh1.wav", HURT_1);
 	load_chunk("music/hurtflesh2.wav", HURT_2);
 	load_chunk("music/hurtflesh3.wav", HURT_3);
+	load_chunk("music/shotgun_shoot_red.wav", SOUND_PORTAL);
 }
 
 void chunk_delete(void) {

@@ -53,6 +53,7 @@ Config *config_new(void)
 
 	conf->text = 0;
 	conf->display = 0;
+	conf->timer = 0;
 return conf;
 }
 
