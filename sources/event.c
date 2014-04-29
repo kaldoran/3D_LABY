@@ -58,7 +58,7 @@ void main_loop(void)
 			}
 		}
 
-		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]))
+		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]) && conf->jump_duration == 0)
 		{
 			if ( conf->jump_duration == 0 ) { /* j'ai du mal a courir quand je saute */
 				if ( conf->free_fly ) {
@@ -75,9 +75,8 @@ void main_loop(void)
 				}
 			}
 		}
-		else if (!conf->viewMode &&  conf->key[SDLK_LCTRL]) {
+		else if (!conf->viewMode && conf->key[SDLK_LCTRL]) {
 			if ( conf->free_fly ) {
-			
 				if ( conf->speed <= FLY_WALK_SPEED ) 
 					conf->speed = FLY_WALK_SPEED;
 				else 
@@ -175,6 +174,7 @@ void main_loop(void)
 			portals->bleu->actif = 0;
 			portals->orange->actif = 0;
 			conf->timer = SDL_GetTicks();
+			conf->speed = DEFAULT_SPEED;
 		}
 
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
