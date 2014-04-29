@@ -33,6 +33,13 @@
 #define FAR                 SIZE * 2 * CELL_SIZE
 #define SENSITIVITY         0.05
 
+#define WALK_SPEED          0.3
+#define FLY_WALK_SPEED      0.1
+#define DEFAULT_SPEED       0.5
+#define FLY_SPEED           5
+#define RUN_SPEED           1.51337
+#define FLY_RUN_SPEED       7.51337
+
 #define DAY                 1
 #define NIGHT               0
 
@@ -56,6 +63,7 @@ typedef struct Config {
 
 	Point *eye_direction;
 	Point *body_direction;
+	float speed;
 
 	float theta;
 	float phi;

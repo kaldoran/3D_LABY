@@ -33,15 +33,14 @@ void main_loop(void)
 	uint32_t start_time;
 
 	Point *save_eye;
-	float speed;
 
 	last_time = SDL_GetTicks();
 	while (!conf->key[SDLK_ESCAPE] && !conf->quit)
 	{
 		start_time = SDL_GetTicks(); 
 		save_eye = point_new(conf->eye->x, conf->eye->y, conf->eye->z);
-		speed  = (conf->free_fly) ? 5 : 0.5;
 
+		
 		update_event();
 
 		if (!conf->viewMode && conf->key[SDLK_F1])
@@ -62,14 +61,51 @@ void main_loop(void)
 		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]))
 		{
 			if ( conf->jump_duration == 0 ) { /* j'ai du mal a courir quand je saute */
-				speed = (conf->free_fly) ? 7.51337 : 0.91337;
+				if ( conf->free_fly ) {
+					if ( conf->speed >= FLY_RUN_SPEED ) 
+						conf->speed = FLY_RUN_SPEED;
+					else 
+						conf->speed += 0.1;
+				}
+				else {
+					if ( conf->speed >= RUN_SPEED ) 
+						conf->speed = RUN_SPEED;
+					else 
+						conf->speed += 0.01;
+				}
+			}
+		}
+		else if (!conf->viewMode &&  conf->key[SDLK_LCTRL]) {
+			if ( conf->free_fly ) {
+			
+				if ( conf->speed <= FLY_WALK_SPEED ) 
+					conf->speed = FLY_WALK_SPEED;
+				else 
+					conf->speed -= 0.1;
+			}
+			else {
+				if ( conf->speed <= WALK_SPEED ) 
+					conf->speed = WALK_SPEED;
+				else 
+					conf->speed -= 0.01;
+			}
+		}
+		else {
+			if (conf->free_fly) {
+				if ( conf->speed <= FLY_SPEED )
+					conf->speed = FLY_SPEED;
+				else 
+					conf->speed -= 0.1;
+			}
+			else {
+				if ( conf->speed <= DEFAULT_SPEED ) 
+					conf->speed = DEFAULT_SPEED;
+				else 
+					conf->speed -= 0.01;
 			}
 		}
 
-		if (!conf->viewMode &&  conf->key[SDLK_LCTRL])
-		{
-			speed = (conf->free_fly) ? 0.1 : 0.3;
-		}
+
 
 		if (conf->key[SDLK_F2])
 		{
@@ -104,22 +140,22 @@ void main_loop(void)
 		
 		if (!conf->viewMode && (conf->key[SDLK_UP] || conf->key[SDLK_z]))
 		{
-			forward_move(save_eye, speed);
+			forward_move(save_eye, conf->speed);
 		}
 
 		if (!conf->viewMode && (conf->key[SDLK_DOWN] || conf->key[SDLK_s]))
 		{
-			backward_move(save_eye, speed);
+			backward_move(save_eye, conf->speed);
 		}
 
 		if (!conf->viewMode && (conf->key[SDLK_RIGHT] || conf->key[SDLK_d]))
 		{
-			right_move(save_eye, speed);
+			right_move(save_eye, conf->speed);
 		}
 
 		if (!conf->viewMode && (conf->key[SDLK_LEFT] || conf->key[SDLK_q]))
 		{
-			left_move(save_eye, speed);
+			left_move(save_eye, conf->speed);
 		}
 
 		if (!conf->viewMode && conf->key[SDLK_a])
@@ -302,7 +338,10 @@ void main_loop(void)
 			conf->eye->y = save_eye->y;
 			conf->eye->z = save_eye->z;
 		}
-
+		else {
+			conf->speed = DEFAULT_SPEED;
+		}
+		
 		/* Mouse motion */
 		if(!conf->viewMode)
 		{
