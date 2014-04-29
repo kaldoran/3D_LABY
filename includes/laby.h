@@ -27,7 +27,7 @@
 #define WALL                104
 #define MOVING_WALL         105
 #define SPIKES              106
-#define SPIKES_MW			107
+#define SPIKES_MW		   107
 
 #define IS_IN(X)            (X >= 0  && X < SIZE)
 #define IS_BORDER(X)        (END_TOP(X) || END_BOTTOM(X) || END_RIGHT(X) || END_LEFT(X))

@@ -61,7 +61,9 @@ void main_loop(void)
 
 		if (!conf->viewMode && (conf->key[SDLK_LSHIFT] || conf->key[SDLK_LALT]))
 		{
-			speed = (conf->free_fly) ? 7.51337 : 0.91337;
+			if ( conf->jump_duration == 0 ) { /* j'ai du mal a courir quand je saute */
+				speed = (conf->free_fly) ? 7.51337 : 0.91337;
+			}
 		}
 
 		if (!conf->viewMode &&  conf->key[SDLK_LCTRL])

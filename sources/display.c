@@ -553,14 +553,14 @@ void portal_maker (void)
 				/* Ne pas depasser les bords */
 				if ( coord_previous_bloc == 1 || coord_previous_bloc == -1) {
 					if ( COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y - WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
+							(int)((tmp->y - WIDTH_PORTAL + 1) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
 					     	
-						tmp->y += WIDTH_PORTAL_DIV;
+						tmp->y += ( WIDTH_PORTAL_DIV - 1);
 					}
 					else if ( COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y + WIDTH_PORTAL) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
+							(int)((tmp->y + WIDTH_PORTAL - 1 ) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
 						
-						tmp->y -= WIDTH_PORTAL_DIV;
+						tmp->y -= ( WIDTH_PORTAL_DIV - 1);
 					}
 					else {
 						break;
@@ -568,13 +568,13 @@ void portal_maker (void)
 				}
 
 				else if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
-					if ( COORD((int)((tmp->x - WIDTH_PORTAL)/  CELL_SIZE), 
+					if ( COORD((int)((tmp->x - WIDTH_PORTAL - 1)/  CELL_SIZE), 
 							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x - WIDTH_PORTAL < 0 ) {
-						tmp->x += WIDTH_PORTAL_DIV;
+						tmp->x += ( WIDTH_PORTAL_DIV + 1);
 					}
-					else if ( COORD((int)((tmp->x + WIDTH_PORTAL)/ CELL_SIZE), 
+					else if ( COORD((int)((tmp->x + WIDTH_PORTAL + 1 )/ CELL_SIZE), 
 							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x + WIDTH_PORTAL > SIZE ) {
-						tmp->x -= WIDTH_PORTAL_DIV;
+						tmp->x -= ( WIDTH_PORTAL_DIV + 1);
 					}
 					else {
 						break;
@@ -610,7 +610,7 @@ void portal_maker (void)
 					portals->bleu->portail->y = tmp->y;
 				}
 				Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
-				break;
+
 			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
 				break;
 			}
