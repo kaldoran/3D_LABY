@@ -567,7 +567,7 @@ void portal_maker (void)
 					}
 				}
 
-				if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
+				else if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
 					if ( COORD((int)((tmp->x - WIDTH_PORTAL)/  CELL_SIZE), 
 							(int)(tmp->y / CELL_SIZE)) != coord_current_bloc || tmp->x - WIDTH_PORTAL < 0 ) {
 						tmp->x += WIDTH_PORTAL_DIV;
@@ -579,6 +579,9 @@ void portal_maker (void)
 					else {
 						break;
 					}
+				}
+				else {
+					break;
 				}
 
 				if ( coord_previous_bloc == 1) {

@@ -141,14 +141,13 @@ void main_loop(void)
 
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
-			if (!conf->free_fly) {
+			if (conf->free_fly) {
 				save_eye->z -= 1;
 			}
 		}
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
-			printf("%d", conf->free_fly);
 			if (!conf->free_fly)
 			{
 				if ( !conf->viewMode && conf->jump_duration == 0 ) {
