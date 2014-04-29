@@ -26,12 +26,13 @@ all: clear dir $(BIN_REP)/$(BIN)
 # BIN creation.
  #
 $(BIN_REP)/$(BIN): $(OBJ)
-	@$(CC) $(OBJ) -o $@ -I $(INC_REP) $(CFLAGS) 
+	$(CC) $(OBJ) -o $@ -I $(INC_REP) $(CFLAGS) 
+	@echo "./bin/"$(BIN)" well created !"
 #
 # Object files creation.
  #
 $(OBJ_REP)/%.o: $(SRC_REP)/%.c
-	@$(CC) -c $^ -o $@ -I $(INC_REP) $(CFLAGS) 
+	$(CC) -c $^ -o $@ -I $(INC_REP) $(CFLAGS) 
 
 #
 # Other usefull targets.

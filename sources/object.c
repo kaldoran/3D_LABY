@@ -183,6 +183,7 @@ Object_list *object_list_shift(Object_list *ol)
 		node = ol->first;
 		ol->first = (ol->first)->previous;
 		(ol->first)->next = NULL;
+		--(ol->size);
 		doubly_linked_node_free(node);
 	}
 return ol;
