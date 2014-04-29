@@ -99,7 +99,7 @@ int main( int argc, char* argv[] )
 
 	if(argc > 1)
 	{
-		if (!strcasecmp(argv[1], "Debug") || !strcasecmp(argv[1], "debug") )
+		if (!strcasecmp(argv[1], "Debug"))
 		{
 			fprintf(stdout, "Hello Human and Welcome to our new NON-computer-aided DEBUG MODE.\n\n");
 			laby_print();
@@ -116,12 +116,12 @@ int main( int argc, char* argv[] )
 			return 0;
 		}
 
-		else if (!strcasecmp(argv[1], "Tree") || !strcasecmp(argv[1], "tree"))
+		else if (!strcasecmp(argv[1], "Tree"))
 		{
 			conf->quadTreeView = 1;
 		}
 
-		else if (!strcasecmp(argv[1], "View") || !strcasecmp(argv[1], "view"))
+		else if (!strcasecmp(argv[1], "View"))
 		{
 			conf->viewMode = 1;
 			conf->display = 1;

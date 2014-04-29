@@ -69,14 +69,13 @@ void display(void)
 			create_texture_from_text(font[DEBUG_FONT], buffer, 255, 255, 255);
 			text_print(10, 10);
 		}
-		if (!conf->viewMode)
-		{
+		if (!conf->viewMode) {
 			life_print();
+
+			timer_convert(SDL_GetTicks() - conf->timer, buffer);
+			create_texture_from_text(font[TIMER_FONT], buffer, 255, 255, 255);
+			text_print(SCREEN_WIDTH /2 - 15, 100);
 		}
-		timer_convert(SDL_GetTicks() - conf->timer, buffer);
-		
-		create_texture_from_text(font[TIMER_FONT], buffer, 255, 255, 255);
-		text_print(SCREEN_WIDTH /2 - 15, 100);
 	change_to_3d();
 	
 	glFlush();
@@ -581,6 +580,7 @@ void portal_maker (void)
 					portals->bleu->portail->x = tmp->x;
 					portals->bleu->portail->y = tmp->y;
 				}
+				Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
 				break;
 			} else if (laby->matrix[coord_current_bloc] == MOVING_WALL){
 				break;
@@ -921,12 +921,14 @@ void timer_convert(Uint32 timer, char buffer[]) {
 	return;
 }
 
-void jump(Point *save_eye) {
-	if ( conf->jump_duration >= 0 ) {
-		save_eye->z -= sin(conf->jump_duration) * JUMP_SPEED; 
-		conf->jump_duration -= 0.1;
-		return;
+float jump(Point *save_eye) {
+	if ( conf->jump_duration != 0 && conf->jump_duration <= 240) {
+		save_eye->z += sin(conf->jump_duration * M_PI / 180) * JUMP_SPEED; 
+		conf->jump_duration += 5;
+	}
+	else {
+		conf->jump_duration = 0;
 	}
 	
-	conf->jump_duration = 0;
+	return save_eye->z - conf->eye->z;
 }

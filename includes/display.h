@@ -68,5 +68,5 @@ void moving_wall_list_display();
 
 void timer_convert(Uint32 timer, char buffer[]);
 
-void jump(Point *save_eye);
+float jump(Point *save_eye);
 #endif

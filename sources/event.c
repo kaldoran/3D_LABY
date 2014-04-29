@@ -136,33 +136,32 @@ void main_loop(void)
 			
 			portals->bleu->actif = 0;
 			portals->orange->actif = 0;
+			conf->timer = SDL_GetTicks();
 		}
 
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
-			if (!conf->viewMode || !conf->free_fly)
-			{
+			if (!conf->free_fly) {
 				save_eye->z -= 1;
-			} else {
-				conf->eye->z -= 5;
 			}
 		}
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
-
-			if (!conf->viewMode || !conf->free_fly)
+			printf("%d", conf->free_fly);
+			if (!conf->free_fly)
 			{
-				if ( conf->jump_duration == 0 ) {
-					conf->jump_duration = 6;
+				if ( !conf->viewMode && conf->jump_duration == 0 ) {
+					conf->jump_duration = 120;
 				}
-				/*save_eye->z += 1;*/
-			} else {
-				conf->eye->z += 5;
+
+			} 
+			else {
+				save_eye->z += 1;
 			}
 		}
 		
-		jump(save_eye);
+		conf->eye->z += jump(save_eye);
 		
 		if ( conf->key[SDLK_p] ) {
 			conf->key[SDLK_p] = 0;
@@ -192,7 +191,6 @@ void main_loop(void)
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 1;
-			Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
 		}
 
 		if (!conf->viewMode && conf->mousebutton[SDL_BUTTON_RIGHT])
@@ -200,7 +198,6 @@ void main_loop(void)
 			conf->mousebutton[SDL_BUTTON_LEFT] = 0;
 			conf->mousebutton[SDL_BUTTON_RIGHT] = 0;
 			conf->shoot = 2;
-			Mix_PlayChannel(1, sound[SOUND_PORTAL], 0);
 		}
 		
 		if (!conf->viewMode && portals->orange->actif && portals->bleu->actif ) {

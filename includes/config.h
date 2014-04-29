@@ -45,7 +45,7 @@
 #define MAX_HEALTH          10
 #define TIME_BETWEEN_DMG    10 /* Temps en Milliseconde */
 
-#define JUMP_SPEED          0.3
+#define JUMP_SPEED          0.45
 
 typedef struct Config {
 	char *path;

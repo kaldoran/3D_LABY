@@ -19,7 +19,7 @@ TTF_Font *font_load(char *name, int size) {
 
 void font_new(void) {
 	font[DEBUG_FONT] = font_load(my_strcat(conf->path, "font/zelda.ttf"), 20);
-	font[TIMER_FONT] = font_load(my_strcat(conf->path, "font/clock.ttf"), 20);
+	font[TIMER_FONT] = font_load(my_strcat(conf->path, "font/clock.ttf"), 27);
 }
 
 void font_close(TTF_Font *font[NUMBER_OF_FONT])
