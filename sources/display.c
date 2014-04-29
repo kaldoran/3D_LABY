@@ -553,14 +553,14 @@ void portal_maker (void)
 				/* Ne pas depasser les bords */
 				if ( coord_previous_bloc == 1 || coord_previous_bloc == -1) {
 					if ( COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y - WIDTH_PORTAL_DIV + 1) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
+							(int)((tmp->y - WIDTH_PORTAL_DIV - 1) / CELL_SIZE)) != coord_current_bloc || tmp->y - WIDTH_PORTAL < 0 ) {
 					     	
-						tmp->y += ( WIDTH_PORTAL_DIV - 1);
+						tmp->y += ( WIDTH_PORTAL_DIV + 1);
 					}
 					else if ( COORD((int)(tmp->x/ CELL_SIZE), 
-							(int)((tmp->y + WIDTH_PORTAL_DIV - 1 ) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
+							(int)((tmp->y + WIDTH_PORTAL_DIV + 1 ) / CELL_SIZE)) != coord_current_bloc || tmp->y + WIDTH_PORTAL > SIZE ) {
 						
-						tmp->y -= ( WIDTH_PORTAL_DIV - 1);
+						tmp->y -= ( WIDTH_PORTAL_DIV + 1);
 					}
 				}
 				else if ( coord_previous_bloc == -WIDTH || coord_previous_bloc == WIDTH) {
