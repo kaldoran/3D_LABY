@@ -13,7 +13,7 @@
 #ifndef __CONF
 #define __CONF
 
-#define TITLE               "Teapot Science and Co. new NON-computer-aided enrichment center."
+#define TITLE               "No more Teapot Science and Co. new NON-computer-aided enrichment center."
 
 #define SCREEN_POSITION_X   300
 #define SCREEN_POSITION_Y   600
@@ -23,7 +23,7 @@
 #define SCREEN_MID_WIDTH    (SCREEN_WIDTH / 2)
 
 #define CELL_SIZE           16
-#define SPIKE_HEIGHT	   0.5
+#define SPIKE_HEIGHT	    0.5
 #define HEIGHT_MIN_BORDER   3
 #define HEIGHT_MAX_BORDER   7
 #define HORIZON             1
@@ -61,6 +61,7 @@ typedef struct Config {
 	float phi;
 
 	char free_fly;
+	char win;
 	char time;
 	char life;
 	char shoot;
@@ -87,6 +88,7 @@ typedef struct Config {
 	unsigned int height_text;
 	int display;
 	Uint32 timer;
+	char time_buffer[7];
 	int last_time_dmg;
 	float jump_duration;
 } Config;

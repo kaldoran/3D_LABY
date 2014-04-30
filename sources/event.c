@@ -144,21 +144,26 @@ void main_loop(void)
 		if (conf->key[SDLK_KP2] || (conf->key[SDLK_n]))
 		{
 			if (conf->free_fly) {
-				save_eye->z -= 1;
+				save_eye->z -= 3;
+			} else if (conf->viewMode) {
+				save_eye->z -= 10;
 			}
 		}
 
 		if (conf->key[SDLK_KP8] || (conf->key[SDLK_SPACE]))
 		{
-			if (!conf->free_fly)
+			if (!conf->free_fly && !conf->viewMode)
 			{
+				conf->key[SDLK_KP8] = 0;
+				conf->key[SDLK_SPACE] = 0;
 				if ( !conf->viewMode && conf->jump_duration == 0 ) {
 					conf->jump_duration = 120;
 				}
-
 			} 
-			else {
-				save_eye->z += 1;
+			else if (conf->free_fly){
+				save_eye->z += 3;
+			} else {
+				save_eye->z += 10;
 			}
 		}
 		
@@ -349,7 +354,8 @@ void main_loop(void)
 
 		if (IS_EXIT(COORD((int)(conf->eye->x / CELL_SIZE), (int)(conf->eye->y / CELL_SIZE))) && !conf->free_fly)
 		{
-			if (strcmp(conf->music, "music/music3.mp3")) {
+			if (!conf->win)
+			{
 				fprintf(stderr, "\n                         #,\n");
 				fprintf(stderr, "                        ###\n");
 				fprintf(stderr, "                       ## ##\n");
@@ -383,9 +389,12 @@ void main_loop(void)
 				fprintf(stderr, "       ######                         ######\n");
 				fprintf(stderr, "          ###############################\n");
 				fprintf(stderr, "The cake was not a lie !\n");
+			}
+			if (strcmp(conf->music, "music/music3.mp3")) {
 				conf->music = "music/music3.mp3";
 				music_new();
 			}
+			conf->win = 1;
 		}
 
 		/* Display with FPS care */

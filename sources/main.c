@@ -76,7 +76,7 @@ int main( int argc, char* argv[] )
 	fprintf(stdout, "                ,%cMM@@MH ,@%c=              .------=.\n", pc, pc);
 	fprintf(stdout, "                =@#@@@MX.                 -%cHX$$%c%c:;\n", pc, pc, pc);
 	fprintf(stdout, "               =-./@M@M$                  .;@MMMM@MM:\n");
-	fprintf(stdout, "               X@/ -$MM/                   . +MM@@@M$\n");
+	fprintf(stdout, "               X@/ -$MM/    No more        . +MM@@@M$\n");
 	fprintf(stdout, "              ,@M@H: :@:   Teapot Science   . =X#@@@@-\n");
 	fprintf(stdout, "              ,@@@MMX,                      /H- ;@M@M=\n");
 	fprintf(stdout, "              .H@@@@M@+,          & Co.     %cMM+..%c#$.\n", pc, pc);

@@ -72,7 +72,7 @@ void check_dommage();
 
 void moving_wall_list_display();
 
-void timer_convert(Uint32 timer, char buffer[]);
+void timer_convert(Uint32 timer);
 
 float jump(Point *save_eye);
 #endif

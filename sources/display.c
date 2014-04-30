@@ -86,8 +86,10 @@ void display(void)
 		}
 		if (!conf->viewMode) {
 			life_print();
-			timer_convert(SDL_GetTicks() - conf->timer, buffer);
-			text_print(font[TIMER_FONT], buffer, 255, 255, 255, SCREEN_WIDTH /2 - 15, 100);
+			if(!conf->win)
+				timer_convert(SDL_GetTicks() - conf->timer);
+			
+			text_print(font[TIMER_FONT], conf->time_buffer, 255, 255, 255, SCREEN_WIDTH /2 - 15, 100);
 		}
 	change_to_3d();
 	
@@ -776,7 +778,7 @@ void sky_box_print(float size)
 	glPopMatrix();
 
 	glEnable(GL_DEPTH_TEST);
-	if(!conf->viewMode)
+	if(!conf->viewMode && !conf->quadTreeView)
 	{
 		glEnable(GL_FOG);
 	}
@@ -818,22 +820,23 @@ void life_print(void) {
 	int current_pos_x = 0, current_pos_y = 0, i;
 	
 	glLoadIdentity();
-	glTranslated( SCREEN_WIDTH /2 - (MARGING_HEART * MAX_HEALTH ) / 2 - (WIDTH_HEART * MAX_HEALTH) / 4,  HEIGHT_HEART, 0);
+	glTranslated(MARGING_HEART, HEIGHT_HEART, 0);
 	glColor3ub(255,255,255);
 	
 	glBindTexture(GL_TEXTURE_2D, heart);
 	
-	for ( i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART) {		
-		glBegin(GL_QUADS);
-			glTexCoord2i(0,1);
-			glVertex2i(current_pos_x, current_pos_y);
-			glTexCoord2i(1,1);
-			glVertex2i(current_pos_x + WIDTH_HEART, current_pos_y);
-			glTexCoord2i(1,0);
-			glVertex2i(current_pos_x + WIDTH_HEART,  current_pos_y + HEIGHT_HEART);
-			glTexCoord2i(0,0);
-			glVertex2i(current_pos_x , current_pos_y + HEIGHT_HEART);
-		glEnd();
+	for (i = 0; i < conf->life; i++, current_pos_x += WIDTH_HEART + MARGING_HEART)
+	{		
+	 	glBegin(GL_QUADS);
+	 		glTexCoord2i(0,1);
+	 		glVertex2i(current_pos_x, current_pos_y);
+	 		glTexCoord2i(1,1);
+	 		glVertex2i(current_pos_x + WIDTH_HEART, current_pos_y);
+	 		glTexCoord2i(1,0);
+	 		glVertex2i(current_pos_x + WIDTH_HEART,  current_pos_y + HEIGHT_HEART);
+	 		glTexCoord2i(0,0);
+	 		glVertex2i(current_pos_x , current_pos_y + HEIGHT_HEART);
+	 	glEnd();
 	}
 }
 
@@ -906,7 +909,7 @@ void change_to_2d(void) {
 
 void change_to_3d(void) {
 	glEnable(GL_DEPTH_TEST);
-	if(!conf->viewMode)
+	if(!conf->viewMode && !conf->quadTreeView)
 	{
 		glEnable(GL_FOG);
 	}
@@ -950,17 +953,17 @@ void moving_wall_list_display()
 	}
 }
 
-void timer_convert(Uint32 timer, char buffer[]) {
+void timer_convert(Uint32 timer) {
 
 	Uint32 uptime = timer / 1000;
 
 	uptime %= 3600;
-	sprintf(buffer, "%02d", uptime / 60);
+	sprintf(conf->time_buffer, "%02d", uptime / 60);
 	
-	buffer[2] = ':';
+	conf->time_buffer[2] = ':';
 	
 	uptime %= 60;
-	sprintf(buffer + 3, "%02d", uptime);
+	sprintf(conf->time_buffer + 3, "%02d", uptime);
 	return;
 }
 

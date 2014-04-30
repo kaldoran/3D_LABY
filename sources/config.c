@@ -25,10 +25,11 @@ Config *config_new(void)
 									conf->eye->y + conf->eye_direction->y,
 									conf->eye->z + conf->eye_direction->z);
 	conf->up             = point_new(0, 0, 1);
-
+	
 	conf->theta          = 90.;
 	conf->phi            = 0.;
-
+	
+	conf->win            = 0;
 	conf->time           = NIGHT;
 	conf->life           = MAX_HEALTH;
 	conf->shoot          = 0;
@@ -36,7 +37,7 @@ Config *config_new(void)
 	conf->print_config   = 0;
 	conf->free_fly       = 0;
 	conf->full_screen    = 0;
-
+	
 	conf->quadTreeView   = 0;
 	conf->viewMode       = 0;
 	
@@ -47,15 +48,16 @@ Config *config_new(void)
 	conf->mousexrel      = 0;
 	conf->mouseyrel      = 0;
 	conf->quit           = 0;
-
-	conf->music 		 = "music/music.mp3";
-	conf->volume	     = MIX_MAX_VOLUME;
-
-	conf->text = 0;
-	conf->display = 0;
-	conf->timer = 0;
-	conf->last_time_dmg = 0;
-	conf->jump_duration = 0;
+	
+	conf->music          = "music/music.mp3";
+	conf->volume         = MIX_MAX_VOLUME;
+	
+	conf->text           = 0;
+	conf->display        = 0;
+	conf->timer          = 0;
+	memset(conf->time_buffer,0,sizeof(conf->time_buffer));
+	conf->last_time_dmg  = 0;
+	conf->jump_duration  = 0;
 return conf;
 }
 
