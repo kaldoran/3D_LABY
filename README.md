@@ -11,3 +11,14 @@ Contrainte :
 	- Utiliser un 4-Arbre
 
 :beers: :metal:
+
+Usage : 
+  - Make then : 
+  ./bin/main 
+  
+Option : 
+  - tree 
+  - debug
+  - view
+
+![Image view](image.png)
