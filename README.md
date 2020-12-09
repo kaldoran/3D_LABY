@@ -10,3 +10,5 @@ Nous avons choisi ici de réaliser un Labyrinthe 3D.
 Contrainte : 
 	- Utiliser un 4-Arbre
 
+Screen with glut : 
+![GLUT](image.png)
